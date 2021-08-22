@@ -66,6 +66,40 @@ impl DNASequence {
 
         (100 * count) as f64/self.seq.len() as f64
     }
+
+    pub fn suffix_overlap(&self, seq: &Self, len: usize) -> bool {
+        
+        if self.seq.len() < len {
+            return false;
+        }
+
+        let tail = &self.seq[self.seq.len() - len..];
+
+        for i in 0..len {
+            if tail[i] != seq.seq[i] {
+                return false;
+            }
+        }
+
+        true
+    }
+
+    pub fn prefix_overlap(&self, seq: &Self, len: usize) -> bool {
+        
+        if seq.seq.len() < len {
+            return false;
+        }
+
+        let tail = &seq.seq[seq.seq.len() - len..];
+
+        for i in 0..len {
+            if tail[i] != self.seq[i] {
+                return false;
+            }
+        }
+
+        true
+    }
 }
 
 impl std::fmt::Display for DNASequence {
@@ -128,5 +162,25 @@ mod test {
         let output = "60.919540";
 
         assert_eq!(output, &DNASequence::new(input).gc_content().to_string()[..9]);
+    }
+
+    #[test]
+    fn suffix_overlap() {
+        let input = vec!["AAATTTGGG", "GGGGTTACCC"];        
+        let s1 = DNASequence::new(input[0]);
+        let s2 = DNASequence::new(input[1]);
+
+        assert_eq!(true, s1.suffix_overlap(&s2, 3));
+        assert_eq!(false, s2.suffix_overlap(&s1, 3));
+    }
+
+    #[test]
+    fn prefix_overlap() {
+        let input = vec!["AAATTTGGG", "GGGGTTACCC"];        
+        let s1 = DNASequence::new(input[0]);
+        let s2 = DNASequence::new(input[1]);
+
+        assert_eq!(false, s1.prefix_overlap(&s2, 3));
+        assert_eq!(true, s2.prefix_overlap(&s1, 3));
     }
 }

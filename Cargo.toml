@@ -35,3 +35,7 @@ path = "bin/iprb.rs"
 [[bin]]
 name = "gc"
 path = "bin/gc.rs"
+
+[[bin]]
+name = "grph"
+path = "bin/grph.rs"
