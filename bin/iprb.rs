@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let v: Vec<u32> = input.split(' ').map(|s| s.parse().unwrap()).collect();
     
     
-    let res = genetics::mendelian_inheritance_dominant(17, 30, 24);
+    let res = genetics::mendelian::mendelian_inheritance_dominant(17, 30, 24);
     println!("{}", res);
     
     Ok(())
