@@ -23,3 +23,12 @@ path = "bin/rna.rs"
 [[bin]]
 name = "revc"
 path = "bin/revc.rs"
+
+[[bin]]
+name = "fib"
+path = "bin/fib.rs"
+
+[[bin]]
+name = "iprb"
+path = "bin/iprb.rs"
+
