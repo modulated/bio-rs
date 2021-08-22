@@ -54,6 +54,18 @@ impl DNASequence {
             seq: self.seq.iter().rev().map(|c|c.complement()).collect()
         }
     }
+
+    pub fn gc_content(&self) -> f64 {
+        let mut count = 0;
+        for n in &self.seq {
+            match n {
+                DNA::G | DNA::C => count += 1,
+                _ => continue
+            }
+        }
+
+        (100 * count) as f64/self.seq.len() as f64
+    }
 }
 
 impl std::fmt::Display for DNASequence {
@@ -108,5 +120,13 @@ mod test {
         let output = "TCAGT";
 
         assert_eq!(output, DNASequence::new(input).reverse_complement().to_string());
+    }
+
+    #[test]
+    fn gc_content() {
+        let input = "CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT";
+        let output = "60.919540";
+
+        assert_eq!(output, &DNASequence::new(input).gc_content().to_string()[..9]);
     }
 }
