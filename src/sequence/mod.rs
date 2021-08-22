@@ -1,7 +1,9 @@
 mod dna_seq;
-pub use dna_seq::DNASequence;
 mod rna_seq;
+pub mod fasta;
+pub use dna_seq::DNASequence;
 pub use rna_seq::RNASequence;
+pub use fasta::FASTA;
 
 trait Sequence {
     fn complement(&self) -> Self;
