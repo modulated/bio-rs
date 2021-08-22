@@ -1,0 +1,25 @@
+[package]
+name = "bio"
+version = "0.1.0"
+authors = ["George Roubos <cowkingdom@hotmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "bio"
+path = "src/lib.rs"
+
+[dependencies]
+
+[[bin]]
+name = "dna"
+path = "bin/dna.rs"
+
+[[bin]]
+name = "rna"
+path = "bin/rna.rs"
+
+[[bin]]
+name = "revc"
+path = "bin/revc.rs"
