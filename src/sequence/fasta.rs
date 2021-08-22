@@ -3,8 +3,8 @@ use crate::*;
 #[allow(dead_code)]
 #[derive(PartialEq, Debug)]
 pub struct FASTA {
-    name: String,
-    seq: DNASequence
+    pub name: String,
+    pub seq: DNASequence
 }
 
 pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
