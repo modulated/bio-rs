@@ -32,3 +32,6 @@ path = "bin/fib.rs"
 name = "iprb"
 path = "bin/iprb.rs"
 
+[[bin]]
+name = "gc"
+path = "bin/gc.rs"
