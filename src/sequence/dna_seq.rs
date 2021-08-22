@@ -100,6 +100,20 @@ impl DNASequence {
 
         true
     }
+
+    pub fn translate(&self) -> Protein {
+        let mut vec = vec![];
+
+        for n in self.seq.chunks(3) {
+            if n.len() != 3 { continue; }
+            let c: AminoAcid = (&Codon::new(n[0], n[1], n[2])).into();
+            vec.push(c);
+        }
+
+        Protein {
+            seq: vec
+        }
+    }
 }
 
 impl std::fmt::Display for DNASequence {

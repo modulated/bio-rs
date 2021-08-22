@@ -39,3 +39,7 @@ path = "bin/gc.rs"
 [[bin]]
 name = "grph"
 path = "bin/grph.rs"
+
+[[bin]]
+name = "prot"
+path = "bin/prot.rs"
