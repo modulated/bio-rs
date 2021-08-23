@@ -1,4 +1,5 @@
 use crate::RNA;
+use super::NucleicAcid;
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Debug)]
 pub enum DNA {
@@ -20,6 +21,8 @@ impl DNA {
     }
 }
 
+impl NucleicAcid for DNA {}
+
 impl std::convert::TryFrom<&char> for DNA {
     type Error = ();
     fn try_from(item: &char) -> Result<Self, Self::Error> {
@@ -33,8 +36,8 @@ impl std::convert::TryFrom<&char> for DNA {
     }
 }
 
-impl From<&RNA> for DNA {    
-    fn from(item: &RNA) -> Self {
+impl From<RNA> for DNA {    
+    fn from(item: RNA) -> Self {
         match item {
             RNA::A => return DNA::A,
             RNA::C => return DNA::C,
@@ -83,6 +86,6 @@ mod test {
 
     #[test]
     fn from() {
-        assert_eq!(RNA::from(&DNA::T), RNA::U);
+        assert_eq!(RNA::from(DNA::T), RNA::U);
     }
 }

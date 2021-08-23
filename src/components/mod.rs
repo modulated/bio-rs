@@ -6,3 +6,5 @@ mod amino;
 pub use amino::AminoAcid;
 mod codon;
 pub use codon::Codon;
+
+pub trait NucleicAcid {}

@@ -41,7 +41,7 @@ impl DNASequence {
         let mut seq: Vec<RNA> = vec![];
 
         for c in &self.seq {
-            seq.push(RNA::from(c))
+            seq.push(RNA::from(*c))
         }
 
         RNASequence {

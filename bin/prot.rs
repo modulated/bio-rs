@@ -30,6 +30,6 @@ mod test {
         
             
                 
-        assert_eq!(output, RNASequence::new(input).transcribe().translate().to_string());
+        assert_eq!(output, RNASequence::new(input).translate().to_string());
     }
 }

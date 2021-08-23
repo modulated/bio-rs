@@ -1,4 +1,4 @@
-use crate::{DNASequence, RNA, DNA};
+use crate::*;
 
 #[derive(Debug, PartialEq)]
 pub struct RNASequence {
@@ -41,7 +41,7 @@ impl RNASequence {
         let mut seq: Vec<DNA> = vec![];
 
         for c in &self.seq {
-            seq.push(DNA::from(c))
+            seq.push(DNA::from(*c))
         }
 
         DNASequence {
@@ -52,6 +52,21 @@ impl RNASequence {
     pub fn reverse_complement(&self) -> RNASequence {
         RNASequence {
             seq: self.seq.iter().rev().map(|c|c.complement()).collect()
+        }
+    }
+
+    pub fn translate(&self) -> Protein {
+        let mut vec = vec![];
+
+        for n in self.seq.chunks(3) {
+            if n.len() != 3 { continue; }
+            let c = Codon::new(n[0], n[1], n[2]);
+            let a: AminoAcid = (&c).into();
+            vec.push(a);
+        }
+
+        Protein {
+            seq: vec
         }
     }
 }
@@ -108,5 +123,13 @@ mod test {
         let output = "UCAGU";
 
         assert_eq!(output, RNASequence::new(input).reverse_complement().to_string());
+    }
+
+    #[test]
+    fn translate() {
+        let input = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA";
+        let output = "MAMAPRTEINSTRING";
+
+        assert_eq!(output, RNASequence::new(input).translate().to_string());
     }
 }

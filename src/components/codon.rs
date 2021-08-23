@@ -1,14 +1,14 @@
-use crate::DNA;
+use super::NucleicAcid;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Codon {
-    pub first: DNA,
-    pub second: DNA,
-    pub third: DNA
+pub struct Codon<T: NucleicAcid> {
+    pub first: T,
+    pub second: T,
+    pub third: T
 }
 
-impl Codon {
-    pub fn new(first: DNA, second: DNA, third: DNA) -> Self {
+impl<T: NucleicAcid> Codon<T> {
+    pub fn new(first: T, second: T, third: T) -> Self {
         Codon {
             first,
             second,
@@ -17,7 +17,8 @@ impl Codon {
     }
 }
 
-impl std::fmt::Display for Codon {
+// Codon.to_string()
+impl<T: NucleicAcid + std::fmt::Display> std::fmt::Display for Codon<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         
         write!(f, "{}{}{}", self.first, self.second, self.third)
