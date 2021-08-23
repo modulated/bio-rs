@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let fastas = fasta::parse_string_to_vec_of_fasta(&input);
     println!("{} sequences loaded", fastas.len());
 
-    let edges = genetics::overlap::overlap_graph(fastas, 3);    
+    let edges = crate::overlap_graph(fastas, 3);    
 
     for (k,v) in &edges {
         println!("{} {}", k, v);
@@ -48,7 +48,7 @@ mod test {
 
         let fastas = fasta::parse_string_to_vec_of_fasta(input);
 
-        let g = genetics::overlap::overlap_graph(fastas, 3);        
+        let g = overlap_graph(fastas, 3);        
                 
         assert_eq!(output, g);
     }

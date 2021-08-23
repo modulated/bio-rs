@@ -47,6 +47,17 @@ impl From<RNA> for DNA {
     }
 }
 
+impl From<&RNA> for DNA {    
+    fn from(item: &RNA) -> Self {
+        match item {
+            RNA::A => return DNA::A,
+            RNA::C => return DNA::C,
+            RNA::G => return DNA::G,
+            RNA::U => return DNA::T            
+        }
+    }
+}
+
 impl std::fmt::Display for DNA {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {

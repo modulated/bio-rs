@@ -12,6 +12,9 @@ path = "src/lib.rs"
 
 [dependencies]
 
+[dev-dependencies]
+cargo-husky = "1.5"
+
 [[bin]]
 name = "dna"
 path = "bin/dna.rs"
@@ -43,3 +46,7 @@ path = "bin/grph.rs"
 [[bin]]
 name = "prot"
 path = "bin/prot.rs"
+
+[[bin]]
+name = "ham"
+path = "bin/ham.rs"
