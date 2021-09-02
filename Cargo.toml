@@ -54,3 +54,7 @@ path = "bin/ham.rs"
 [[bin]]
 name = "subs"
 path = "bin/subs.rs"
+
+[[bin]]
+name = "revp"
+path = "bin/revp.rs"
