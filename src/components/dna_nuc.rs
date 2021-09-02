@@ -1,5 +1,4 @@
-use crate::RNA;
-use super::NucleicAcid;
+use crate::{RNA, NucleicAcid};
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Debug)]
 pub enum DNA {
@@ -9,9 +8,8 @@ pub enum DNA {
     T
 }
 
-impl DNA {
-    #[allow(dead_code)]
-    pub fn complement(&self) -> DNA {
+impl NucleicAcid for DNA {
+    fn complement(&self) -> Self {
         match self {
             DNA::A => DNA::T,
             DNA::C => DNA::G,
@@ -21,39 +19,37 @@ impl DNA {
     }
 }
 
-impl NucleicAcid for DNA {}
-
 impl std::convert::TryFrom<&char> for DNA {
     type Error = ();
     fn try_from(item: &char) -> Result<Self, Self::Error> {
-        match item {
-            'A' => return Ok(DNA::A),
-            'C' => return Ok(DNA::C),
-            'G' => return Ok(DNA::G),
-            'T' => return Ok(DNA::T),
-            _ => return Err(())
+        return match item {
+            'A' => Ok(DNA::A),
+            'C' => Ok(DNA::C),
+            'G' => Ok(DNA::G),
+            'T' => Ok(DNA::T),
+            _ => Err(())
         }
     }
 }
 
 impl From<RNA> for DNA {    
     fn from(item: RNA) -> Self {
-        match item {
-            RNA::A => return DNA::A,
-            RNA::C => return DNA::C,
-            RNA::G => return DNA::G,
-            RNA::U => return DNA::T            
+        return match item {
+            RNA::A => DNA::A,
+            RNA::C => DNA::C,
+            RNA::G => DNA::G,
+            RNA::U => DNA::T
         }
     }
 }
 
 impl From<&RNA> for DNA {    
     fn from(item: &RNA) -> Self {
-        match item {
-            RNA::A => return DNA::A,
-            RNA::C => return DNA::C,
-            RNA::G => return DNA::G,
-            RNA::U => return DNA::T            
+        return match item {
+            RNA::A => DNA::A,
+            RNA::C => DNA::C,
+            RNA::G => DNA::G,
+            RNA::U => DNA::T
         }
     }
 }
@@ -73,7 +69,7 @@ impl std::fmt::Display for DNA {
 mod test {
     use std::convert::TryFrom;
 
-    use super::{DNA, RNA};
+    use crate::{DNA, RNA, NucleicAcid};
 
     #[test]
     fn complement() {

@@ -9,9 +9,8 @@ pub enum RNA {
     U
 }
 
-impl RNA {
-    #[allow(dead_code)]
-    pub fn complement(&self) -> RNA {
+impl NucleicAcid for RNA {
+    fn complement(&self) -> Self {
         match self {
             RNA::A => RNA::U,
             RNA::C => RNA::G,
@@ -21,39 +20,37 @@ impl RNA {
     }
 }
 
-impl NucleicAcid for RNA {}
-
 impl std::convert::TryFrom<&char> for RNA {
     type Error = ();
     fn try_from(item: &char) -> Result<Self, Self::Error> {
-        match item {
-            'A' => return Ok(RNA::A),
-            'C' => return Ok(RNA::C),
-            'G' => return Ok(RNA::G),
-            'U' => return Ok(RNA::U),
-            _ => return Err(())
+        return match item {
+            'A' => Ok(RNA::A),
+            'C' => Ok(RNA::C),
+            'G' => Ok(RNA::G),
+            'U' => Ok(RNA::U),
+            _ => Err(())
         }
     }
 }
 
 impl From<DNA> for RNA {    
     fn from(item: DNA) -> Self {
-        match item {
-            DNA::A => return RNA::A,
-            DNA::C => return RNA::C,
-            DNA::G => return RNA::G,
-            DNA::T => return RNA::U           
+        return match item {
+            DNA::A => RNA::A,
+            DNA::C => RNA::C,
+            DNA::G => RNA::G,
+            DNA::T => RNA::U
         }
     }
 }
 
 impl From<&DNA> for RNA {    
     fn from(item: &DNA) -> Self {
-        match item {
-            DNA::A => return RNA::A,
-            DNA::C => return RNA::C,
-            DNA::G => return RNA::G,
-            DNA::T => return RNA::U           
+        return match item {
+            DNA::A => RNA::A,
+            DNA::C => RNA::C,
+            DNA::G => RNA::G,
+            DNA::T => RNA::U
         }
     }
 }
@@ -72,9 +69,8 @@ impl std::fmt::Display for RNA {
 
 #[cfg(test)]
 mod test {
+    use crate::{NucleicAcid, RNA, DNA};
     use std::convert::TryFrom;
-
-    use super::{RNA, DNA};
 
     #[test]
     fn complement() {
