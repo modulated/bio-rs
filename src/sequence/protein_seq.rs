@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{AminoAcid, substring};
 use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
@@ -8,10 +8,11 @@ pub struct Protein {
 
 impl Protein {
     pub fn new(str: &str) -> Self {
-        use std::convert::TryFrom;
+
         let mut vec: Vec<AminoAcid> = Vec::new();
 
         for c in str.chars() {
+            use std::convert::TryFrom;
             let aa = AminoAcid::try_from(&c);
             if let Ok(i) = aa {
                 vec.push(i);
@@ -27,7 +28,7 @@ impl Protein {
         let mut out = HashMap::new();
 
         for n in &self.seq {
-            let count = out.entry(*n).or_insert(0u32);
+            let count = out.entry(*n).or_insert(0_u32);
             *count += 1;
         }
 
@@ -53,7 +54,7 @@ impl std::fmt::Display for Protein {
 
 #[cfg(test)]
 mod test {
-    use crate::*;
+    use crate::{Protein, AminoAcid};
 
     #[test]
     fn new() {

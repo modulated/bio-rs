@@ -7,7 +7,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //     return Ok(());
     // }
 
-    // let filename = args().skip(1).next().ok_or("File not found.")?;
+    // let filename = args().nth(1).ok_or("File not found.")?;
     // let input = std::fs::read_to_string(filename)?;
     // let v: Vec<u32> = input.split(' ').map(|s| s.parse().unwrap()).collect();
     

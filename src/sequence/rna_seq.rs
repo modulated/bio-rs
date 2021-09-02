@@ -22,8 +22,8 @@ impl RNASequence {
         }
     }
 
-    pub fn counts(&self) -> (u64, u64, u64, u64) {
-        let mut out = (0u64, 0u64, 0u64, 0u64);
+    pub fn counts(&self) -> (u32, u32, u32, u32) {
+        let mut out = (0, 0, 0, 0);
 
         for n in &self.seq {
             match n {

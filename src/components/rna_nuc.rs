@@ -23,7 +23,7 @@ impl NucleicAcid for RNA {
 impl std::convert::TryFrom<&char> for RNA {
     type Error = ();
     fn try_from(item: &char) -> Result<Self, Self::Error> {
-        return match item {
+        match item {
             'A' => Ok(RNA::A),
             'C' => Ok(RNA::C),
             'G' => Ok(RNA::G),
@@ -35,7 +35,7 @@ impl std::convert::TryFrom<&char> for RNA {
 
 impl From<DNA> for RNA {    
     fn from(item: DNA) -> Self {
-        return match item {
+        match item {
             DNA::A => RNA::A,
             DNA::C => RNA::C,
             DNA::G => RNA::G,
@@ -46,7 +46,7 @@ impl From<DNA> for RNA {
 
 impl From<&DNA> for RNA {    
     fn from(item: &DNA) -> Self {
-        return match item {
+        match item {
             DNA::A => RNA::A,
             DNA::C => RNA::C,
             DNA::G => RNA::G,

@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let filename = args().skip(1).next().ok_or("A")?;
+    let filename = args().nth(1).ok_or("A")?;
     let input = std::fs::read_to_string(filename)?;
 
 

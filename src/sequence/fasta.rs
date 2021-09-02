@@ -1,4 +1,4 @@
-use crate::*;
+use crate::DNASequence;
 
 #[allow(dead_code)]
 #[derive(PartialEq, Debug)]
@@ -26,7 +26,7 @@ pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
 
 #[cfg(test)]
 mod test {
-    use crate::{*, fasta::parse_string_to_vec_of_fasta};
+    use crate::{DNASequence, fasta::FASTA, fasta::parse_string_to_vec_of_fasta};
     #[test]
     fn parse() {
         let input = r#">Rosalind_6404

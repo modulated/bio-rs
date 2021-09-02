@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let filename = args().skip(1).next().unwrap();
+    let filename = args().nth(1).unwrap();
     let input = std::fs::read_to_string(filename)?;
 
     let seq = DNASequence::new(&input);

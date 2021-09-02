@@ -89,7 +89,7 @@ impl TryFrom<&char> for AminoAcid {
             'W' => Ok(AminoAcid::Tryptophan),
             'Y' => Ok(AminoAcid::Tyrosine),
             'V' => Ok(AminoAcid::Valine),
-            _ => return Err(())
+            _ => Err(())
         }
     }
 }
@@ -101,34 +101,34 @@ impl<T: NucleicAcid + Into<DNA> + Copy> From<&Codon<T>> for AminoAcid {
                 match item.second.into() {
                     DNA::A => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Lysine; },
-                            DNA::C => { return AminoAcid::Asparagine; },
-                            DNA::G => { return AminoAcid::Lysine; },
-                            DNA::T => { return AminoAcid::Asparagine; },
+                            DNA::A => { AminoAcid::Lysine },
+                            DNA::C => { AminoAcid::Asparagine },
+                            DNA::G => { AminoAcid::Lysine },
+                            DNA::T => { AminoAcid::Asparagine },
                         }
                     },
                     DNA::C => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Threonine; },
-                            DNA::C => { return AminoAcid::Threonine; },
-                            DNA::G => { return AminoAcid::Threonine; },
-                            DNA::T => { return AminoAcid::Threonine; },
+                            DNA::A => { AminoAcid::Threonine },
+                            DNA::C => { AminoAcid::Threonine },
+                            DNA::G => { AminoAcid::Threonine },
+                            DNA::T => { AminoAcid::Threonine },
                         }
                     },
                     DNA::G => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Arginine; },
-                            DNA::C => { return AminoAcid::Serine; },
-                            DNA::G => { return AminoAcid::Arginine; },
-                            DNA::T => { return AminoAcid::Serine; },
+                            DNA::A => { AminoAcid::Arginine },
+                            DNA::C => { AminoAcid::Serine },
+                            DNA::G => { AminoAcid::Arginine },
+                            DNA::T => { AminoAcid::Serine },
                         }
                     },
                     DNA::T => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Isoleucine; },
-                            DNA::C => { return AminoAcid::Isoleucine; },
-                            DNA::G => { return AminoAcid::Methionine; },
-                            DNA::T => { return AminoAcid::Isoleucine; },
+                            DNA::A => { AminoAcid::Isoleucine },
+                            DNA::C => { AminoAcid::Isoleucine },
+                            DNA::G => { AminoAcid::Methionine },
+                            DNA::T => { AminoAcid::Isoleucine },
                         }
                     },
                 }
@@ -137,34 +137,34 @@ impl<T: NucleicAcid + Into<DNA> + Copy> From<&Codon<T>> for AminoAcid {
                 match item.second.into() {
                     DNA::A => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Glutamine; },
-                            DNA::C => { return AminoAcid::Histidine; },
-                            DNA::G => { return AminoAcid::Glutamine; },
-                            DNA::T => { return AminoAcid::Histidine; },
+                            DNA::A => { AminoAcid::Glutamine },
+                            DNA::C => { AminoAcid::Histidine },
+                            DNA::G => { AminoAcid::Glutamine },
+                            DNA::T => { AminoAcid::Histidine },
                         }
                     },
                     DNA::C => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Proline; },
-                            DNA::C => { return AminoAcid::Proline; },
-                            DNA::G => { return AminoAcid::Proline; },
-                            DNA::T => { return AminoAcid::Proline; },
+                            DNA::A => { AminoAcid::Proline },
+                            DNA::C => { AminoAcid::Proline },
+                            DNA::G => { AminoAcid::Proline },
+                            DNA::T => { AminoAcid::Proline },
                         }
                     },
                     DNA::G => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Arginine; },
-                            DNA::C => { return AminoAcid::Arginine; },
-                            DNA::G => { return AminoAcid::Arginine; },
-                            DNA::T => { return AminoAcid::Arginine; },
+                            DNA::A => { AminoAcid::Arginine },
+                            DNA::C => { AminoAcid::Arginine },
+                            DNA::G => { AminoAcid::Arginine },
+                            DNA::T => { AminoAcid::Arginine },
                         }
                     },
                     DNA::T => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Leucine; },
-                            DNA::C => { return AminoAcid::Leucine; },
-                            DNA::G => { return AminoAcid::Leucine; },
-                            DNA::T => { return AminoAcid::Leucine; },
+                            DNA::A => { AminoAcid::Leucine },
+                            DNA::C => { AminoAcid::Leucine },
+                            DNA::G => { AminoAcid::Leucine },
+                            DNA::T => { AminoAcid::Leucine },
                         }
                     },
                 }
@@ -173,70 +173,70 @@ impl<T: NucleicAcid + Into<DNA> + Copy> From<&Codon<T>> for AminoAcid {
                 match item.second.into() {
                     DNA::A => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Glutamate; },
-                            DNA::C => { return AminoAcid::Aspartate; },
-                            DNA::G => { return AminoAcid::Glutamate; },
-                            DNA::T => { return AminoAcid::Aspartate; },
+                            DNA::A => { AminoAcid::Glutamate },
+                            DNA::C => { AminoAcid::Aspartate },
+                            DNA::G => { AminoAcid::Glutamate },
+                            DNA::T => { AminoAcid::Aspartate },
                         }
                     },
                     DNA::C => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Alanine; },
-                            DNA::C => { return AminoAcid::Alanine; },
-                            DNA::G => { return AminoAcid::Alanine; },
-                            DNA::T => { return AminoAcid::Alanine; },
+                            DNA::A => { AminoAcid::Alanine },
+                            DNA::C => { AminoAcid::Alanine },
+                            DNA::G => { AminoAcid::Alanine },
+                            DNA::T => { AminoAcid::Alanine },
                         }
                     },
                     DNA::G => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Glycine; },
-                            DNA::C => { return AminoAcid::Glycine; },
-                            DNA::G => { return AminoAcid::Glycine; },
-                            DNA::T => { return AminoAcid::Glycine; },
+                            DNA::A => { AminoAcid::Glycine },
+                            DNA::C => { AminoAcid::Glycine },
+                            DNA::G => { AminoAcid::Glycine },
+                            DNA::T => { AminoAcid::Glycine },
                         }
                     },
                     DNA::T => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Valine; },
-                            DNA::C => { return AminoAcid::Valine; },
-                            DNA::G => { return AminoAcid::Valine; },
-                            DNA::T => { return AminoAcid::Valine; },
+                            DNA::A => { AminoAcid::Valine },
+                            DNA::C => { AminoAcid::Valine },
+                            DNA::G => { AminoAcid::Valine },
+                            DNA::T => { AminoAcid::Valine },
                         }
                     },
                 }
             },
             DNA::T => {
-                match item.second.into().into() {
+                match item.second.into() {
                     DNA::A => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Stop(StopColor::Ochre); },
-                            DNA::C => { return AminoAcid::Tyrosine; },
-                            DNA::G => { return AminoAcid::Stop(StopColor::Amber); },
-                            DNA::T => { return AminoAcid::Tyrosine; },
+                            DNA::A => { AminoAcid::Stop(StopColor::Ochre) },
+                            DNA::C => { AminoAcid::Tyrosine },
+                            DNA::G => { AminoAcid::Stop(StopColor::Amber) },
+                            DNA::T => { AminoAcid::Tyrosine },
                         }
                     },
                     DNA::C => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Serine; },
-                            DNA::C => { return AminoAcid::Serine; },
-                            DNA::G => { return AminoAcid::Serine; },
-                            DNA::T => { return AminoAcid::Serine; },
+                            DNA::A => { AminoAcid::Serine },
+                            DNA::C => { AminoAcid::Serine },
+                            DNA::G => { AminoAcid::Serine },
+                            DNA::T => { AminoAcid::Serine },
                         }
                     },
                     DNA::G => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Stop(StopColor::Opal); },
-                            DNA::C => { return AminoAcid::Cysteine; },
-                            DNA::G => { return AminoAcid::Tryptophan; },
-                            DNA::T => { return AminoAcid::Cysteine; },
+                            DNA::A => { AminoAcid::Stop(StopColor::Opal) },
+                            DNA::C => { AminoAcid::Cysteine },
+                            DNA::G => { AminoAcid::Tryptophan },
+                            DNA::T => { AminoAcid::Cysteine },
                         }
                     },
                     DNA::T => {
                         match item.third.into() {
-                            DNA::A => { return AminoAcid::Leucine; },
-                            DNA::C => { return AminoAcid::Phenylalanine; },
-                            DNA::G => { return AminoAcid::Leucine; },
-                            DNA::T => { return AminoAcid::Phenylalanine; },
+                            DNA::A => { AminoAcid::Leucine },
+                            DNA::C => { AminoAcid::Phenylalanine },
+                            DNA::G => { AminoAcid::Leucine },
+                            DNA::T => { AminoAcid::Phenylalanine },
                         }
                     },
                 }

@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let filename = args().skip(1).next().ok_or("Error: Unable to read args")?;
+    let filename = args().nth(1).ok_or("Error: Unable to read args")?;
     let input = std::fs::read_to_string(filename)?;
 
     let seq = &fasta::parse_string_to_vec_of_fasta(&input)[0].seq;
@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut s = "".to_string();
     for (i,j) in res {
         use std::fmt::Write;
-        write!(s, "{} {}\n", i, j)?;
+        writeln!(s, "{} {}", i, j)?;
     }
     println!("{}", s);
 

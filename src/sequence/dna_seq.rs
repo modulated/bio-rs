@@ -22,8 +22,8 @@ impl DNASequence {
         }
     }
 
-    pub fn counts(&self) -> (u64, u64, u64, u64) {
-        let mut out = (0u64, 0u64, 0u64, 0u64);
+    pub fn counts(&self) -> (u32, u32, u32, u32) {
+        let mut out = (0, 0, 0, 0);
 
         for n in &self.seq {
             match n {
@@ -56,6 +56,8 @@ impl DNASequence {
     }
 
     pub fn gc_content(&self) -> f64 {
+        use std::convert::TryFrom;
+
         let mut count = 0;
         for n in &self.seq {
             match n {
@@ -64,7 +66,7 @@ impl DNASequence {
             }
         }
 
-        (100 * count) as f64/self.seq.len() as f64
+        f64::from(100 * count)/f64::from(i32::try_from(self.seq.len()).unwrap())
     }
 
     pub fn suffix_overlap(&self, seq: &Self, len: usize) -> bool {
@@ -75,8 +77,8 @@ impl DNASequence {
 
         let tail = &self.seq[self.seq.len() - len..];
 
-        for i in 0..len {
-            if tail[i] != seq.seq[i] {
+        for (i, e) in tail.iter().enumerate().take(len) {
+            if e != &seq.seq[i] {
                 return false;
             }
         }
@@ -92,8 +94,8 @@ impl DNASequence {
 
         let tail = &seq.seq[seq.seq.len() - len..];
 
-        for i in 0..len {
-            if tail[i] != self.seq[i] {
+        for (i, e) in tail.iter().enumerate().take(len) {
+            if e != &self.seq[i] {
                 return false;
             }
         }
