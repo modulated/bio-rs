@@ -101,6 +101,10 @@ impl DNASequence {
         true
     }
 
+    pub fn substring(&self, pattern: &DNASequence) -> Vec<usize> {
+        substring(&pattern.seq, &self.seq)
+    }
+
     pub fn translate(&self) -> Protein {
         let mut vec = vec![];
 
@@ -196,5 +200,15 @@ mod test {
 
         assert_eq!(false, s1.prefix_overlap(&s2, 3));
         assert_eq!(true, s2.prefix_overlap(&s1, 3));
+    }
+
+    #[test]
+    fn substring() {
+        let a = DNASequence::new("GATATATGCATATACTT");
+        let b = DNASequence::new("ATAT");
+
+        let res = a.substring(&b);
+
+        assert_eq!(vec![2, 4, 10], res);
     }
 }

@@ -69,6 +69,11 @@ impl RNASequence {
             seq: vec
         }
     }
+
+    pub fn substring(&self, pattern: &RNASequence) -> Vec<usize> {
+        substring(&pattern.seq, &self.seq)
+    }
+
 }
 
 impl std::fmt::Display for RNASequence {
@@ -132,4 +137,15 @@ mod test {
 
         assert_eq!(output, RNASequence::new(input).translate().to_string());
     }
+
+    #[test]
+    fn substring() {
+        let a = RNASequence::new("GAUAUAUGCAUAUACUU");
+        let b = RNASequence::new("AUAU");
+
+        let res = a.substring(&b);
+
+        assert_eq!(vec![2, 4, 10], res);
+    }
+
 }

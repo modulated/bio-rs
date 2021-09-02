@@ -42,7 +42,7 @@ mod test {
 
         let fastas = crate::fasta::parse_string_to_vec_of_fasta(input);
 
-        let g = crate::overlap_graph(fastas, 3);
+        let g = super::overlap_graph(fastas, 3);
         assert_eq!(output, g);
     }
 }

@@ -33,6 +33,11 @@ impl Protein {
 
         out
     }
+
+    pub fn substring(&self, pattern: &Protein) -> Vec<usize> {
+        substring(&pattern.seq, &self.seq)
+    }
+
 }
 
 impl std::fmt::Display for Protein {
@@ -63,5 +68,18 @@ mod test {
         let counts = protein.counts();
 
         assert_eq!(*counts.get(&AminoAcid::Alanine).unwrap(), 2u32);
+    }
+
+    #[test]
+    fn substring() {
+        let a = Protein::new("AMGCKAMAM");
+        let b = Protein::new("AM");
+        let fail = Protein::new("AMBAMBJAAJFEAMAEGJ"); // longer than haystack - should return empty vec
+
+        let res = a.substring(&b);
+        let res_empty = a.substring(&fail);
+        let empty: Vec<usize> = Vec::new();
+        assert_eq!(vec![1, 6, 8], res);
+        assert_eq!(empty, res_empty);
     }
 }

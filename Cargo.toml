@@ -50,3 +50,7 @@ path = "bin/prot.rs"
 [[bin]]
 name = "ham"
 path = "bin/ham.rs"
+
+[[bin]]
+name = "subs"
+path = "bin/subs.rs"

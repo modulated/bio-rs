@@ -1,4 +1,6 @@
 mod hamming;
 mod overlap;
-pub use hamming::*;
-pub use overlap::*;
+mod substring;
+pub use hamming::hamming_distance;
+pub use overlap::overlap_graph;
+pub use substring::substring;
