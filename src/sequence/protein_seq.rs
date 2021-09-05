@@ -39,12 +39,17 @@ impl Protein {
         substring(&pattern.seq, &self.seq)
     }
 
-    pub fn cleave_start_stop(&mut self) -> Option<Vec<Protein>> {
-        let start = self.seq.iter().position(|x|x == &AminoAcid::Methionine);
-        match start {
-            None => None,
-            Some(i) => Some(Protein { seq: self.seq[i..].to_owned()})
+    pub fn get_read_frames(& self) -> Vec<Protein> {
+
+        let mut out = vec![];
+
+        for i in 0..self.seq.len() {
+            if self.seq[i] == AminoAcid::Methionine {
+                out.push(Protein{seq:self.seq[i..].to_owned()});
+            }
         }
+
+        out
     }
 }
 
@@ -92,10 +97,10 @@ mod test {
     }
 
     #[test]
-    fn cleave_start_stop() {
-        let input = "LIPKETMLLGSFRLIPKETLIQVAGSSPCNLS";
-        let output = "MLLGSFRLIPKETLIQVAGSSPCNLS";
+    fn get_read_frames() {
+        let input = "LIPKETMLLGSFRLIMPKETLIQVAGSSPCNLS";
+        let output = vec!["MLLGSFRLIMPKETLIQVAGSSPCNLS","MPKETLIQVAGSSPCNLS"];
 
-        assert_eq!(Protein::new(&input).cleave_start_stop().unwrap().to_string(), output);
+        assert_eq!(Protein::new(&input).get_read_frames().iter().map(|x|x.to_string()).collect::<Vec<String>>(), output);
     }
 }
