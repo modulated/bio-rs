@@ -21,16 +21,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     Ok(())
 }
-
-#[cfg(test)]
-mod test {
-    use bio::*;
-    #[test]
-    fn sample() {
-        let input = "GATGGAACTTGACTACGTAAATT";
-        let output = "GAUGGAACUUGACUACGUAAAUU";
-        let res = DNASequence::new(input).transcribe();
-                
-        assert_eq!(output, res.to_string());
-    }
-}

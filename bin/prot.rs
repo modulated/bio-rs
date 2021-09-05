@@ -19,17 +19,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-#[cfg(test)]
-mod test {
-    use bio::*;    
-    #[test]
-    fn sample_prot() {
-        let input = "AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA";
-        let output = "MAMAPRTEINSTRING";
-        
-            
-                
-        assert_eq!(output, RNASequence::new(input).translate().to_string());
-    }
-}

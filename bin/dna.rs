@@ -18,15 +18,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     Ok(())
 }
-
-#[cfg(test)]
-mod test {
-    #[test]
-    fn sample() {
-        let x = "AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC";
-        let seq = bio::DNASequence::new(x);
-        let counts = seq.counts();
-        let str = format!("{} {} {} {}", counts.0, counts.1, counts.2, counts.3);
-        assert_eq!("20 12 17 21", str);
-    }
-}

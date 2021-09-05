@@ -19,17 +19,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-#[cfg(test)]
-mod test {
-    use bio::*;
-    #[test]
-    fn sample() {
-        let input = "GATATATGCATATACTT\nATAT";
-        let output = "2 4 10";
-        let a: Vec<&str> = input.split('\n').collect();
-        let res = DNASequence::new(a[0]).substring(&DNASequence::new(a[1])).iter().map(|x|x.to_string()).collect::<Vec<String>>().join(" ");
-
-        assert_eq!(output, res.to_string());
-    }
-}

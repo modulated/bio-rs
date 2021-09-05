@@ -26,31 +26,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     Ok(())
 }
-
-#[cfg(test)]
-mod test {
-    use bio::*;    
-    #[test]
-    fn sample_grph() {
-        let input = 
-        ">Rosalind_0498
-        AAATAAA
-        >Rosalind_2391
-        AAATTTT
-        >Rosalind_2323
-        TTTTCCC
-        >Rosalind_0442
-        AAATCCC
-        >Rosalind_5013
-        GGGTGGG";
-        let output: Vec<(String, String)> = vec![("Rosalind_0498", "Rosalind_2391"),
-        ("Rosalind_0498", "Rosalind_0442"),
-        ("Rosalind_2391", "Rosalind_2323")].into_iter().map(|x| (x.0.to_owned(), x.1.to_owned())).collect();
-
-        let fastas = fasta::parse_string_to_vec_of_fasta(input);
-
-        let g = overlap_graph(fastas, 3);        
-                
-        assert_eq!(output, g);
-    }
-}
