@@ -1,6 +1,6 @@
 use criterion::*;
 use std::fs::read_to_string;
-use bio::{Seq, DNASequence};
+use bio::Seq;
 
 static FILENAME: &str = "benches/ecoli.fasta";
 

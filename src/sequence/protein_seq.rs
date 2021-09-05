@@ -39,6 +39,13 @@ impl Protein {
         substring(&pattern.seq, &self.seq)
     }
 
+    pub fn cleave_start_stop(&mut self) -> Option<Vec<Protein>> {
+        let start = self.seq.iter().position(|x|x == &AminoAcid::Methionine);
+        match start {
+            None => None,
+            Some(i) => Some(Protein { seq: self.seq[i..].to_owned()})
+        }
+    }
 }
 
 impl std::fmt::Display for Protein {
@@ -82,5 +89,13 @@ mod test {
         let empty: Vec<usize> = Vec::new();
         assert_eq!(vec![1, 6, 8], res);
         assert_eq!(empty, res_empty);
+    }
+
+    #[test]
+    fn cleave_start_stop() {
+        let input = "LIPKETMLLGSFRLIPKETLIQVAGSSPCNLS";
+        let output = "MLLGSFRLIPKETLIQVAGSSPCNLS";
+
+        assert_eq!(Protein::new(&input).cleave_start_stop().unwrap().to_string(), output);
     }
 }
