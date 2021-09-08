@@ -15,16 +15,16 @@ pub trait Sequence: PartialEq {
     // fn to_string(&self) -> String;
 }
 
-pub struct Seq(String);
+pub struct Seq { data: String }
 
 impl Seq {
-    pub fn new(string: &str) -> Self {
-        Seq(string.to_owned())
+    pub fn new<T: Into<String>>(string: T) -> Self {
+        Seq { data: string.into() }
     }
 
     pub fn counts(&self) -> (u32, u32, u32, u32) {
         let mut out = (0,0,0,0);
-        for c in self.0.chars() {
+        for c in self.data.chars() {
             match c {
                 'A' | 'a' => out.0 += 1,
                 'C' | 'c' => out.1 += 1,
