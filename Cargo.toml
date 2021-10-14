@@ -9,7 +9,7 @@ edition = "2018"
 [lib]
 name = "bio"
 path = "src/lib.rs"
-doctests = false
+doctest = false
 
 [dependencies]
 
@@ -24,65 +24,89 @@ harness = false
 [[bin]]
 name = "dna"
 path = "bin/dna.rs"
-doctests = false
-tests = false
+doctest = false
+test = false
 
 [[bin]]
 name = "rna"
 path = "bin/rna.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "revc"
 path = "bin/revc.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "fib"
 path = "bin/fib.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "iprb"
 path = "bin/iprb.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "gc"
 path = "bin/gc.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "grph"
 path = "bin/grph.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "prot"
 path = "bin/prot.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "ham"
 path = "bin/ham.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "subs"
 path = "bin/subs.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
 
 [[bin]]
 name = "revp"
 path = "bin/revp.rs"
-tests = false
-doctests = false
+test = false
+doctest = false
+
+[[bin]]
+name = "orf"
+path = "bin/orf.rs"
+test = false
+doctest = false
+
+[[bin]]
+name = "mrna"
+path = "bin/mrna.rs"
+test = false
+doctest = false
+
+[[bin]]
+name = "perm"
+path = "bin/perm.rs"
+test = false
+doctest = false
+
+[[bin]]
+name = "pper"
+path = "bin/pper.rs"
+test = false
+doctest = false

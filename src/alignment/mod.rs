@@ -1,8 +1,5 @@
-mod hamming;
-mod overlap;
+pub mod hamming;
+pub mod overlap;
+pub mod palindrome;
 mod substring;
-mod palindrome;
-pub use palindrome::reverse_palindrome;
-pub use hamming::hamming_distance;
-pub use overlap::overlap_graph;
 pub use substring::substring;
