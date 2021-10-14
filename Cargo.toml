@@ -122,3 +122,9 @@ name = "lexf"
 path = "bin/lexf.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "tree"
+path = "bin/tree.rs"
+test = false
+doctest = false
