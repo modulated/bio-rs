@@ -77,7 +77,6 @@ fn modulo_factorial(num: u64, m: u64) -> u64 {
 	(1..=num).fold(1, |acc, v| (acc * v) % m)
 }
 
-
 #[cfg(test)]
 mod test {
 	use super::{modulo_factorial, partial_permutation};

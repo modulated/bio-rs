@@ -1,3 +1,3 @@
+pub mod kmer;
 pub mod mendelian;
 pub mod permutation;
-pub mod kmer;

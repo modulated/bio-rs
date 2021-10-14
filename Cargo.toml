@@ -116,3 +116,9 @@ name = "splc"
 path = "bin/splc.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "lexf"
+path = "bin/lexf.rs"
+test = false
+doctest = false
