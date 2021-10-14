@@ -4,6 +4,7 @@
 #[warn(clippy::pedantic)]
 mod alignment;
 pub mod combinatorics;
+pub mod graph;
 mod sequence;
 pub mod util;
 pub use alignment::*;
