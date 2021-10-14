@@ -124,8 +124,26 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		self.connected() && (self.num_edges() == self.num_nodes() - 1)
 	}
 
+	pub fn is_ubt(&self) -> bool {
+		self.connected() && self.nodes().iter().all(|node| (self.degree(node).unwrap() == 3 || self.degree(node).unwrap() == 1))
+	}
+
 	pub fn edges_required_for_tree(&self) -> usize {
 		self.num_nodes() - 1 - self.num_edges()
+	}
+
+	pub fn ubt_internal_count(&self) -> usize {
+		assert!(self.is_ubt());
+		self.ubt_leaf_count() - 2
+	}
+
+	pub fn ubt_leaf_count(&self) -> usize {
+		self.iter().fold(0,|accum, x|{
+			match x.1.len() {
+				1 => accum + 1,
+				_ => accum
+			}
+		})
 	}
 
 	pub fn connected(&self) -> bool {
@@ -360,5 +378,28 @@ mod tests {
 		g.link(7, 9).unwrap();
 
 		assert_eq!(g.edges_required_for_tree(), 3);
+	}
+
+	#[test]
+	fn unweighted_ubt() {
+		let mut g = UnweightedGraph::new();
+		g.add(1);
+		g.add(2);
+		g.add(3);
+		g.add(4);
+		g.add(5);
+		g.add(6);
+		g.link(1,2).unwrap();
+		g.link(2,3).unwrap();
+		g.link(2,4).unwrap();
+		g.link(1,5).unwrap();
+		g.link(1,6).unwrap();
+
+		assert!(g.is_ubt());
+		assert_eq!(g.ubt_leaf_count(), 4);
+		assert_eq!(g.ubt_internal_count(), 2);
+		
+		g.link(1, 4).unwrap();
+		assert!(!g.is_ubt());
 	}
 }
