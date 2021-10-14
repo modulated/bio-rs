@@ -1,4 +1,4 @@
-use bio::combinatorics::potential_mrna_strings_from_protein as combo;
+use bio::combinatorics::permutation::potential_mrna_strings_from_protein as combo;
 use bio::Seq;
 use std::env::args;
 

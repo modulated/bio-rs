@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let intg = args().nth(1).ok_or("File not found.")?;
 	let input: u8 = intg.parse()?;
 
-	let out = bio::combinatorics::permutation(input);
+	let out = bio::combinatorics::permutation::permutation(input);
 
 	println!("{}", out.len());
 	for l in out {
