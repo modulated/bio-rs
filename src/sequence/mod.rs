@@ -1,11 +1,5 @@
-// mod dna_seq;
-// mod rna_seq;
-// mod protein_seq;
 mod bytes;
 pub mod fasta;
 mod seq;
-pub use seq::Seq;
-// pub use dna_seq::DNASequence;
-// pub use rna_seq::RNASequence;
 pub use fasta::FASTA;
-// pub use protein_seq::Protein;
+pub use seq::Seq;

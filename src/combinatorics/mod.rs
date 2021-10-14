@@ -110,7 +110,10 @@ mod test {
 	fn test_partial_perm() {
 		assert_eq!(partial_permutation(6, 6, 700), 20);
 		assert_eq!(partial_permutation(6, 1, 1000), 6);
-		assert_eq!(partial_permutation(2, 2, 1000000), modulo_factorial(2, 10000));
+		assert_eq!(
+			partial_permutation(2, 2, 1000000),
+			modulo_factorial(2, 10000)
+		);
 		assert_eq!(partial_permutation(21, 7, 1_000_000), 51200);
 	}
 

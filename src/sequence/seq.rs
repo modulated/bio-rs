@@ -14,6 +14,10 @@ impl Seq {
 		Seq(b.to_vec())
 	}
 
+	pub fn to_slice(&self) -> &[u8] {
+		&self.0[..]
+	}
+
 	pub fn is_empty(&self) -> bool {
 		self.len() == 0
 	}
@@ -76,15 +80,22 @@ impl Seq {
 				_ => out.push(*c),
 			}
 		}
-		Self::new(String::from_utf8(out).unwrap())
+		Self::from_bytes(&out)
 	}
 
-	pub fn translate(&self) -> Self {
+	pub fn translate(&self, terminates: bool) -> Self {
 		let mut out: Vec<u8> = Vec::with_capacity(self.0.len());
-		for c in self.0.chunks_exact(3) {
-			out.push(super::bytes::codon_to_amino(c));
+		for c in self
+			.0
+			.chunks_exact(3)
+			.map(|x| super::bytes::codon_to_amino(x))
+		{
+			if terminates && c == b'*' {
+				break;
+			}
+			out.push(c);
 		}
-		Self::new(String::from_utf8(out).unwrap())
+		Self::from_bytes(&out)
 	}
 
 	pub fn suffix_overlap(&self, seq: &Self, len: usize) -> bool {
@@ -121,6 +132,21 @@ impl Seq {
 
 	pub fn substring(&self, pattern: &Seq) -> Vec<usize> {
 		crate::alignment::substring(&pattern.0, &self.0)
+	}
+
+	pub fn splice_introns(&self, introns: &[&Seq]) -> Self {
+		let mut arr = self.clone();
+
+		for s in introns {
+			let subidx = arr.substring(s);
+			for si in subidx {
+				let start_slice = si - 1;
+				let end_slice = start_slice + s.len();
+				arr.0.drain(start_slice..end_slice);
+			}
+		}
+
+		arr
 	}
 
 	pub fn orf(&self) -> Vec<Seq> {
@@ -188,6 +214,8 @@ impl std::fmt::Display for Seq {
 
 #[cfg(test)]
 mod test {
+	use crate::fasta::parse_string_to_vec_of_fasta;
+
 	use super::Seq;
 
 	#[test]
@@ -246,16 +274,12 @@ mod test {
 	#[test]
 	fn translate() {
 		let input = "ATGGCCATGGCGCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA";
-		let output = "MAMAPRTEINSTRING";
-		assert_eq!(
-			Seq::new(input)
-				.translate()
-				.to_string()
-				.split('*')
-				.next()
-				.unwrap(),
-			output
-		)
+		let output1 = "MAMAPRTEINSTRING";
+		let output2 = "MAMAPRTEINSTRING*";
+		let res1 = Seq::new(input).translate(true).to_string();
+		let res2 = Seq::new(input).translate(false).to_string();
+		assert_eq!(res1, output1);
+		assert_eq!(res2, output2);
 	}
 
 	#[test]
@@ -302,5 +326,23 @@ mod test {
 		let res = a.substring(&b);
 
 		assert_eq!(vec![2, 4, 10], res);
+	}
+
+	#[test]
+	fn splice() {
+		let input = ">Rosalind_10
+		ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG
+		>Rosalind_12
+		ATCGGTCGAA
+		>Rosalind_15
+		ATCGGTCGAGCGTGT";
+		let dnaout = "ATGGTCTACATAGCTGACAAACAGCACGTAGCATCTCGAGAGGCATATGGTCACATGTTCAAAGTTTGCGCCTAG";
+		let protout = "MVYIADKQHVASREAYGHMFKVCA";
+		let fastas = parse_string_to_vec_of_fasta(input);
+		let introns: Vec<&Seq> = fastas[1..].iter().map(|x| &x.seq).collect();
+		let res = fastas[0].seq.splice_introns(&introns[..]);
+
+		assert_eq!(res.to_string(), dnaout);
+		assert_eq!(res.translate(true).to_string(), protout);
 	}
 }

@@ -110,3 +110,9 @@ name = "pper"
 path = "bin/pper.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "splc"
+path = "bin/splc.rs"
+test = false
+doctest = false
