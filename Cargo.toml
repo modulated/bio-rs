@@ -128,3 +128,9 @@ name = "tree"
 path = "bin/tree.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "kmer"
+path = "bin/kmer.rs"
+test = false
+doctest = false
