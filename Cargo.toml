@@ -134,3 +134,9 @@ name = "kmer"
 path = "bin/kmer.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "fibd"
+path = "bin/fibd.rs"
+test = false
+doctest = false
