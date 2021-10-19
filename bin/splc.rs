@@ -1,4 +1,4 @@
-use bio::{fasta, Seq};
+use bio::{formats::parse_string_to_vec_of_fasta, Seq};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let filename = args().nth(1).ok_or("File not found.")?;
 	let input = std::fs::read_to_string(filename)?;
 
-	let fastas = fasta::parse_string_to_vec_of_fasta(&input);
+	let fastas = parse_string_to_vec_of_fasta(&input);
 	println!("{} sequences loaded", fastas.len());
 
 	let introns: Vec<&Seq> = fastas[1..].iter().map(|x| &x.seq).collect();

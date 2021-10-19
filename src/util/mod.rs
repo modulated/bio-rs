@@ -23,7 +23,7 @@ pub fn mortal_fibonacci_rabbits(
 	months: i64,
 	lifespan: i64,
 	memo: &mut std::collections::HashMap<i64, i64>,
-) -> i64 {	
+) -> i64 {
 	if memo.contains_key(&months) {
 		return memo[&months];
 	}
@@ -31,18 +31,16 @@ pub fn mortal_fibonacci_rabbits(
 	let out = match months {
 		x if x < 0 => 0,
 		0 => 0,
-		1 => 1,		
+		1 => 1,
 		_ => {
 			if months <= lifespan {
 				mortal_fibonacci_rabbits(months - 1, lifespan, memo)
 					+ mortal_fibonacci_rabbits(months - 2, lifespan, memo)
-			}
-			else if months == lifespan + 1 {
+			} else if months == lifespan + 1 {
 				mortal_fibonacci_rabbits(months - 1, lifespan, memo)
 					+ mortal_fibonacci_rabbits(months - 2, lifespan, memo)
 					- 1
-			}
-			else {
+			} else {
 				mortal_fibonacci_rabbits(months - 1, lifespan, memo)
 					+ mortal_fibonacci_rabbits(months - 2, lifespan, memo)
 					- mortal_fibonacci_rabbits(months - (lifespan + 1), lifespan, memo)
@@ -56,8 +54,8 @@ pub fn mortal_fibonacci_rabbits(
 
 #[cfg(test)]
 mod test {
-    use crate::util::mortal_fibonacci_rabbits;
-	
+	use crate::util::mortal_fibonacci_rabbits;
+
 	#[test]
 	fn test_mortal() {
 		let mut map = std::collections::HashMap::new();

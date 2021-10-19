@@ -214,7 +214,7 @@ impl std::fmt::Display for Seq {
 
 #[cfg(test)]
 mod test {
-	use crate::fasta::parse_string_to_vec_of_fasta;
+	use crate::formats::parse_string_to_vec_of_fasta;
 
 	use super::Seq;
 

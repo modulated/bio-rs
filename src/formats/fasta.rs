@@ -1,10 +1,25 @@
 use crate::Seq;
+use ureq;
 
-#[allow(dead_code)]
+const UNIPROT_URL: &str = "https://www.uniprot.org/uniprot/";
+
 #[derive(PartialEq, Debug)]
 pub struct FASTA {
 	pub name: String,
 	pub seq: Seq,
+}
+
+impl FASTA {
+	pub fn from_uniprot_id(id: &str) -> Self {
+		let path = format!("{}{}.fasta", UNIPROT_URL, id);
+		let r = ureq::get(&path).call().unwrap().into_string().unwrap();
+		let split = &r[1..].split_once('\n');
+		let (name, seq) = split.unwrap();
+		Self {
+			name: name.to_string(),
+			seq: Seq::new(seq),
+		}
+	}
 }
 
 pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
@@ -29,7 +44,8 @@ pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
 
 #[cfg(test)]
 mod test {
-	use crate::{fasta::parse_string_to_vec_of_fasta, fasta::FASTA, Seq};
+	use super::{parse_string_to_vec_of_fasta, FASTA};
+	use crate::Seq;
 	#[test]
 	fn parse() {
 		let input = r#">Rosalind_6404
@@ -67,5 +83,24 @@ mod test {
 		];
 
 		assert_eq!(output, parse_string_to_vec_of_fasta(input));
+	}
+
+	#[test]
+	fn uniprot() {
+		let seq = "MKNKFKTQEELVNHLKTVGFVFANSEIYNGLANAWDYGPLGVLLKNNLKNLWWKEFVTKQ
+		KDVVGLDSAIILNPLVWKASGHLDNFSDPLIDCKNCKARYRADKLIESFDENIHIAENSS
+		NEEFAKVLNDYEISCPTCKQFNWTEIRHFNLMFKTYQGVIEDAKNVVYLRPETAQGIFVN
+		FKNVQRSMRLHLPFGIAQIGKSFRNEITPGNFIFRTREFEQMEIEFFLKEESAYDIFDKY
+		LNQIENWLVSACGLSLNNLRKHEHPKEELSHYSKKTIDFEYNFLHGFSELYGIAYRTNYD
+		LSVHMNLSKKDLTYFDEQTKEKYVPHVIEPSVGVERLLYAILTEATFIEKLENDDERILM
+		DLKYDLAPYKIAVMPLVNKLKDKAEEIYGKILDLNISATFDNSGSIGKRYRRQDAIGTIY
+		CLTIDFDSLDDQQDPSFTIRERNSMAQKRIKLSELPLYLNQKAHEDFQRQCQK"
+			.chars()
+			.filter(|x| x.is_alphabetic())
+			.collect::<String>();
+
+		let r = FASTA::from_uniprot_id("B5ZC00");
+		assert_eq!(r.name, "sp|B5ZC00|SYG_UREU1 Glycine--tRNA ligase OS=Ureaplasma urealyticum serovar 10 (strain ATCC 33699 / Western) OX=565575 GN=glyQS PE=3 SV=1");
+		assert_eq!(r.seq.to_string(), seq);
 	}
 }

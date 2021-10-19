@@ -1,4 +1,4 @@
-use bio::fasta::parse_string_to_vec_of_fasta;
+use bio::formats::parse_string_to_vec_of_fasta;
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

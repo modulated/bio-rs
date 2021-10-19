@@ -1,4 +1,4 @@
-use bio::*;
+use bio::{formats::parse_string_to_vec_of_fasta, palindrome};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let filename = args().nth(1).ok_or("Error: Unable to read args")?;
 	let input = std::fs::read_to_string(filename)?;
 
-	let seq = &fasta::parse_string_to_vec_of_fasta(&input)[0].seq;
+	let seq = &parse_string_to_vec_of_fasta(&input)[0].seq;
 
 	let res = palindrome::reverse(seq, 4, 12);
 

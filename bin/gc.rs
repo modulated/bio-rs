@@ -1,4 +1,4 @@
-use bio::*;
+use bio::formats::parse_string_to_vec_of_fasta;
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	let mut map = std::collections::HashMap::new();
 
-	let fastas = fasta::parse_string_to_vec_of_fasta(&input);
+	let fastas = parse_string_to_vec_of_fasta(&input);
 	for f in fastas {
 		map.insert(f.name, f.seq.gc_content());
 	}

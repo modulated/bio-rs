@@ -73,8 +73,12 @@ pub fn partial_permutation(n: u64, k: u64, m: u64) -> u64 {
 	}
 }
 
-fn modulo_factorial(num: u64, m: u64) -> u64 {
+pub fn modulo_factorial(num: u64, m: u64) -> u64 {
 	(1..=num).fold(1, |acc, v| (acc * v) % m)
+}
+
+pub fn factorial(num: u64) -> u64 {
+	(1..=num).product()
 }
 
 #[cfg(test)]
