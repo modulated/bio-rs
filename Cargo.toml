@@ -147,3 +147,9 @@ name = "lia"
 path = "bin/lia.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "mprt"
+path = "bin/mprt.rs"
+test = false
+doctest = false
