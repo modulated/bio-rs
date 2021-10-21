@@ -159,3 +159,9 @@ name = "sseq"
 path = "bin/sseq.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "lcsq"
+path = "bin/lcsq.rs"
+test = false
+doctest = false
