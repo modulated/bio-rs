@@ -1,8 +1,6 @@
 use crate::Seq;
 use ureq;
 
-const UNIPROT_URL: &str = "https://www.uniprot.org/uniprot/";
-
 #[derive(PartialEq, Debug)]
 pub struct FASTA {
 	pub name: String,
@@ -11,7 +9,18 @@ pub struct FASTA {
 
 impl FASTA {
 	pub fn from_uniprot_id(id: &str) -> Self {
-		let path = format!("{}{}.fasta", UNIPROT_URL, id);
+		let path = format!("https://www.uniprot.org/uniprot/{}.fasta", id);
+		let r = ureq::get(&path).call().unwrap().into_string().unwrap();
+		let split = &r[1..].split_once('\n');
+		let (name, seq) = split.unwrap();
+		Self {
+			name: name.to_string(),
+			seq: Seq::new(seq),
+		}
+	}
+
+	pub fn from_ena_id(id: &str) -> Self {
+		let path = format!("https://www.ebi.ac.uk/Tools/dbfetch/dbfetch?db=ena_sequence&id={}&format=fasta&style=raw", id);
 		let r = ureq::get(&path).call().unwrap().into_string().unwrap();
 		let split = &r[1..].split_once('\n');
 		let (name, seq) = split.unwrap();
@@ -102,5 +111,13 @@ mod test {
 		let r = FASTA::from_uniprot_id("B5ZC00");
 		assert_eq!(r.name, "sp|B5ZC00|SYG_UREU1 Glycine--tRNA ligase OS=Ureaplasma urealyticum serovar 10 (strain ATCC 33699 / Western) OX=565575 GN=glyQS PE=3 SV=1");
 		assert_eq!(r.seq.to_string(), seq);
+	}
+
+	#[test]
+	fn ena() {
+
+		let r = FASTA::from_ena_id("LT599825.1");
+		assert_eq!(r.name, "ENA|LT599825|LT599825.1 Escherichia coli isolate E. coli NRZ14408 genome assembly, chromosome: NRZ14408_C");
+		assert_eq!(r.seq.len(), 5344876);
 	}
 }
