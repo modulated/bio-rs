@@ -25,9 +25,35 @@ where
 	out
 }
 
+pub fn subsequence<N, H>(needle: &[N], haystack: &[H]) -> Vec<usize>
+where
+	N: PartialEq,
+	H: PartialEq<N>,
+{
+	let mut out = vec![];
+
+	if needle.len() > haystack.len() {
+		return out;
+	}
+
+	let mut n_idx = 0;
+
+	for (i, c) in haystack.iter().enumerate() {
+		if *c == needle[n_idx] {
+			n_idx += 1;
+			out.push(i+ 1);
+			if n_idx == needle.len() {
+				break;
+			}
+		}
+	}
+
+	out
+}
+
 #[cfg(test)]
 mod test {
-	use crate::alignment::substring::substring;
+	use crate::alignment::substring::{substring, subsequence};
 
 	#[test]
 	fn test_substring() {
@@ -35,5 +61,14 @@ mod test {
 		let nd = vec![4, 5, 6];
 
 		assert_eq!(vec![4, 7], substring(&nd, &hs));
+	}
+
+	#[test]
+	fn test_subsequence() {
+		let hs = "ACGCGCGTGACG";
+		let nd = "GTA";
+		let res = vec![3, 8, 10];
+
+		assert_eq!(res, subsequence(&nd.as_bytes(), &hs.as_bytes()));
 	}
 }

@@ -153,3 +153,9 @@ name = "mprt"
 path = "bin/mprt.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "sseq"
+path = "bin/sseq.rs"
+test = false
+doctest = false
