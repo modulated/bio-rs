@@ -1,7 +1,7 @@
 #[deny(clippy::all)]
 #[warn(clippy::cargo)]
 #[warn(clippy::nursery)]
-#[warn(clippy::pedantic)]
+// #[warn(clippy::pedantic)]
 mod alignment;
 pub mod combinatorics;
 pub mod formats;

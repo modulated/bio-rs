@@ -11,6 +11,7 @@ pub enum AminoMotif {
 }
 
 impl ProteinMotif {
+	#[must_use]
 	pub fn new(string: &str) -> Self {
 		let mut vec = vec![];
 		let mut iter = string.bytes();
@@ -36,6 +37,7 @@ impl ProteinMotif {
 		Self(vec)
 	}
 
+	#[must_use]
 	pub fn find_in(&self, seq: &Seq) -> Vec<usize> {
 		let mut res = vec![];
 		let mut i = 0;
@@ -44,28 +46,27 @@ impl ProteinMotif {
 			let mut j = 0;
 
 			while j < self.0.len() {
-				let c = seq.0[i + j];
+				let seq_amino = seq.0[i + j];
 				match self.0[j] {
 					AminoMotif::Amino(a) => {
-						if a == c {
+						if a == seq_amino {
 							j += 1;
 						} else {
 							break;
 						}
 					}
 					AminoMotif::Either(a, b) => {
-						if a == c || c == b {
+						if a == seq_amino || b == seq_amino {
 							j += 1;
 						} else {
 							break;
 						}
 					}
 					AminoMotif::Except(a) => {
-						if a != c {
-							j += 1;
-						} else {
+						if a == seq_amino {
 							break;
 						}
+						j += 1;
 					}
 				};
 				if j == self.0.len() {

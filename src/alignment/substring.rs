@@ -41,7 +41,7 @@ where
 	for (i, c) in haystack.iter().enumerate() {
 		if *c == needle[n_idx] {
 			n_idx += 1;
-			out.push(i+ 1);
+			out.push(i + 1);
 			if n_idx == needle.len() {
 				break;
 			}
@@ -53,7 +53,7 @@ where
 
 #[cfg(test)]
 mod test {
-	use crate::alignment::substring::{substring, subsequence};
+	use crate::alignment::substring::{subsequence, substring};
 
 	#[test]
 	fn test_substring() {
