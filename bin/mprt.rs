@@ -10,21 +10,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	let filename = args().nth(1).ok_or("File not found.")?;
 	let input = std::fs::read_to_string(filename)?;
-    
-    let ids: Vec<_> = input.trim_end().split('\n').collect();
 
-    let pm = ProteinMotif::new("N{P}[ST]{P}");    
+	let ids: Vec<_> = input.trim_end().split('\n').collect();
 
-    for id in ids {
-        let f = FASTA::from_uniprot_id(id);
-        let res = pm.find_in(&f.seq);
+	let pm = ProteinMotif::new("N{P}[ST]{P}");
 
-        if res.len() != 0 {
-            let str_ints = res.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ");
-            println!("{}", id);
-            println!("{}", str_ints);
-        }
-    }
+	for id in ids {
+		let f = FASTA::from_uniprot_id(id);
+		let res = pm.find_in(&f.seq);
 
-    Ok(())
+		if !res.is_empty() {
+			let str_ints = res
+				.iter()
+				.map(|x| x.to_string())
+				.collect::<Vec<_>>()
+				.join(" ");
+			println!("{}", id);
+			println!("{}", str_ints);
+		}
+	}
+
+	Ok(())
 }

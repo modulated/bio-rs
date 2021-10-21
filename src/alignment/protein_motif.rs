@@ -41,10 +41,10 @@ impl ProteinMotif {
 		let mut i = 0;
 
 		while i < (seq.len() - self.0.len() + 1) {
-			let mut j = 0;			
+			let mut j = 0;
 
 			while j < self.0.len() {
-				let c = seq.0[i + j];				
+				let c = seq.0[i + j];
 				match self.0[j] {
 					AminoMotif::Amino(a) => {
 						if a == c {
@@ -67,7 +67,7 @@ impl ProteinMotif {
 							break;
 						}
 					}
-				};				
+				};
 				if j == self.0.len() {
 					res.push(i + 1);
 				}
