@@ -31,12 +31,16 @@ impl FASTA {
 	}
 
 	pub fn from_file(file: &str) -> Self {
-		let cont = std::fs::read_to_string(file).unwrap();		
-		let (name, seq) = cont.trim().trim_start_matches('>').split_once('\n').unwrap();
+		let cont = std::fs::read_to_string(file).unwrap();
+		let (name, seq) = cont
+			.trim()
+			.trim_start_matches('>')
+			.split_once('\n')
+			.unwrap();
 
 		Self {
 			name: name.to_string(),
-			seq: Seq::new(seq)
+			seq: Seq::new(seq),
 		}
 	}
 }

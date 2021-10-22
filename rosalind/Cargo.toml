@@ -156,3 +156,15 @@ name = "scsp"
 path = "src/scsp.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "seto"
+path = "src/seto.rs"
+test = false
+doctest = false
+
+[[bin]]
+name = "sset"
+path = "src/sset.rs"
+test = false
+doctest = false

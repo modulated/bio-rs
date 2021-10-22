@@ -10,3 +10,4 @@ mod sequence;
 pub mod util;
 pub use alignment::*;
 pub use sequence::*;
+pub use util::sets;
