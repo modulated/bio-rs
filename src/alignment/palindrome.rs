@@ -55,7 +55,7 @@ mod test {
 		];
 
 		let mut res = reverse(&Seq::new(input), 4, 12);
-		res.sort();
+		res.sort_unstable();
 		assert_eq!(res, output);
 	}
 
@@ -65,7 +65,7 @@ mod test {
 		let output = vec![(1, 4), (1, 6), (2, 4), (3, 4)];
 
 		let mut res = reverse(&Seq::new(input), 4, 12);
-		res.sort();
+		res.sort_unstable();
 		assert_eq!(res, output);
 	}
 
@@ -85,7 +85,7 @@ mod test {
 		];
 
 		let mut res = reverse(&Seq::new(input), 4, 12);
-		res.sort();
+		res.sort_unstable();
 		assert_eq!(res, output);
 	}
 }

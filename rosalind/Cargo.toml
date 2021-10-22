@@ -4,6 +4,13 @@ version = "0.1.0"
 authors = ["George Roubos <cowkingdom@hotmail.com>"]
 edition = "2018"
 
+description = "A bioinformatics and nucleotide sequence analysis library"
+repository = "https://github.com/modulated/bio-rs"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+keywords = ["bioinformatics", "biology", "dna", "protein"]
+categories = ["data structures", "algorithms", "science"]
+
 [dependencies]
 bio = {path = "../"}
 

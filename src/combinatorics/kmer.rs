@@ -6,7 +6,7 @@ pub fn ordered_kmer_permutations<T: Ord + Sized + Copy + Eq + Hash + std::fmt::D
 	k: usize,
 ) -> Vec<Vec<T>> {
 	if k == 1 {
-		return alphabet.iter().cloned().map(|x| vec![x]).collect();
+		return alphabet.iter().copied().map(|x| vec![x]).collect();
 	}
 
 	let mut vec = Vec::new();
@@ -21,7 +21,7 @@ pub fn ordered_kmer_permutations<T: Ord + Sized + Copy + Eq + Hash + std::fmt::D
 	vec
 }
 
-pub fn kmer_composition_map<T: Ord + Sized + Copy + Eq + Hash + std::fmt::Debug>(
+pub fn composition_map<T: Ord + Sized + Copy + Eq + Hash + std::fmt::Debug>(
 	string: &[T],
 	k: usize,
 ) -> HashMap<Vec<T>, usize> {
@@ -42,7 +42,7 @@ pub fn lexographical_kmer_composition<T: Ord + Sized + Copy + Eq + Hash + std::f
 	k: usize,
 ) -> Vec<usize> {
 	let mut out = vec![];
-	let map = kmer_composition_map(string, k);
+	let map = composition_map(string, k);
 	// println!("{:#?}", map);
 	for l in ordered_kmer_permutations(alphabet, k) {
 		assert_eq!(l.len(), k);
@@ -63,7 +63,7 @@ mod test {
 		];
 		let res: Vec<String> = super::ordered_kmer_permutations::<char>(&alph, 2)
 			.iter()
-			.map(|x| x.into_iter().collect())
+			.map(|x| x.iter().collect())
 			.collect();
 
 		assert_eq!(res, perms);

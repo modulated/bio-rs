@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		if !res.is_empty() {
 			let str_ints = res
 				.iter()
-				.map(|x| x.to_string())
+				.map(std::string::ToString::to_string)
 				.collect::<Vec<_>>()
 				.join(" ");
 			println!("{}", id);

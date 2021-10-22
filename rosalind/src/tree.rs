@@ -1,4 +1,4 @@
-use bio::graph::UnweightedGraph;
+use bio::graph::Unweighted;
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	println!("Edges: {:#?}", edges.len());
 
-	let mut g = UnweightedGraph::new();
+	let mut g = Unweighted::new();
 	for i in 1..=n {
 		g.add(i);
 	}

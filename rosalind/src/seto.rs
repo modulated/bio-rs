@@ -1,4 +1,4 @@
-use bio::util::{sets, slice_to_fmt_array, slice_to_string};
+use bio::util::{sets, slice_to_fmt_array};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

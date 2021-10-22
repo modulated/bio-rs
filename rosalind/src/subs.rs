@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let res = Seq::new(a[0])
 		.substring(&Seq::new(a[1]))
 		.iter()
-		.map(|x| x.to_string())
+		.map(std::string::ToString::to_string)
 		.collect::<Vec<String>>()
 		.join(" ");
 

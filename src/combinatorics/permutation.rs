@@ -1,30 +1,15 @@
-pub(super) fn amino_codon_combinations(amino: u8) -> u8 {
+pub(super) const fn amino_codon_combinations(amino: u8) -> u8 {
 	match amino {
-		b'A' => 4,
-		b'C' => 2,
-		b'D' => 2,
-		b'E' => 2,
-		b'F' => 2,
-		b'G' => 4,
-		b'H' => 2,
-		b'I' => 3,
-		b'K' => 2,
-		b'L' => 6,
-		b'M' => 1,
-		b'N' => 2,
-		b'P' => 4,
-		b'Q' => 2,
-		b'R' => 6,
-		b'S' => 6,
-		b'T' => 4,
-		b'V' => 4,
-		b'W' => 1,
-		b'Y' => 2,
-		b'*' => 3,
+		b'M' | b'W' => 1,
+		b'C' | b'D' | b'E' | b'F' | b'K' | b'N' | b'Y' | b'Q' | b'H' => 2,
+		b'I' | b'*' => 3,
+		b'G' | b'P' | b'T' | b'A' | b'V' => 4,
+		b'L' | b'R' | b'S' => 6,
 		_ => 0,
 	}
 }
 
+#[must_use]
 pub fn potential_mrna_strings_from_protein(prot: &[u8], modulo: u64) -> u64 {
 	prot.iter()
 		.fold(u64::from(amino_codon_combinations(b'*')), |acc, x| {
@@ -32,6 +17,7 @@ pub fn potential_mrna_strings_from_protein(prot: &[u8], modulo: u64) -> u64 {
 		})
 }
 
+#[must_use]
 pub fn permutation(k: u8) -> Vec<Vec<u8>> {
 	let mut values: Vec<u8> = (1..=k).collect();
 	let k = k as usize;
@@ -60,7 +46,8 @@ pub fn permutation(k: u8) -> Vec<Vec<u8>> {
 	out
 }
 
-pub fn partial_permutation(n: u64, k: u64, m: u64) -> u64 {
+#[must_use]
+pub fn partial_permutation_modulo(n: u64, k: u64, m: u64) -> u64 {
 	assert!(n >= k);
 	if n == k {
 		modulo_factorial(n, m)
@@ -73,17 +60,19 @@ pub fn partial_permutation(n: u64, k: u64, m: u64) -> u64 {
 	}
 }
 
+#[must_use]
 pub fn modulo_factorial(num: u64, m: u64) -> u64 {
 	(1..=num).fold(1, |acc, v| (acc * v) % m)
 }
 
+#[must_use]
 pub fn factorial(num: u64) -> u64 {
 	(1..=num).product()
 }
 
 #[cfg(test)]
 mod test {
-	use super::{modulo_factorial, partial_permutation};
+	use super::{modulo_factorial, partial_permutation_modulo};
 
 	#[test]
 	fn test_mrna_protein() {
@@ -110,13 +99,13 @@ mod test {
 
 	#[test]
 	fn test_partial_perm() {
-		assert_eq!(partial_permutation(6, 6, 700), 20);
-		assert_eq!(partial_permutation(6, 1, 1000), 6);
+		assert_eq!(partial_permutation_modulo(6, 6, 700), 20);
+		assert_eq!(partial_permutation_modulo(6, 1, 1000), 6);
 		assert_eq!(
-			partial_permutation(2, 2, 1000000),
+			partial_permutation_modulo(2, 2, 1_000_000),
 			modulo_factorial(2, 10000)
 		);
-		assert_eq!(partial_permutation(21, 7, 1_000_000), 51200);
+		assert_eq!(partial_permutation_modulo(21, 7, 1_000_000), 51200);
 	}
 
 	#[test]

@@ -90,17 +90,17 @@ mod test {
 
 	#[test]
 	fn lcs() {
-		let a_1 = "ACGTACG".as_bytes();
-		let b_1 = "ATACAGTACGTA".as_bytes();
+		let a_1 = b"ACGTACG";
+		let b_1 = b"ATACAGTACGTA";
 
-		let out_1 = longest_common_subsequence(&a_1, &b_1);
-		assert_eq!(out_1, "ACGTACG".as_bytes());
+		let out_1 = longest_common_subsequence(a_1, b_1);
+		assert_eq!(out_1, b"ACGTACG");
 
-		let a_2 = "AACCTAGG".as_bytes();
-		let b_2 = "ACACTGTGA".as_bytes();
+		let a_2 = b"AACCTAGG";
+		let b_2 = b"ACACTGTGA";
 
-		let out_2 = longest_common_subsequence(&a_2, &b_2);
-		assert_eq!(out_2, "AACTGG".as_bytes());
+		let out_2 = longest_common_subsequence(a_2, b_2);
+		assert_eq!(out_2, b"AACTGG");
 	}
 
 	#[test]

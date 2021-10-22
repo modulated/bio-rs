@@ -12,7 +12,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		.map(|x| x.parse().unwrap())
 		.collect::<Vec<_>>();
 
-	let out = bio::combinatorics::permutation::partial_permutation(intg[0], intg[1], 1_000_000);
+	let out =
+		bio::combinatorics::permutation::partial_permutation_modulo(intg[0], intg[1], 1_000_000);
 
 	println!("{}", out);
 

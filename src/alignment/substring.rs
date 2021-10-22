@@ -65,10 +65,10 @@ mod test {
 
 	#[test]
 	fn test_subsequence() {
-		let hs = "ACGCGCGTGACG";
-		let nd = "GTA";
+		let hs = b"ACGCGCGTGACG";
+		let nd = b"GTA";
 		let res = vec![3, 8, 10];
 
-		assert_eq!(res, subsequence(&nd.as_bytes(), &hs.as_bytes()));
+		assert_eq!(res, subsequence(nd, hs));
 	}
 }

@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		println!(
 			"{}",
 			l.iter()
-				.map(|x| x.to_string())
+				.map(std::string::ToString::to_string)
 				.collect::<Vec<_>>()
 				.join(" ")
 		);

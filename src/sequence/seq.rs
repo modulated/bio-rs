@@ -6,55 +6,64 @@ pub struct Seq(pub(crate) Vec<u8>);
 impl Seq {
 	pub fn new<T: Into<String>>(string: T) -> Self {
 		let mut s: Vec<u8> = string.into().into();
-		s.retain(|x| x.is_ascii_alphabetic());
-		Seq(s)
+		s.retain(u8::is_ascii_alphabetic);
+		Self(s)
 	}
 
+	#[must_use]
 	pub fn from_bytes(b: &[u8]) -> Self {
-		Seq(b.to_vec())
+		Self(b.to_vec())
 	}
 
+	#[must_use]
 	pub fn as_slice(&self) -> &[u8] {
 		&self.0[..]
 	}
 
+	#[must_use]
 	pub fn is_empty(&self) -> bool {
 		self.len() == 0
 	}
 
+	#[must_use]
 	pub fn len(&self) -> usize {
 		self.0.len()
 	}
 
+	#[must_use]
 	pub fn iter(&self) -> std::slice::Iter<u8> {
 		self.0.iter()
 	}
 
+	#[must_use]
 	pub fn counts(&self) -> (u32, u32, u32, u32) {
 		let mut out = (0, 0, 0, 0);
-		for c in self.0.iter() {
+		for c in &self.0 {
 			match c {
 				b'A' | b'a' => out.0 += 1,
 				b'C' | b'c' => out.1 += 1,
 				b'G' | b'g' => out.2 += 1,
 				b'T' | b't' | b'U' | b'u' => out.3 += 1,
-				_ => panic!("Unexpected input in Seq: {}", c),
+				_ => unreachable!("Unexpected input in Seq: {}", c),
 			}
 		}
 
 		out
 	}
 
+	#[must_use]
 	pub fn complement(&self) -> Self {
 		Self::new(String::from_utf8(bytes::complement_slice(&self.0)).unwrap())
 	}
 
-	pub fn reverse_complement(&self) -> Seq {
+	#[must_use]
+	pub fn reverse_complement(&self) -> Self {
 		let mut out = bytes::complement_slice(&self.0);
 		out.reverse();
 		Self::new(String::from_utf8(out).unwrap())
 	}
 
+	#[must_use]
 	pub fn gc_content(&self) -> f64 {
 		use std::convert::TryFrom;
 
@@ -69,9 +78,10 @@ impl Seq {
 		f64::from(100 * count) / f64::from(i32::try_from(self.len()).unwrap())
 	}
 
+	#[must_use]
 	pub fn transcribe(&self) -> Self {
 		let mut out: Vec<u8> = Vec::with_capacity(self.0.len());
-		for c in self.0.iter() {
+		for c in &self.0 {
 			match c {
 				b'U' => out.push(b'T'),
 				b'u' => out.push(b't'),
@@ -83,6 +93,7 @@ impl Seq {
 		Self::from_bytes(&out)
 	}
 
+	#[must_use]
 	pub fn translate(&self, terminates: bool) -> Self {
 		let mut out: Vec<u8> = Vec::with_capacity(self.0.len());
 		for c in self
@@ -98,6 +109,7 @@ impl Seq {
 		Self::from_bytes(&out)
 	}
 
+	#[must_use]
 	pub fn suffix_overlap(&self, seq: &Self, len: usize) -> bool {
 		if self.len() < len {
 			return false;
@@ -114,6 +126,7 @@ impl Seq {
 		true
 	}
 
+	#[must_use]
 	pub fn prefix_overlap(&self, seq: &Self, len: usize) -> bool {
 		if seq.len() < len {
 			return false;
@@ -130,11 +143,13 @@ impl Seq {
 		true
 	}
 
-	pub fn substring(&self, pattern: &Seq) -> Vec<usize> {
+	#[must_use]
+	pub fn substring(&self, pattern: &Self) -> Vec<usize> {
 		crate::alignment::substring(&pattern.0, &self.0)
 	}
 
-	pub fn splice_introns(&self, introns: &[&Seq]) -> Self {
+	#[must_use]
+	pub fn splice_introns(&self, introns: &[&Self]) -> Self {
 		let mut arr = self.clone();
 
 		for s in introns {
@@ -149,7 +164,8 @@ impl Seq {
 		arr
 	}
 
-	pub fn orf(&self) -> Vec<Seq> {
+	#[must_use]
+	pub fn orf(&self) -> Vec<Self> {
 		use super::bytes::codon_to_amino;
 
 		let mut out = vec![];
@@ -176,19 +192,19 @@ impl Seq {
 				match codon_to_amino(c) {
 					b'M' => {
 						proteins.iter_mut().for_each(|x| x.push(b'M'));
-						proteins.push(vec![b'M'])
+						proteins.push(vec![b'M']);
 					}
 					b'*' => {
 						out.append(&mut proteins);
 					}
-					_c => {
-						proteins.iter_mut().for_each(|x| x.push(_c));
+					c => {
+						proteins.iter_mut().for_each(|x| x.push(c));
 					}
 				}
 			}
 		}
 
-		let mut out_seqs: Vec<Seq> = out.iter().map(|x| Seq::from_bytes(&x[..])).collect();
+		let mut out_seqs: Vec<Self> = out.iter().map(|x| Self::from_bytes(&x[..])).collect();
 		out_seqs.sort();
 		out_seqs.dedup();
 		out_seqs
@@ -197,7 +213,7 @@ impl Seq {
 
 impl Default for Seq {
 	fn default() -> Self {
-		Self(Default::default())
+		Self(Vec::default())
 	}
 }
 
@@ -220,7 +236,7 @@ impl std::fmt::Display for Seq {
 
 #[cfg(test)]
 mod test {
-	use crate::formats::parse_string_to_vec_of_fasta;
+	use crate::formats::parse_string_to_fasta_vec;
 
 	use super::Seq;
 
@@ -230,7 +246,7 @@ mod test {
 		assert_eq!(Seq::new(input).0, input.as_bytes());
 
 		let input_2 = "MKNKFKTQEELVNHLKTVGFVFANSEIYNGLANAWDYGPLGVLLKNNLKNLWWKEFVTKQKDVVGLDSAIILNPLVWKASGHLDNFSDPLIDCKNCKARYRADKLIESFDENIHIAENSSNEEFAKVLNDYEISCPTCKQFNWTEIRHFNLMFKTYQGVIEDAKNVVYLRPETAQGIFVNFKNVQRSMRLHLPFGIAQIGKSFRNEITPGNFIFRTREFEQMEIEFFLKEESAYDIFDKYLNQIENWLVSACGLSLNNLRKHEHPKEELSHYSKKTIDFEYNFLHGFSELYGIAYRTNYDLSVHMNLSKKDLTYFDEQTKEKYVPHVIEPSVGVERLLYAILTEATFIEKLENDDERILMDLKYDLAPYKIAVMPLVNKLKDKAEEIYGKILDLNISATFDNSGSIGKRYRRQDAIGTIYCLTIDFDSLDDQQDPSFTIRERNSMAQKRIKLSELPLYLNQKAHEDFQRQCQK";
-		assert_eq!(Seq::new(input_2).to_string(), input_2)
+		assert_eq!(Seq::new(input_2).to_string(), input_2);
 	}
 
 	#[test]
@@ -253,7 +269,7 @@ mod test {
 	#[test]
 	fn counts() {
 		let input = "ACTCGTAGCTAGCTAGC";
-		assert_eq!(Seq::new(input).counts(), (4, 5, 4, 4))
+		assert_eq!(Seq::new(input).counts(), (4, 5, 4, 4));
 	}
 
 	#[test]
@@ -269,10 +285,10 @@ mod test {
 		let mut stringvec = Seq::new(input)
 			.orf()
 			.iter()
-			.map(|x| x.to_string())
+			.map(std::string::ToString::to_string)
 			.collect::<Vec<_>>();
-		stringvec.sort();
-		output.sort();
+		stringvec.sort_unstable();
+		output.sort_unstable();
 
 		assert_eq!(stringvec, output);
 	}
@@ -318,8 +334,8 @@ mod test {
 		let s1 = Seq::new(input[0]);
 		let s2 = Seq::new(input[1]);
 
-		assert_eq!(true, s1.suffix_overlap(&s2, 3));
-		assert_eq!(false, s2.suffix_overlap(&s1, 3));
+		assert!(s1.suffix_overlap(&s2, 3));
+		assert!(!s2.suffix_overlap(&s1, 3));
 	}
 
 	#[test]
@@ -328,8 +344,8 @@ mod test {
 		let s1 = Seq::new(input[0]);
 		let s2 = Seq::new(input[1]);
 
-		assert_eq!(false, s1.prefix_overlap(&s2, 3));
-		assert_eq!(true, s2.prefix_overlap(&s1, 3));
+		assert!(!s1.prefix_overlap(&s2, 3));
+		assert!(s2.prefix_overlap(&s1, 3));
 	}
 
 	#[test]
@@ -352,7 +368,7 @@ mod test {
 		ATCGGTCGAGCGTGT";
 		let dnaout = "ATGGTCTACATAGCTGACAAACAGCACGTAGCATCTCGAGAGGCATATGGTCACATGTTCAAAGTTTGCGCCTAG";
 		let protout = "MVYIADKQHVASREAYGHMFKVCA";
-		let fastas = parse_string_to_vec_of_fasta(input);
+		let fastas = parse_string_to_fasta_vec(input);
 		let introns: Vec<&Seq> = fastas[1..].iter().map(|x| &x.seq).collect();
 		let res = fastas[0].seq.splice_introns(&introns[..]);
 

@@ -1,10 +1,9 @@
 use core::hash::Hash;
 use std::collections::HashSet;
-use std::iter::FromIterator;
 
 pub fn union<T: Clone + Eq + Hash + Ord>(left: &[T], right: &[T]) -> Vec<T> {
-	let left: HashSet<T> = HashSet::from_iter(left.iter().cloned());
-	let right: HashSet<T> = HashSet::from_iter(right.iter().cloned());
+	let left: HashSet<T> = left.iter().cloned().collect();
+	let right: HashSet<T> = right.iter().cloned().collect();
 
 	let mut out = left.union(&right).cloned().collect::<Vec<_>>();
 	out.sort();
@@ -12,8 +11,8 @@ pub fn union<T: Clone + Eq + Hash + Ord>(left: &[T], right: &[T]) -> Vec<T> {
 }
 
 pub fn intersection<T: Clone + Eq + Hash + Ord>(left: &[T], right: &[T]) -> Vec<T> {
-	let left: HashSet<T> = HashSet::from_iter(left.iter().cloned());
-	let right: HashSet<T> = HashSet::from_iter(right.iter().cloned());
+	let left: HashSet<T> = left.iter().cloned().collect();
+	let right: HashSet<T> = right.iter().cloned().collect();
 
 	let mut out = left.intersection(&right).cloned().collect::<Vec<_>>();
 	out.sort();
@@ -21,8 +20,8 @@ pub fn intersection<T: Clone + Eq + Hash + Ord>(left: &[T], right: &[T]) -> Vec<
 }
 
 pub fn difference<T: Clone + Eq + Hash + Ord>(left: &[T], right: &[T]) -> Vec<T> {
-	let left: HashSet<T> = HashSet::from_iter(left.iter().cloned());
-	let right: HashSet<T> = HashSet::from_iter(right.iter().cloned());
+	let left: HashSet<T> = left.iter().cloned().collect();
+	let right: HashSet<T> = right.iter().cloned().collect();
 
 	let mut out = left.difference(&right).cloned().collect::<Vec<_>>();
 	out.sort();

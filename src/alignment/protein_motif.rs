@@ -12,6 +12,7 @@ pub enum AminoMotif {
 
 impl ProteinMotif {
 	#[must_use]
+	#[allow(clippy::missing_panics_doc)]
 	pub fn new(string: &str) -> Self {
 		let mut vec = vec![];
 		let mut iter = string.bytes();
@@ -38,6 +39,7 @@ impl ProteinMotif {
 	}
 
 	#[must_use]
+	#[allow(clippy::missing_panics_doc)]
 	pub fn find_in(&self, seq: &Seq) -> Vec<usize> {
 		let mut res = vec![];
 		let mut i = 0;
@@ -47,7 +49,8 @@ impl ProteinMotif {
 
 			while j < self.0.len() {
 				let seq_amino = seq.0[i + j];
-				match self.0[j] {
+				let val = self.0.get(j).unwrap();
+				match *val {
 					AminoMotif::Amino(a) => {
 						if a == seq_amino {
 							j += 1;
@@ -94,7 +97,7 @@ mod test {
 			AminoMotif::Except(b'P'),
 		]);
 
-		assert_eq!(output, ProteinMotif::new(&input));
+		assert_eq!(output, ProteinMotif::new(input));
 	}
 
 	#[test]

@@ -8,6 +8,7 @@ pub struct FASTA {
 }
 
 impl FASTA {
+	#[must_use]
 	pub fn from_uniprot_id(id: &str) -> Self {
 		let path = format!("https://www.uniprot.org/uniprot/{}.fasta", id);
 		let r = ureq::get(&path).call().unwrap().into_string().unwrap();
@@ -19,6 +20,7 @@ impl FASTA {
 		}
 	}
 
+	#[must_use]
 	pub fn from_ena_id(id: &str) -> Self {
 		let path = format!("https://www.ebi.ac.uk/Tools/dbfetch/dbfetch?db=ena_sequence&id={}&format=fasta&style=raw", id);
 		let r = ureq::get(&path).call().unwrap().into_string().unwrap();
@@ -30,6 +32,7 @@ impl FASTA {
 		}
 	}
 
+	#[must_use]
 	pub fn from_file(file: &str) -> Self {
 		let cont = std::fs::read_to_string(file).unwrap();
 		let (name, seq) = cont
@@ -45,7 +48,8 @@ impl FASTA {
 	}
 }
 
-pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
+#[must_use]
+pub fn parse_string_to_fasta_vec(input: &str) -> Vec<FASTA> {
 	let mut res = vec![];
 	let arr: Vec<&str> = input.split('>').skip(1).collect();
 
@@ -67,7 +71,7 @@ pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
 
 #[cfg(test)]
 mod test {
-	use super::{parse_string_to_vec_of_fasta, FASTA};
+	use super::{parse_string_to_fasta_vec, FASTA};
 	use crate::Seq;
 
 	#[test]
@@ -112,7 +116,7 @@ mod test {
 			},
 		];
 
-		assert_eq!(output, parse_string_to_vec_of_fasta(input));
+		assert_eq!(output, parse_string_to_fasta_vec(input));
 	}
 
 	#[test]
@@ -140,6 +144,6 @@ mod test {
 	fn ena() {
 		let r = FASTA::from_ena_id("LT599825.1");
 		assert_eq!(r.name, "ENA|LT599825|LT599825.1 Escherichia coli isolate E. coli NRZ14408 genome assembly, chromosome: NRZ14408_C");
-		assert_eq!(r.seq.len(), 5344876);
+		assert_eq!(r.seq.len(), 5_344_876);
 	}
 }

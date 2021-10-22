@@ -1,4 +1,4 @@
-use bio::util::mortal_fibonacci_rabbits;
+use bio::util::mortal_rabbits;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	println!("FIBD Problem");
@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let (months, lifespan) = (args[0].parse().unwrap(), args[1].parse().unwrap());
 
 	let mut memo = std::collections::HashMap::new();
-	let res = mortal_fibonacci_rabbits(months, lifespan, &mut memo);
+	let res = mortal_rabbits(months, lifespan, &mut memo);
 	println!("{}", res);
 
 	Ok(())

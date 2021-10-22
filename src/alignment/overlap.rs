@@ -41,7 +41,7 @@ mod test {
 		.map(|(a, b)| (a.to_string(), b.to_string()))
 		.collect();
 
-		let fastas = crate::formats::fasta::parse_string_to_vec_of_fasta(input);
+		let fastas = crate::formats::fasta::parse_string_to_fasta_vec(input);
 
 		let g = super::create_graph(&fastas, 3);
 		assert_eq!(output, g);

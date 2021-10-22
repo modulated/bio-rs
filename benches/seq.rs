@@ -8,7 +8,7 @@ fn read_counts(name: &str) {
 	let r = read_to_string(name).unwrap();
 
 	let s = Seq::new(&r);
-	s.counts();
+	let _ = s.counts();
 }
 
 fn run(c: &mut Criterion) {

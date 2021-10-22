@@ -1,4 +1,4 @@
-mod error;
-pub use error::GraphError;
+mod grapherror;
+pub use grapherror::GraphError as Error;
 mod unweighted;
-pub use unweighted::UnweightedGraph;
+pub use unweighted::Unweighted;

@@ -1,22 +1,26 @@
-use super::GraphError;
-use std::collections::{HashMap, HashSet, VecDeque};
+use super::Error;
+use std::{
+	borrow::Borrow,
+	collections::{HashMap, HashSet, VecDeque},
+};
 
-type Result<T> = std::result::Result<T, GraphError>;
+type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Clone)]
-pub struct UnweightedGraph<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> {
+pub struct Unweighted<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> {
 	data: HashMap<T, Vec<T>>,
 }
 
-impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Default for UnweightedGraph<T> {
+impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Default for Unweighted<T> {
 	fn default() -> Self {
 		Self::new()
 	}
 }
 
-impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph<T> {
+impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Unweighted<T> {
+	#[must_use]
 	pub fn new() -> Self {
-		UnweightedGraph {
+		Self {
 			data: HashMap::new(),
 		}
 	}
@@ -25,10 +29,12 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		self.data.insert(node, Vec::new());
 	}
 
+	#[must_use]
 	pub fn num_nodes(&self) -> usize {
 		self.data.len()
 	}
 
+	#[must_use]
 	pub fn num_edges(&self) -> usize {
 		let mut n = 0;
 		for i in self.data.values() {
@@ -38,6 +44,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		n / 2
 	}
 
+	#[must_use]
 	pub fn nodes(&self) -> Vec<T> {
 		self.data.keys().cloned().collect()
 	}
@@ -46,7 +53,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		let r = self
 			.data
 			.get(node)
-			.ok_or_else(|| GraphError::NodeNotFound(node.to_string()))?;
+			.ok_or_else(|| Error::NodeNotFound(node.to_string()))?;
 		Ok(r.clone())
 	}
 
@@ -54,10 +61,11 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		let r = self
 			.data
 			.get(node)
-			.ok_or_else(|| GraphError::NodeNotFound(node.to_string()))?;
+			.ok_or_else(|| Error::NodeNotFound(node.to_string()))?;
 		Ok(r.len())
 	}
 
+	#[must_use]
 	pub fn iter(&self) -> std::collections::hash_map::Iter<T, Vec<T>> {
 		self.data.iter()
 	}
@@ -74,56 +82,64 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		self.data.retain(|_, v| v.len() > thresh);
 	}
 
-	pub fn link(&mut self, node_1: T, node_2: T) -> Result<()> {
-		if !self.data.contains_key(&node_1) {
-			return Err(GraphError::NodeNotFound(node_1.to_string()));
+	pub fn link<Q: Borrow<T>>(&mut self, node_1: Q, node_2: Q) -> Result<()> {
+		if !self.data.contains_key(node_1.borrow()) {
+			return Err(Error::NodeNotFound(node_1.borrow().to_string()));
 		}
-		if !self.data.contains_key(&node_2) {
-			return Err(GraphError::NodeNotFound(node_2.to_string()));
+		if !self.data.contains_key(node_2.borrow()) {
+			return Err(Error::NodeNotFound(node_2.borrow().to_string()));
 		}
 
-		let e = self.data.entry(node_1.clone()).or_default();
-		e.push(node_2.clone());
+		let mut e = self.data.entry(node_1.borrow().clone()).or_default();
+		e.push(node_2.borrow().clone());
 
-		let e = self.data.entry(node_2).or_default();
-		e.push(node_1);
+		e = self.data.entry(node_2.borrow().clone()).or_default();
+		e.push(node_1.borrow().clone());
 
 		Ok(())
 	}
 
-	pub fn unlink(&mut self, node_1: T, node_2: T) -> Result<()> {
-		if !self.data.contains_key(&node_1) {
-			return Err(GraphError::NodeNotFound(node_1.to_string()));
+	pub fn unlink<Q: Borrow<T>>(&mut self, node_1: Q, node_2: Q) -> Result<()> {
+		if !self.data.contains_key(node_1.borrow()) {
+			return Err(Error::NodeNotFound(node_1.borrow().to_string()));
 		}
-		if !self.data.contains_key(&node_2) {
-			return Err(GraphError::NodeNotFound(node_2.to_string()));
+		if !self.data.contains_key(node_2.borrow()) {
+			return Err(Error::NodeNotFound(node_2.borrow().to_string()));
 		}
 
-		let edges_1 = self.data.entry(node_1.clone()).or_insert_with(Vec::new);
-		if !edges_1.contains(&node_2) {
-			return Err(GraphError::EdgeNotFound((
-				node_1.to_string(),
-				node_2.to_string(),
+		let edges_1 = self
+			.data
+			.entry(node_1.borrow().clone())
+			.or_insert_with(Vec::new);
+		if !edges_1.contains(node_2.borrow()) {
+			return Err(Error::EdgeNotFound((
+				node_1.borrow().to_string(),
+				node_2.borrow().to_string(),
 			)));
 		}
-		edges_1.retain(|x| x != &node_2);
+		edges_1.retain(|x| x != node_2.borrow());
 
-		let edges_2 = self.data.entry(node_2.clone()).or_insert_with(Vec::new);
-		if !edges_2.contains(&node_1) {
-			return Err(GraphError::EdgeNotFound((
-				node_2.to_string(),
-				node_1.to_string(),
+		let edges_2 = self
+			.data
+			.entry(node_2.borrow().clone())
+			.or_insert_with(Vec::new);
+		if !edges_2.contains(node_1.borrow()) {
+			return Err(Error::EdgeNotFound((
+				node_2.borrow().to_string(),
+				node_1.borrow().to_string(),
 			)));
 		}
-		edges_2.retain(|x| x != &node_1);
+		edges_2.retain(|x| x != node_1.borrow());
 
 		Ok(())
 	}
 
+	#[must_use]
 	pub fn is_tree(&self) -> bool {
 		self.connected() && (self.num_edges() == self.num_nodes() - 1)
 	}
 
+	#[must_use]
 	pub fn is_ubt(&self) -> bool {
 		self.connected()
 			&& self
@@ -132,15 +148,18 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 				.all(|node| (self.degree(node).unwrap() == 3 || self.degree(node).unwrap() == 1))
 	}
 
+	#[must_use]
 	pub fn edges_required_for_tree(&self) -> usize {
 		self.num_nodes() - 1 - self.num_edges()
 	}
 
+	#[must_use]
 	pub fn ubt_internal_count(&self) -> usize {
 		assert!(self.is_ubt());
 		self.ubt_leaf_count() - 2
 	}
 
+	#[must_use]
 	pub fn ubt_leaf_count(&self) -> usize {
 		self.iter().fold(0, |accum, x| match x.1.len() {
 			1 => accum + 1,
@@ -148,6 +167,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		})
 	}
 
+	#[must_use]
 	pub fn connected(&self) -> bool {
 		let mut visited = HashSet::new();
 		let mut queue = VecDeque::new();
@@ -161,7 +181,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 			let neighbours = self.neighbours(&n).unwrap();
 			for node in neighbours {
 				if !visited.contains(&node) {
-					queue.push_back(node)
+					queue.push_back(node);
 				}
 			}
 		}
@@ -169,7 +189,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 		visited.len() == self.num_nodes()
 	}
 
-	pub fn bfs_path(&self, start: T, end: T) -> Result<Vec<T>> {
+	pub fn bfs_path(&self, start: T, end: &T) -> Result<Vec<T>> {
 		let mut visited = HashSet::new();
 		let mut queue = VecDeque::new();
 
@@ -179,7 +199,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 			let path = queue.pop_front().unwrap();
 
 			// return if path ends in destination
-			if path.last().unwrap() == &end {
+			if path.last().unwrap() == end {
 				return Ok(path);
 			}
 
@@ -193,16 +213,16 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> UnweightedGraph
 			}
 		}
 
-		Err(GraphError::PathNotFound)
+		Err(Error::PathNotFound)
 	}
 }
 
 #[cfg(test)]
 mod tests {
-	use super::UnweightedGraph;
+	use super::Unweighted;
 	#[test]
 	fn unweighted_size() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		assert_eq!(g.num_nodes(), 2);
@@ -210,7 +230,7 @@ mod tests {
 
 	#[test]
 	fn unweighted_link() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -224,7 +244,7 @@ mod tests {
 
 	#[test]
 	fn unweighted_unlink() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -243,14 +263,14 @@ mod tests {
 	#[test]
 	#[should_panic(expected = "NodeNotFound")]
 	fn unweighted_link_error() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(2);
 		g.link(1, 2).unwrap();
 	}
 
 	#[test]
 	fn unweighted_neighbours() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -259,13 +279,13 @@ mod tests {
 		g.link(2, 3).unwrap();
 		g.link(3, 4).unwrap();
 
-		assert_eq!(g.neighbours(&2).unwrap(), vec!(1, 3));
+		assert_eq!(g.neighbours(&2).unwrap(), vec![1, 3]);
 		assert_eq!(g.degree(&2).unwrap(), 2);
 	}
 
 	#[test]
 	fn unweighted_bfs_path() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(3);
 		g.add(2);
@@ -278,13 +298,13 @@ mod tests {
 		g.link(3, 5).unwrap();
 		g.link(3, 4).unwrap();
 
-		assert_eq!(g.bfs_path(1, 4).unwrap(), vec![1, 2, 3, 4]);
+		assert_eq!(g.bfs_path(1, &4).unwrap(), vec![1, 2, 3, 4]);
 	}
 
 	#[test]
 	#[should_panic(expected = "PathNotFound")]
 	fn unweighted_bfs_path_fail() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(3);
 		g.add(2);
@@ -296,12 +316,12 @@ mod tests {
 		g.link(3, 5).unwrap();
 		g.link(3, 4).unwrap();
 
-		assert_eq!(g.bfs_path(1, 6).unwrap(), vec![1, 2, 3, 4]);
+		assert_eq!(g.bfs_path(1, &6).unwrap(), vec![1, 2, 3, 4]);
 	}
 
 	#[test]
 	fn unweighted_connected() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -316,7 +336,7 @@ mod tests {
 	#[test]
 	#[should_panic]
 	fn unweighted_connected_fail() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -331,7 +351,7 @@ mod tests {
 
 	#[test]
 	fn unweighted_is_tree() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
@@ -366,7 +386,7 @@ mod tests {
 
 	#[test]
 	fn unweighted_min_tree() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 
 		for x in 1..=10 {
 			g.add(x);
@@ -384,7 +404,7 @@ mod tests {
 
 	#[test]
 	fn unweighted_ubt() {
-		let mut g = UnweightedGraph::new();
+		let mut g = Unweighted::new();
 		g.add(1);
 		g.add(2);
 		g.add(3);
