@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let a = &fastas[0].seq;
 	let b = &fastas[1].seq;
 
-	let res = bio::longest_common_sequence(a, b);
+	let res: String = String::from_utf8(bio::longest_common_sequence(a.as_slice(), b.as_slice())).unwrap();
 
 	println!("{}", res);
 

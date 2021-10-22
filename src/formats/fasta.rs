@@ -95,6 +95,7 @@ mod test {
 	}
 
 	#[test]
+	#[ignore]
 	fn uniprot() {
 		let seq = "MKNKFKTQEELVNHLKTVGFVFANSEIYNGLANAWDYGPLGVLLKNNLKNLWWKEFVTKQ
 		KDVVGLDSAIILNPLVWKASGHLDNFSDPLIDCKNCKARYRADKLIESFDENIHIAENSS
@@ -114,6 +115,7 @@ mod test {
 	}
 
 	#[test]
+	#[ignore]
 	fn ena() {
 
 		let r = FASTA::from_ena_id("LT599825.1");

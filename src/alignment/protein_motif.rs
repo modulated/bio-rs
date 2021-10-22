@@ -115,6 +115,13 @@ mod test {
 		let seq_1 = Seq::new(input_1);
 		let res_1 = pm.find_in(&seq_1);
 		assert_eq!(res_1, output_1);
+	}
+
+	#[test]
+	#[ignore]
+	fn find_motif_in_prot_from_database() {
+		
+		let pm = super::ProteinMotif::new("N{P}[ST]{P}");
 
 		let fasta_2 = crate::formats::FASTA::from_uniprot_id("P07204_TRBM_HUMAN");
 		let output_2 = vec![47, 115, 116, 382, 409];

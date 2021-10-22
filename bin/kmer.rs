@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let fasta = &bio::formats::parse_string_to_vec_of_fasta(&filestring)[0];
 
 	let r = bio::combinatorics::kmer::lexographical_kmer_composition(
-		fasta.seq.to_slice(),
+		fasta.seq.as_slice(),
 		&[b'A', b'C', b'G', b'T'][..],
 		4,
 	);
