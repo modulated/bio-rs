@@ -29,6 +29,16 @@ impl FASTA {
 			seq: Seq::new(seq),
 		}
 	}
+
+	pub fn from_file(file: &str) -> Self {
+		let cont = std::fs::read_to_string(file).unwrap();		
+		let (name, seq) = cont.trim().trim_start_matches('>').split_once('\n').unwrap();
+
+		Self {
+			name: name.to_string(),
+			seq: Seq::new(seq)
+		}
+	}
 }
 
 pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
@@ -55,6 +65,13 @@ pub fn parse_string_to_vec_of_fasta(input: &str) -> Vec<FASTA> {
 mod test {
 	use super::{parse_string_to_vec_of_fasta, FASTA};
 	use crate::Seq;
+
+	#[test]
+	fn from_file() {
+		let e = FASTA::from_file("benches/salmonella.fasta");
+		assert_eq!(e.name, "JYPS01000003.1 Salmonella enterica strain CVM 43749 43749_contig_3, whole genome shotgun sequence");
+	}
+
 	#[test]
 	fn parse() {
 		let input = r#">Rosalind_6404
