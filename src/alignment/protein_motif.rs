@@ -120,7 +120,6 @@ mod test {
 	#[test]
 	#[ignore]
 	fn find_motif_in_prot_from_database() {
-		
 		let pm = super::ProteinMotif::new("N{P}[ST]{P}");
 
 		let fasta_2 = crate::formats::FASTA::from_uniprot_id("P07204_TRBM_HUMAN");

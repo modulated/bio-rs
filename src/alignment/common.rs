@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-pub fn longest_common_sequence<T: PartialEq + Copy + Debug>(left: &[T], right: &[T]) -> Vec<T> {
+pub fn longest_common_subsequence<T: PartialEq + Copy + Debug>(left: &[T], right: &[T]) -> Vec<T> {
 	let left_len = left.len();
 	let right_len = right.len();
 
@@ -39,54 +39,46 @@ pub fn longest_common_sequence<T: PartialEq + Copy + Debug>(left: &[T], right: &
 	}
 
 	output.reverse();
-	output	
+	output
 }
 
-
-
-pub fn shortest_common_supersequence<T: PartialEq + Copy + Debug>(left: &[T], right: &[T]) -> Vec<T> {
+pub fn shortest_common_supersequence<T: PartialEq + Copy + Debug>(
+	left: &[T],
+	right: &[T],
+) -> Vec<T> {
 	let mut out = vec![];
 
-    let left_len = left.len();
+	let left_len = left.len();
 	let right_len = right.len();
 
-    let mut matrix = vec![vec![0; right_len + 1]; left_len + 1];
+	let lcsq_string = longest_common_subsequence(left, right);
 
-    for i in 0..=left_len {
-        for j in 0..=right_len {
-            if i == 0 || j == 0 {
-                matrix[i][j] = 0;
+	let mut i = 0;
+	let mut j = 0;
+
+	for char in lcsq_string {
+		if i < left_len {
+			while left[i] != char {
+				out.push(left[i]);
+				i += 1;
 			}
-            else if left[i - 1] == right[j - 1] {
-                matrix[i][j] = matrix[i - 1][j - 1] + 1;
-			}
-            else {
-                matrix[i][j] = std::cmp::max(matrix[i - 1][j], matrix[i][j - 1]);
-			}
+			i += 1;
 		}
+		if j < right_len {
+			while right[j] != char {
+				out.push(right[j]);
+				j += 1;
+			}
+			j += 1;
+		}
+		out.push(char);
 	}
 
-	for x in &matrix {
-		println!("{:?}",x);
+	if i < left_len {
+		out.extend_from_slice(&left[i..]);
 	}
-
-    let mut i = left_len;
-	let mut j = right_len;
-
-    while i > 0 || j > 0 {
-        if matrix[i][j] == matrix[i - 1][j] {
-            i -= 1;            
-			out.insert(0, left[i]);
-		}
-        else if matrix[i][j] == matrix[i][j - 1] {
-            j -= 1;
-            out.insert(0, right[j]);
-		}
-        else {
-            out.insert(0, left[i - 1]);
-            i -= 1;
-            j -= 1;
-		}
+	if j < right_len {
+		out.extend_from_slice(&right[j..]);
 	}
 
 	out
@@ -94,22 +86,20 @@ pub fn shortest_common_supersequence<T: PartialEq + Copy + Debug>(left: &[T], ri
 
 #[cfg(test)]
 mod test {
-	use crate::alignment::common::shortest_common_supersequence;
-
-use super::longest_common_sequence;
+	use super::{longest_common_subsequence, shortest_common_supersequence};
 
 	#[test]
 	fn lcs() {
 		let a_1 = "ACGTACG".as_bytes();
 		let b_1 = "ATACAGTACGTA".as_bytes();
 
-		let out_1 = longest_common_sequence(&a_1, &b_1);
+		let out_1 = longest_common_subsequence(&a_1, &b_1);
 		assert_eq!(out_1, "ACGTACG".as_bytes());
 
 		let a_2 = "AACCTAGG".as_bytes();
 		let b_2 = "ACACTGTGA".as_bytes();
 
-		let out_2 = longest_common_sequence(&a_2, &b_2);
+		let out_2 = longest_common_subsequence(&a_2, &b_2);
 		assert_eq!(out_2, "AACTGG".as_bytes());
 	}
 

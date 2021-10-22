@@ -117,7 +117,6 @@ mod test {
 	#[test]
 	#[ignore]
 	fn ena() {
-
 		let r = FASTA::from_ena_id("LT599825.1");
 		assert_eq!(r.name, "ENA|LT599825|LT599825.1 Escherichia coli isolate E. coli NRZ14408 genome assembly, chromosome: NRZ14408_C");
 		assert_eq!(r.seq.len(), 5344876);

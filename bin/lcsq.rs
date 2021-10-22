@@ -14,9 +14,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let a = &fastas[0].seq;
 	let b = &fastas[1].seq;
 
-	let res: String = String::from_utf8(bio::longest_common_sequence(a.as_slice(), b.as_slice())).unwrap();
+	let res = bio::longest_common_subsequence(a.as_slice(), b.as_slice());
+	let res_string = String::from_utf8(res).unwrap();
 
-	println!("{}", res);
+	println!("{}", res_string);
 
 	Ok(())
 }

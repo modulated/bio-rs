@@ -165,3 +165,9 @@ name = "lcsq"
 path = "bin/lcsq.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "scsp"
+path = "bin/scsp.rs"
+test = false
+doctest = false
