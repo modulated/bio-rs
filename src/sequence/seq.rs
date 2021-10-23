@@ -235,13 +235,13 @@ impl std::fmt::Display for Seq {
 }
 
 impl IntoIterator for Seq {
-    type Item = u8;
+	type Item = u8;
 
-    type IntoIter = std::vec::IntoIter<Self::Item>;
+	type IntoIter = std::vec::IntoIter<Self::Item>;
 
-    fn into_iter(self) -> Self::IntoIter {
-        self.0.into_iter()
-    }
+	fn into_iter(self) -> Self::IntoIter {
+		self.0.into_iter()
+	}
 }
 
 #[cfg(test)]

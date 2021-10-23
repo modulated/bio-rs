@@ -21,7 +21,7 @@ pub fn p_distance<I: PartialEq, T: Clone + IntoIterator<Item = I>>(a: &T, b: &T)
 
 pub fn matrix<I: PartialEq, T: Clone + IntoIterator<Item = I>>(slice: &[T]) -> Vec<Vec<f64>> {
 	let mut out: Vec<Vec<f64>> = vec![vec![0.0; slice.len()]; slice.len()];
-	
+
 	for i in 0..(slice.len() - 1) {
 		for j in i..slice.len() {
 			let r = p_distance(&slice[i], &slice[j]);
@@ -35,7 +35,7 @@ pub fn matrix<I: PartialEq, T: Clone + IntoIterator<Item = I>>(slice: &[T]) -> V
 
 #[cfg(test)]
 mod test {
-	use super::{distance, p_distance, matrix};
+	use super::{distance, matrix, p_distance};
 	use crate::Seq;
 
 	#[test]
@@ -54,10 +54,14 @@ mod test {
 		assert_eq!(fmt, "0.40000");
 	}
 
-
 	#[test]
 	fn dist_matrix() {
-		let input = vec![Seq::new("TTTCCATTTA"), Seq::new("GATTCATTTC"), Seq::new("TTTCCATTTT"), Seq::new("GTTCCATTTA")];
+		let input = vec![
+			Seq::new("TTTCCATTTA"),
+			Seq::new("GATTCATTTC"),
+			Seq::new("TTTCCATTTT"),
+			Seq::new("GTTCCATTTA"),
+		];
 
 		let res = vec![
 			vec![0.00000, 0.40000, 0.10000, 0.10000],

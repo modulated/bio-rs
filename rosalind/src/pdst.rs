@@ -1,5 +1,5 @@
+use bio::{hamming::matrix, Seq};
 use std::env::args;
-use bio::{Seq, hamming::matrix};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 	println!("PDST Problem");
@@ -12,20 +12,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let input = std::fs::read_to_string(filename)?;
 
 	let fastas = bio::formats::parse_string_to_fasta_vec(&input);
-	
-    let mut seqs: Vec<Seq> = vec![];
-    for f in fastas {
-        seqs.push(f.seq);
-    }
 
-    let res = matrix(&seqs);
+	let mut seqs: Vec<Seq> = vec![];
+	for f in fastas {
+		seqs.push(f.seq);
+	}
+
+	let res = matrix(&seqs);
 
 	for l in res {
-        for j in l {
-            print!("{:.5} ", j);
-        }
-        println!();
-    }
+		for j in l {
+			print!("{:.5} ", j);
+		}
+		println!();
+	}
 
 	Ok(())
 }
