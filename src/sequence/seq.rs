@@ -234,6 +234,16 @@ impl std::fmt::Display for Seq {
 	}
 }
 
+impl IntoIterator for Seq {
+    type Item = u8;
+
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
+    }
+}
+
 #[cfg(test)]
 mod test {
 	use crate::formats::parse_string_to_fasta_vec;
@@ -270,6 +280,15 @@ mod test {
 	fn counts() {
 		let input = "ACTCGTAGCTAGCTAGC";
 		assert_eq!(Seq::new(input).counts(), (4, 5, 4, 4));
+	}
+
+	#[test]
+	fn iter_trait() {
+		let mut input = Seq::new("ACG").into_iter();
+		assert_eq!(input.next(), Some(b'A'));
+		assert_eq!(input.next(), Some(b'C'));
+		assert_eq!(input.next(), Some(b'G'));
+		assert_eq!(input.next(), None);
 	}
 
 	#[test]
