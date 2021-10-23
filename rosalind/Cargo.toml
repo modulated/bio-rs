@@ -175,3 +175,9 @@ name = "sset"
 path = "src/sset.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "pdst"
+path = "src/pdst.rs"
+test = false
+doctest = false
