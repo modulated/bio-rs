@@ -1,3 +1,4 @@
+use crate::Seq;
 use num::BigUint;
 
 pub(super) const fn amino_codon_combinations(amino: u8) -> u8 {
@@ -17,6 +18,12 @@ pub fn potential_mrna_strings_from_protein(prot: &[u8], modulo: u64) -> u64 {
 		.fold(u64::from(amino_codon_combinations(b'*')), |acc, x| {
 			(acc * u64::from(amino_codon_combinations(*x))) % modulo
 		})
+}
+
+#[must_use]
+pub fn perfect_matchings(seq: &Seq) -> BigUint {
+	let (au, _, gc, _) = seq.counts();
+	factorial(au.into()) * factorial(gc.into())
 }
 
 #[must_use]
@@ -79,13 +86,20 @@ pub fn modulo_factorial(num: u64, m: u64) -> u64 {
 }
 
 #[must_use]
-pub fn factorial(num: u64) -> u64 {
-	(1..=num).product()
+pub fn factorial(num: u64) -> BigUint {
+	let mut accum = BigUint::from(1_u32);
+	for i in 1..=num {
+		accum *= BigUint::from(i);
+	}
+	accum
 }
 
 #[cfg(test)]
 mod test {
-	use super::{modulo_factorial, partial_permutation_modulo};
+	use crate::Seq;
+	use num::BigUint;
+
+	use super::{modulo_factorial, partial_permutation_modulo, perfect_matchings};
 
 	#[test]
 	fn test_mrna_protein() {
@@ -125,5 +139,13 @@ mod test {
 	fn test_factorial() {
 		assert_eq!(modulo_factorial(6, 1000), 720);
 		assert_eq!(modulo_factorial(6, 700), 20);
+	}
+
+	#[test]
+	fn matchings() {
+		let seq = Seq::new("AGCUAGUCAU");
+		let out = BigUint::from(12_u32);
+		let res = perfect_matchings(&seq);
+		assert_eq!(res, out);
 	}
 }
