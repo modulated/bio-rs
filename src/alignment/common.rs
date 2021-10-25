@@ -85,71 +85,71 @@ pub fn shortest_common_supersequence<T: PartialEq + Copy + Debug>(
 }
 
 pub fn longest_increasing_subsequence<T: Ord + Clone>(input_array: &[T]) -> Vec<T> {
-    let n = input_array.len();
-    if n <= 1 {
-        return input_array.to_vec();
-    }
+	let n = input_array.len();
+	if n <= 1 {
+		return input_array.to_vec();
+	}
 
-    // Find longest increasing subsequence
-    let mut dp = vec![(1, None); n];
-    let mut pair = 0;
+	// Find longest increasing subsequence
+	let mut dp = vec![(1, None); n];
+	let mut pair = 0;
 
-    for i in 0..n {
-        for j in 0..i {
-            if input_array[j] < input_array[i] && dp[j].0 + 1 > dp[i].0 {
-                dp[i] = (dp[j].0 + 1, Some(j));
+	for i in 0..n {
+		for j in 0..i {
+			if input_array[j] < input_array[i] && dp[j].0 + 1 > dp[i].0 {
+				dp[i] = (dp[j].0 + 1, Some(j));
 
-                if dp[i].0 > dp[pair].0 {
-                    pair = i;
-                }
-            }
-        }
-    }
+				if dp[i].0 > dp[pair].0 {
+					pair = i;
+				}
+			}
+		}
+	}
 
-    // Construct subsequence
-    let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
+	// Construct subsequence
+	let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
 
-    out.push(input_array[pair].clone());
-    while let Some(next) = dp[pair].1 {
-        pair = next;
-        out.push(input_array[pair].clone());
-    }
+	out.push(input_array[pair].clone());
+	while let Some(next) = dp[pair].1 {
+		pair = next;
+		out.push(input_array[pair].clone());
+	}
 
-    out.into_iter().rev().collect()
+	out.into_iter().rev().collect()
 }
 
 pub fn longest_decreasing_subsequence<T: Ord + Clone>(input_array: &[T]) -> Vec<T> {
-    let n = input_array.len();
-    if n <= 1 {
-        return input_array.to_vec();
-    }
+	let n = input_array.len();
+	if n <= 1 {
+		return input_array.to_vec();
+	}
 
-    // Find longest increasing subsequence
-    let mut dp = vec![(1, None); n];
-    let mut pair = 0;
+	// Find longest increasing subsequence
+	let mut dp = vec![(1, None); n];
+	let mut pair = 0;
 
-    for i in 0..n {
-        for j in 0..i {
-            if input_array[j] > input_array[i] && dp[j].0 + 1 > dp[i].0 {
-                dp[i] = (dp[j].0 + 1, Some(j));
+	for i in 0..n {
+		for j in 0..i {
+			if input_array[j] > input_array[i] && dp[j].0 + 1 > dp[i].0 {
+				dp[i] = (dp[j].0 + 1, Some(j));
 
-                if dp[i].0 > dp[pair].0 {
-                    pair = i;
-                }
-            }
-        }
-    }
+				if dp[i].0 > dp[pair].0 {
+					pair = i;
+				}
+			}
+		}
+	}
 
-    // Construct subsequence
-    let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
+	// Construct subsequence
+	let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
 
-    out.push(input_array[pair].clone());
-    while let Some(next) = dp[pair].1 {
-        pair = next;
-        out.push(input_array[pair].clone());
-    }
+	out.push(input_array[pair].clone());
+	while let Some(next) = dp[pair].1 {
+		pair = next;
+		out.push(input_array[pair].clone());
+	}
 
-    out.into_iter().rev().collect()
+	out.into_iter().rev().collect()
 }
 
 #[cfg(test)]

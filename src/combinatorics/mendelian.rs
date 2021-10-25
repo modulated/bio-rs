@@ -1,5 +1,5 @@
-use std::convert::TryInto;
 use num::ToPrimitive;
+use std::convert::TryInto;
 
 /// Returns probability of two randomly selected organisms producing an individual possessing a dominant allele.
 #[must_use]
