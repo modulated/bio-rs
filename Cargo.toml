@@ -16,7 +16,7 @@ ureq = "2.2"
 num = "0.4"
 
 [dev-dependencies]
-cargo-husky = "1.5"
+cargo-husky = {version = "1.5", features = ["prepush-hook", "run-cargo-clippy", "run-cargo-fmt"]}
 criterion = "0.3"
 
 [[bench]]
