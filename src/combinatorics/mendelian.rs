@@ -1,4 +1,5 @@
-use std::convert::{TryFrom, TryInto};
+use std::convert::TryInto;
+use num::ToPrimitive;
 
 /// Returns probability of two randomly selected organisms producing an individual possessing a dominant allele.
 #[must_use]
@@ -17,27 +18,15 @@ pub fn prob_inheritance_dominant(
 /// Returns the probability that at least `n` organisms will be `AaBb` after `k` generations if they only mate with `AaBb` individuals
 #[must_use]
 pub fn prob_heterozygous_child(k: u32, n: u32) -> f64 {
-	let total = 2_u32.pow(k);
-	let prob_het: f64 = 4.0 / 16.0;
-	let mut prob = vec![];
-
-	for r in n..=total {
-		prob.push(
-			combinatorial(total.into(), r.into())
-				* prob_het.powi(r.try_into().unwrap())
-				* ((1.0 - prob_het).powi((total - r).try_into().unwrap())),
-		);
-	}
-
-	prob.iter().sum()
-}
-
-fn combinatorial(n: u64, r: u64) -> f64 {
-	use crate::combinatorics::permutation::factorial as f;
-	let num: f64 = u32::try_from(f(n)).unwrap().into();
-	let denom1: f64 = u32::try_from(f(r)).unwrap().into();
-	let denom2: f64 = u32::try_from(f(n - r)).unwrap().into();
-	num / denom1 / denom2
+	use super::permutation::ncr;
+	let total = 2_u64.pow(k);
+	(u64::from(n)..=total)
+		.map(|i| {
+			ncr(total, i).to_f64().unwrap()
+				* 0.25_f64.powi(i.try_into().unwrap())
+				* 0.75_f64.powi((total - i).try_into().unwrap())
+		})
+		.sum::<f64>()
 }
 
 #[cfg(test)]

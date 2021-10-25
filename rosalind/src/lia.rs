@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let (k, n) = (args[0].parse().unwrap(), args[1].parse().unwrap());
 
 	let res = het(k, n);
-	println!("{}", res);
+	println!("{:.3}", res);
 
 	Ok(())
 }

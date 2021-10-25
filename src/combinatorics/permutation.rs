@@ -1,3 +1,5 @@
+use num::BigUint;
+
 pub(super) const fn amino_codon_combinations(amino: u8) -> u8 {
 	match amino {
 		b'M' | b'W' => 1,
@@ -44,6 +46,17 @@ pub fn permutation(k: u8) -> Vec<Vec<u8>> {
 	}
 
 	out
+}
+
+#[must_use]
+pub fn ncr(n: u64, r: u64) -> BigUint {
+    let r = r.min(n - r);
+    if r == 0 {
+        return BigUint::from(1_u64);
+    }
+    let numerator: BigUint = ((n - r + 1)..=n).product();
+    let denominator: BigUint = (1..=r).product();
+    numerator / denominator
 }
 
 #[must_use]

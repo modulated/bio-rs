@@ -20,3 +20,8 @@ pub fn slice_to_fmt_array<T: Display>(slice: &[T]) -> String {
 		.join(", ");
 	format!("{{{}}}", r)
 }
+
+#[must_use]
+pub fn int_string_to_vec(string: &str) -> Vec<u32> {
+	string.split(' ').map(|x|x.parse().unwrap()).collect()
+}
