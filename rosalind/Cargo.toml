@@ -181,3 +181,9 @@ name = "pdst"
 path = "src/pdst.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "lgis"
+path = "src/lgis.rs"
+test = false
+doctest = false

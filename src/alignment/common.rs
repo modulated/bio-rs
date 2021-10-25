@@ -84,9 +84,77 @@ pub fn shortest_common_supersequence<T: PartialEq + Copy + Debug>(
 	out
 }
 
+pub fn longest_increasing_subsequence<T: Ord + Clone>(input_array: &[T]) -> Vec<T> {
+    let n = input_array.len();
+    if n <= 1 {
+        return input_array.to_vec();
+    }
+
+    // Find longest increasing subsequence
+    let mut dp = vec![(1, None); n];
+    let mut pair = 0;
+
+    for i in 0..n {
+        for j in 0..i {
+            if input_array[j] < input_array[i] && dp[j].0 + 1 > dp[i].0 {
+                dp[i] = (dp[j].0 + 1, Some(j));
+
+                if dp[i].0 > dp[pair].0 {
+                    pair = i;
+                }
+            }
+        }
+    }
+
+    // Construct subsequence
+    let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
+
+    out.push(input_array[pair].clone());
+    while let Some(next) = dp[pair].1 {
+        pair = next;
+        out.push(input_array[pair].clone());
+    }
+
+    out.into_iter().rev().collect()
+}
+
+pub fn longest_decreasing_subsequence<T: Ord + Clone>(input_array: &[T]) -> Vec<T> {
+    let n = input_array.len();
+    if n <= 1 {
+        return input_array.to_vec();
+    }
+
+    // Find longest increasing subsequence
+    let mut dp = vec![(1, None); n];
+    let mut pair = 0;
+
+    for i in 0..n {
+        for j in 0..i {
+            if input_array[j] > input_array[i] && dp[j].0 + 1 > dp[i].0 {
+                dp[i] = (dp[j].0 + 1, Some(j));
+
+                if dp[i].0 > dp[pair].0 {
+                    pair = i;
+                }
+            }
+        }
+    }
+
+    // Construct subsequence
+    let mut out: Vec<T> = Vec::with_capacity(dp[pair].0);
+
+    out.push(input_array[pair].clone());
+    while let Some(next) = dp[pair].1 {
+        pair = next;
+        out.push(input_array[pair].clone());
+    }
+
+    out.into_iter().rev().collect()
+}
+
 #[cfg(test)]
 mod test {
-	use super::{longest_common_subsequence, shortest_common_supersequence};
+	use super::*;
 
 	#[test]
 	fn lcs() {
@@ -130,5 +198,21 @@ mod test {
 
 		let out = shortest_common_supersequence(&a, &b);
 		assert_eq!(out, res);
+	}
+
+	#[test]
+	fn increasing_subseq() {
+		let input = vec![5, 1, 4, 2, 3];
+		let output = vec![1, 2, 3];
+
+		assert_eq!(longest_increasing_subsequence(&input), output);
+	}
+
+	#[test]
+	fn decreasing_subseq() {
+		let input = vec![5, 1, 4, 2, 3];
+		let output = vec![5, 4, 2];
+
+		assert_eq!(longest_decreasing_subsequence(&input), output);
 	}
 }
