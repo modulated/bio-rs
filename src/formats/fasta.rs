@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::Seq;
 use ureq;
 
@@ -46,6 +48,12 @@ impl FASTA {
 			seq: Seq::new(seq),
 		}
 	}
+}
+
+impl Display for FASTA {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}\nLength: {}", self.name, self.seq.len())
+    }
 }
 
 #[must_use]

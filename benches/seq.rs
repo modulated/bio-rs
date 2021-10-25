@@ -1,19 +1,38 @@
-use bio::Seq;
 use criterion::*;
-use std::fs::read_to_string;
+use bio::formats::FASTA;
 
-static FILENAME: &str = "benches/ecoli.fasta";
+static ECOLI: &str = "benches/ecoli.fasta";
+static SAL: &str = "benches/salmonella.fasta";
 
 fn read_counts(name: &str) {
-	let r = read_to_string(name).unwrap();
+	let r = FASTA::from_file(name);
 
-	let s = Seq::new(&r);
-	let _ = s.counts();
+	let _ = r.seq.counts();
+}
+
+fn orf(seq: &FASTA) {
+	let _r = seq.seq.orf();
+}
+
+fn len(seq: &FASTA) {
+	let _r = seq.seq.len();
 }
 
 fn run(c: &mut Criterion) {
 	c.bench_function("read_counts", |b| {
-		b.iter(|| read_counts(black_box(FILENAME)))
+		b.iter(|| read_counts(black_box(ECOLI)))
+	});
+
+	let sal = FASTA::from_file(SAL);
+
+	c.bench_with_input(BenchmarkId::new("ORF Salmonella", &sal), &sal,|b, s| {
+		b.iter(|| orf(s));
+	});
+
+	let ecoli = FASTA::from_file(ECOLI);
+
+	c.bench_with_input(BenchmarkId::new("Len E Coli", &ecoli), &ecoli,|b, s| {
+		b.iter(|| len(s));
 	});
 }
 
