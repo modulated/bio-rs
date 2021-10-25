@@ -81,6 +81,49 @@ pub fn partial_permutation_modulo(n: u64, k: u64, m: u64) -> u64 {
 }
 
 #[must_use]
+pub fn cartesian_product(lists: &[Vec<i32>]) -> Vec<Vec<i32>> {
+	let mut res: Vec<Vec<i32>> = vec![];
+
+	let mut list_iter = lists.iter();
+	if let Some(first_list) = list_iter.next() {
+		for i in first_list {
+			res.push(vec![*i]);
+		}
+	}
+	for l in list_iter {
+		let mut tmp = vec![];
+		for r in res {
+			for &el in l {
+				let mut tmp_el = r.clone();
+				tmp_el.push(el);
+				tmp.push(tmp_el);
+			}
+		}
+		res = tmp;
+	}
+	res
+}
+
+#[must_use]
+pub fn signed_permuatations(k: u8) -> Vec<Vec<i32>> {
+	let mut out = vec![];
+	let perm = permutation(k);
+
+	for i in perm {
+		for j in cartesian_product(&vec![vec![-1, 1]; k.into()]) {
+			let m: Vec<i32> = i
+				.iter()
+				.zip(j.iter())
+				.map(|x| i32::from(*x.0) * x.1)
+				.collect();			
+			out.push(m);
+		}
+	}
+
+	out
+}
+
+#[must_use]
 pub fn modulo_factorial(num: u64, m: u64) -> u64 {
 	(1..=num).fold(1, |acc, v| (acc * v) % m)
 }
@@ -99,7 +142,7 @@ mod test {
 	use crate::Seq;
 	use num::BigUint;
 
-	use super::{modulo_factorial, partial_permutation_modulo, perfect_matchings};
+	use super::*;
 
 	#[test]
 	fn test_mrna_protein() {
@@ -122,6 +165,32 @@ mod test {
 		res.sort();
 
 		assert_eq!(res, output);
+	}
+
+	#[test]
+	fn test_cartesian_product() {
+		let input = vec![vec![1, 2], vec![3, 4]];
+		let out = vec![vec![1, 3], vec![1, 4], vec![2, 3], vec![2, 4]];
+		assert_eq!(cartesian_product(&input), out);
+	}
+
+	#[test]
+	fn test_signed_permutation() {
+		let mut out = vec![
+			vec![-1, 2],
+			vec![-1, -2],
+			vec![1, 2],
+			vec![1, -2],
+			vec![-2, 1],
+			vec![-2, -1],
+			vec![2, 1],
+			vec![2, -1],
+		];
+		out.sort_unstable();
+
+		let mut res = signed_permuatations(2);
+		res.sort_unstable();
+		assert_eq!(res, out);
 	}
 
 	#[test]
