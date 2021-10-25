@@ -187,3 +187,9 @@ name = "lgis"
 path = "src/lgis.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "pmch"
+path = "src/pmch.rs"
+test = false
+doctest = false

@@ -1,5 +1,5 @@
-use criterion::*;
 use bio::formats::FASTA;
+use criterion::*;
 
 static ECOLI: &str = "benches/ecoli.fasta";
 static SAL: &str = "benches/salmonella.fasta";
@@ -19,19 +19,17 @@ fn len(seq: &FASTA) {
 }
 
 fn run(c: &mut Criterion) {
-	c.bench_function("read_counts", |b| {
-		b.iter(|| read_counts(black_box(ECOLI)))
-	});
+	c.bench_function("read_counts", |b| b.iter(|| read_counts(black_box(ECOLI))));
 
 	let sal = FASTA::from_file(SAL);
 
-	c.bench_with_input(BenchmarkId::new("ORF Salmonella", &sal), &sal,|b, s| {
+	c.bench_with_input(BenchmarkId::new("ORF Salmonella", &sal), &sal, |b, s| {
 		b.iter(|| orf(s));
 	});
 
 	let ecoli = FASTA::from_file(ECOLI);
 
-	c.bench_with_input(BenchmarkId::new("Len E Coli", &ecoli), &ecoli,|b, s| {
+	c.bench_with_input(BenchmarkId::new("Len E Coli", &ecoli), &ecoli, |b, s| {
 		b.iter(|| len(s));
 	});
 }
