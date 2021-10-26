@@ -16,6 +16,11 @@ impl Seq {
 	}
 
 	#[must_use]
+	pub fn from_file(str: &str) -> Self {
+		Self::new(std::fs::read_to_string(str).unwrap())
+	}
+
+	#[must_use]
 	pub fn as_slice(&self) -> &[u8] {
 		&self.0[..]
 	}
