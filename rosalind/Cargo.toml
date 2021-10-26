@@ -205,3 +205,9 @@ name = "sign"
 path = "src/sign.rs"
 test = false
 doctest = false
+
+[[bin]]
+name = "long"
+path = "src/long.rs"
+test = false
+doctest = false
