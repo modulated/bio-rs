@@ -115,7 +115,7 @@ pub fn signed_permuatations(k: u8) -> Vec<Vec<i32>> {
 				.iter()
 				.zip(j.iter())
 				.map(|x| i32::from(*x.0) * x.1)
-				.collect();			
+				.collect();
 			out.push(m);
 		}
 	}

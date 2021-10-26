@@ -12,10 +12,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	let out = bio::combinatorics::permutation::signed_permuatations(input);
 
-    println!("{}", out.len());
-    for l in out {
-        println!("{}", bio::util::slice_to_string(&l));
-    }
+	println!("{}", out.len());
+	for l in out {
+		println!("{}", bio::util::slice_to_string(&l));
+	}
 
 	Ok(())
 }
