@@ -1,9 +1,5 @@
 // TODO: Could be optimised - currently O(n * m) time
-pub fn substring<N, H>(needle: &[N], haystack: &[H]) -> Vec<usize>
-where
-	N: PartialEq,
-	H: PartialEq<N>,
-{
+pub fn substring<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
 	let mut out = vec![];
 
 	if needle.len() > haystack.len() {
@@ -25,11 +21,26 @@ where
 	out
 }
 
-pub fn subsequence<N, H>(needle: &[N], haystack: &[H]) -> Vec<usize>
-where
-	N: PartialEq,
-	H: PartialEq<N>,
-{
+pub fn contains<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> bool {
+	if needle.len() > haystack.len() {
+		return false;
+	}
+
+	for i in 0..=haystack.len() - needle.len() {
+		for j in 0..needle.len() {
+			if haystack[i + j] != needle[j] {
+				break;
+			}
+
+			if j == needle.len() - 1 {
+				return true;
+			}
+		}
+	}
+	false
+}
+
+pub fn subsequence<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
 	let mut out = vec![];
 
 	if needle.len() > haystack.len() {
@@ -53,7 +64,7 @@ where
 
 #[cfg(test)]
 mod test {
-	use crate::alignment::substring::{subsequence, substring};
+	use crate::alignment::substring::*;
 
 	#[test]
 	fn test_substring() {
@@ -61,6 +72,17 @@ mod test {
 		let nd = vec![4, 5, 6];
 
 		assert_eq!(vec![4, 7], substring(&nd, &hs));
+	}
+
+	#[test]
+	fn test_contains() {
+		let hs = vec![1, 2, 3, 4, 5, 6, 4, 5, 6];
+		let nd = vec![4, 5, 6];
+		let nd2 = vec![10, 11];
+
+		assert!(contains(&nd, &hs));
+		assert!(!contains(&nd2, &hs));
+		assert!(!contains(&hs, &nd));
 	}
 
 	#[test]
