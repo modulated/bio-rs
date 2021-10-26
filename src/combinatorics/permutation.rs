@@ -1,4 +1,7 @@
-use crate::Seq;
+use crate::{
+	util::math::{factorial, modulo_factorial},
+	Seq,
+};
 use num::BigUint;
 
 pub(super) const fn amino_codon_combinations(amino: u8) -> u8 {
@@ -56,17 +59,6 @@ pub fn permutation(k: u8) -> Vec<Vec<u8>> {
 }
 
 #[must_use]
-pub fn ncr(n: u64, r: u64) -> BigUint {
-	let r = r.min(n - r);
-	if r == 0 {
-		return BigUint::from(1_u64);
-	}
-	let numerator: BigUint = ((n - r + 1)..=n).product();
-	let denominator: BigUint = (1..=r).product();
-	numerator / denominator
-}
-
-#[must_use]
 pub fn partial_permutation_modulo(n: u64, k: u64, m: u64) -> u64 {
 	assert!(n >= k);
 	if n == k {
@@ -121,20 +113,6 @@ pub fn signed_permuatations(k: u8) -> Vec<Vec<i32>> {
 	}
 
 	out
-}
-
-#[must_use]
-pub fn modulo_factorial(num: u64, m: u64) -> u64 {
-	(1..=num).fold(1, |acc, v| (acc * v) % m)
-}
-
-#[must_use]
-pub fn factorial(num: u64) -> BigUint {
-	let mut accum = BigUint::from(1_u32);
-	for i in 1..=num {
-		accum *= BigUint::from(i);
-	}
-	accum
 }
 
 #[cfg(test)]
@@ -202,12 +180,6 @@ mod test {
 			modulo_factorial(2, 10000)
 		);
 		assert_eq!(partial_permutation_modulo(21, 7, 1_000_000), 51200);
-	}
-
-	#[test]
-	fn test_factorial() {
-		assert_eq!(modulo_factorial(6, 1000), 720);
-		assert_eq!(modulo_factorial(6, 700), 20);
 	}
 
 	#[test]

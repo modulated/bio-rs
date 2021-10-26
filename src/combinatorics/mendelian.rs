@@ -18,7 +18,7 @@ pub fn prob_inheritance_dominant(
 /// Returns the probability that at least `n` organisms will be `AaBb` after `k` generations if they only mate with `AaBb` individuals
 #[must_use]
 pub fn prob_heterozygous_child(k: u32, n: u32) -> f64 {
-	use super::permutation::ncr;
+	use crate::util::math::ncr;
 	let total = 2_u64.pow(k);
 	(u64::from(n)..=total)
 		.map(|i| {
