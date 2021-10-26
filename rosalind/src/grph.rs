@@ -1,5 +1,4 @@
-use bio::formats::parse_string_to_fasta_vec;
-use bio::overlap::create_graph;
+use bio::{overlap::create_graph, FASTAVec};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -10,9 +9,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	}
 
 	let filename = args().nth(1).ok_or("File not found.")?;
-	let input = std::fs::read_to_string(filename)?;
-
-	let fastas = parse_string_to_fasta_vec(&input);
+	
+	let fastas = FASTAVec::from_file(&filename);
 	println!("{} sequences loaded", fastas.len());
 
 	let edges = crate::create_graph(&fastas, 3);

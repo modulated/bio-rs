@@ -41,6 +41,16 @@ impl FASTAVec {
 	pub fn iter(&self) -> std::slice::Iter<FASTA> {
 		self.0.iter()
 	}
+
+	#[must_use]
+	pub fn len(&self) -> usize {
+		self.0.len()
+	}
+
+	#[must_use]
+	pub fn is_empty(&self) -> bool {
+		self.0.len() == 0
+	}
 }
 
 impl Index<usize> for FASTAVec {

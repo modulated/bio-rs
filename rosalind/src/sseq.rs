@@ -8,9 +8,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	}
 
 	let filename = args().nth(1).ok_or("File not found")?;
-	let input = std::fs::read_to_string(filename)?;
-
-	let fastas = bio::formats::parse_string_to_fasta_vec(&input);
+	
+	let fastas = bio::FASTAVec::from_file(&filename);
 	let hay = &fastas[0].seq;
 	let nd = &fastas[1].seq;
 

@@ -7,8 +7,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		return Ok(());
 	}
 
-	let filestring = std::fs::read_to_string(args().nth(1).ok_or("File not found")?)?;
-	let fasta = &bio::formats::parse_string_to_fasta_vec(&filestring)[0];
+	let filename = args().nth(1).ok_or("File not found")?;
+	let fasta = &bio::FASTAVec::from_file(&filename)[0];
 
 	let r = bio::combinatorics::kmer::lexographical_kmer_composition(
 		fasta.seq.as_slice(),

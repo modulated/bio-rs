@@ -1,4 +1,4 @@
-use bio::formats::parse_string_to_fasta_vec;
+use bio::FASTAVec;
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,12 +8,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		return Ok(());
 	}
 
-	let filename = args().nth(1).ok_or("File not found.")?;
-	let input = std::fs::read_to_string(filename)?;
+	let filename = args().nth(1).ok_or("File not found.")?;	
 
+	let fastas = FASTAVec::from_file(&filename);
 	let mut map = std::collections::HashMap::new();
 
-	let fastas = parse_string_to_fasta_vec(&input);
 	for f in fastas {
 		map.insert(f.name, f.seq.gc_content());
 	}

@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	}
 
 	let file = args().nth(1).ok_or("File not found.")?;
-	let fasta = bio::formats::FASTA::from_file(&file);
+	let fasta = bio::FASTA::from_file(&file);
 
 	let out = bio::combinatorics::permutation::perfect_matchings(&fasta.seq);
 

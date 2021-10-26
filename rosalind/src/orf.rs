@@ -1,4 +1,3 @@
-use bio::formats::parse_string_to_fasta_vec;
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,9 +7,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		return Ok(());
 	}
 
-	let filename = args().nth(1).ok_or("File not found.")?;
-	let input = std::fs::read_to_string(filename)?;
-	let v = parse_string_to_fasta_vec(&input);
+	let filename = args().nth(1).ok_or("File not found.")?;	
+	let v = bio::FASTAVec::from_file(&filename);
 
 	let orfs = v[0].seq.orf();
 	for o in orfs {
