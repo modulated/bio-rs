@@ -111,36 +111,12 @@ impl Seq {
 
 	#[must_use]
 	pub fn suffix_overlap(&self, seq: &Self, len: usize) -> bool {
-		if self.len() < len {
-			return false;
-		}
-
-		let tail = &self.0[self.0.len() - len..];
-
-		for (i, e) in tail.iter().enumerate().take(len) {
-			if e != &seq.0[i] {
-				return false;
-			}
-		}
-
-		true
+		crate::alignment::suffix_overlap(self.as_slice(), seq.as_slice(), len)
 	}
 
 	#[must_use]
 	pub fn prefix_overlap(&self, seq: &Self, len: usize) -> bool {
-		if seq.len() < len {
-			return false;
-		}
-
-		let tail = &seq.0[seq.0.len() - len..];
-
-		for (i, e) in tail.iter().enumerate().take(len) {
-			if e != &self.0[i] {
-				return false;
-			}
-		}
-
-		true
+		crate::alignment::prefix_overlap(self.as_slice(), seq.as_slice(), len)
 	}
 
 	#[must_use]

@@ -62,9 +62,43 @@ pub fn subsequence<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -
 	out
 }
 
+pub fn suffix_overlap<T: PartialEq>(left: &[T], right: &[T], n: usize) -> bool {
+	if left.len() < n || right.len() < n {
+		return false;
+	}
+
+	let tail = &left[left.len() - n..];
+
+	for (i, e) in tail.iter().enumerate().take(n) {
+		if *e != right[i] {
+			return false;
+		}
+	}
+
+	true
+}
+
+pub fn prefix_overlap<T: PartialEq>(left: &[T], right: &[T], n: usize) -> bool {
+	if left.len() < n || right.len() < n {
+		return false;
+	}
+	
+	let tail = &right[right.len() - n..];
+	
+	for (i, e) in tail.iter().enumerate().take(n) {
+		if e != &left[i] {
+			return false;
+		}
+	}
+	
+	true
+}
+
+
+
 #[cfg(test)]
 mod test {
-	use crate::alignment::substring::*;
+	use crate::alignment::substring::{contains, subsequence, substring};
 
 	#[test]
 	fn test_substring() {
