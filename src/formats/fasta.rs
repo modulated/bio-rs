@@ -1,6 +1,5 @@
-use std::fmt::Display;
-
 use crate::Seq;
+use std::fmt::Display;
 use ureq;
 
 #[derive(PartialEq, Debug)]
@@ -56,75 +55,14 @@ impl Display for FASTA {
 	}
 }
 
-#[must_use]
-pub fn parse_string_to_fasta_vec(input: &str) -> Vec<FASTA> {
-	let mut res = vec![];
-	let arr: Vec<&str> = input.split('>').skip(1).collect();
-
-	for s in arr {
-		let v: Vec<String> = s
-			.splitn(2, '\n')
-			.map(|n| n.split_whitespace().collect::<Vec<&str>>().join(""))
-			.collect();
-
-		let f = FASTA {
-			name: v[0].clone(),
-			seq: Seq::new(&v[1]),
-		};
-		res.push(f);
-	}
-
-	res
-}
-
 #[cfg(test)]
 mod test {
-	use super::{parse_string_to_fasta_vec, FASTA};
-	use crate::Seq;
+	use super::FASTA;
 
 	#[test]
 	fn from_file() {
 		let e = FASTA::from_file("benches/salmonella.fasta");
 		assert_eq!(e.name, "JYPS01000003.1 Salmonella enterica strain CVM 43749 43749_contig_3, whole genome shotgun sequence");
-	}
-
-	#[test]
-	fn parse() {
-		let input = r#">Rosalind_6404
-        CCTGCGGAAGATCGGCACTAGAATAGCCAGAACCGTTTCTCTGAGGCTTCCGGCCTTCCC
-        TCCCACTAATAATTCTGAGG
-        >Rosalind_5959
-        CCATCGGTAGCGCATCCTTAGTCCAATTAAGTCCCTATCCAGGCGCTCCGCCGAAGGTCT
-        ATATCCATTTGTCAGCAGACACGC
-        >Rosalind_0808
-        CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGAC
-        TGGGAACCTGCGGGCAGTAGGTGGAAT"#;
-
-		let output = vec![
-			FASTA {
-				name: "Rosalind_6404".to_string(),
-				seq: Seq::new(
-					"CCTGCGGAAGATCGGCACTAGAATAGCCAGAACCGTTTCTCTGAG
-                GCTTCCGGCCTTCCCTCCCACTAATAATTCTGAGG",
-				),
-			},
-			FASTA {
-				name: "Rosalind_5959".to_string(),
-				seq: Seq::new(
-					"CCATCGGTAGCGCATCCTTAGTCCAATTAAGTCCCTATCCAGGCG
-                CTCCGCCGAAGGTCTATATCCATTTGTCAGCAGACACGC",
-				),
-			},
-			FASTA {
-				name: "Rosalind_0808".to_string(),
-				seq: Seq::new(
-					"CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTC
-                AGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT",
-				),
-			},
-		];
-
-		assert_eq!(output, parse_string_to_fasta_vec(input));
 	}
 
 	#[test]

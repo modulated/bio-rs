@@ -6,10 +6,11 @@
 
 mod alignment;
 pub mod combinatorics;
-pub mod formats;
+mod formats;
 pub mod graph;
 mod sequence;
 pub mod util;
 pub use alignment::*;
+pub use formats::*;
 pub use sequence::*;
 pub use util::sets;

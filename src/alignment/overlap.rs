@@ -1,7 +1,7 @@
-use crate::formats::FASTA;
+use crate::formats::FASTAVec;
 /// Returns a vec containing edges (names of fasta seq) of a directed graph of overlapping sequences
 #[must_use]
-pub fn create_graph(seqs: &[FASTA], overlap_size: usize) -> Vec<(String, String)> {
+pub fn create_graph(seqs: &FASTAVec, overlap_size: usize) -> Vec<(String, String)> {
 	let mut output = vec![];
 
 	for (i, s1) in seqs.iter().enumerate() {
@@ -41,9 +41,9 @@ mod test {
 		.map(|(a, b)| (a.to_string(), b.to_string()))
 		.collect();
 
-		let fastas = crate::formats::fasta::parse_string_to_fasta_vec(input);
+		let fv = crate::FASTAVec::from_string(input);
 
-		let g = super::create_graph(&fastas, 3);
+		let g = super::create_graph(&fv, 3);
 		assert_eq!(output, g);
 	}
 }

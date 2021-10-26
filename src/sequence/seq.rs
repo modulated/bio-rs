@@ -216,7 +216,7 @@ impl IntoIterator for Seq {
 
 #[cfg(test)]
 mod test {
-	use crate::formats::parse_string_to_fasta_vec;
+	use crate::formats::FASTAVec;
 
 	use super::Seq;
 
@@ -357,7 +357,7 @@ mod test {
 		ATCGGTCGAGCGTGT";
 		let dnaout = "ATGGTCTACATAGCTGACAAACAGCACGTAGCATCTCGAGAGGCATATGGTCACATGTTCAAAGTTTGCGCCTAG";
 		let protout = "MVYIADKQHVASREAYGHMFKVCA";
-		let fastas = parse_string_to_fasta_vec(input);
+		let fastas = FASTAVec::from_string(input);
 		let introns: Vec<&Seq> = fastas[1..].iter().map(|x| &x.seq).collect();
 		let res = fastas[0].seq.splice_introns(&introns[..]);
 
