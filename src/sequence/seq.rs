@@ -53,7 +53,7 @@ impl Seq {
 
 	#[must_use]
 	pub fn complement(&self) -> Self {
-		Self::new(String::from_utf8(bytes::complement_slice(&self.0)).unwrap())
+		Self::from_bytes(&bytes::complement_slice(&self.0))
 	}
 
 	#[must_use]
@@ -82,13 +82,7 @@ impl Seq {
 	pub fn transcribe(&self) -> Self {
 		let mut out: Vec<u8> = Vec::with_capacity(self.0.len());
 		for c in &self.0 {
-			match c {
-				b'U' => out.push(b'T'),
-				b'u' => out.push(b't'),
-				b'T' => out.push(b'U'),
-				b't' => out.push(b'u'),
-				_ => out.push(*c),
-			}
+			out.push(bytes::transcribe_byte(*c));
 		}
 		Self::from_bytes(&out)
 	}

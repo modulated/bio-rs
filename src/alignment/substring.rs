@@ -1,5 +1,5 @@
 // TODO: Could be optimised - currently O(n * m) time
-pub fn substring<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
+pub fn substring<N: PartialEq, H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
 	let mut out = vec![];
 
 	if needle.len() > haystack.len() {
@@ -21,7 +21,7 @@ pub fn substring<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> 
 	out
 }
 
-pub fn contains<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> bool {
+pub fn contains<N: PartialEq, H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> bool {
 	if needle.len() > haystack.len() {
 		return false;
 	}
@@ -40,7 +40,7 @@ pub fn contains<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> b
 	false
 }
 
-pub fn subsequence<N: PartialEq,H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
+pub fn subsequence<N: PartialEq, H: PartialEq<N>>(needle: &[N], haystack: &[H]) -> Vec<usize> {
 	let mut out = vec![];
 
 	if needle.len() > haystack.len() {
@@ -82,19 +82,17 @@ pub fn prefix_overlap<T: PartialEq>(left: &[T], right: &[T], n: usize) -> bool {
 	if left.len() < n || right.len() < n {
 		return false;
 	}
-	
+
 	let tail = &right[right.len() - n..];
-	
+
 	for (i, e) in tail.iter().enumerate().take(n) {
 		if e != &left[i] {
 			return false;
 		}
 	}
-	
+
 	true
 }
-
-
 
 #[cfg(test)]
 mod test {

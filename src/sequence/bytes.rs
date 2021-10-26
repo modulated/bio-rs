@@ -106,6 +106,17 @@ pub(super) fn complement_byte(byte: u8) -> u8 {
 	out
 }
 
+#[inline]
+pub(super) const fn transcribe_byte(byte: u8) -> u8 {
+	match byte {
+		b'U' => b'T',
+		b'u' => b't',
+		b'T' => b'U',
+		b't' => b'u',
+		_ => byte,
+	}
+}
+
 #[cfg(test)]
 mod test {
 	use super::codon_to_amino;
