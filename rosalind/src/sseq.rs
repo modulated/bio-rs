@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	}
 
 	let filename = args().nth(1).ok_or("File not found")?;
-	
+
 	let fastas = bio::FASTAVec::from_file(&filename);
 	let hay = &fastas[0].seq;
 	let nd = &fastas[1].seq;

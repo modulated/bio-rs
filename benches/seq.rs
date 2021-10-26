@@ -1,4 +1,4 @@
-use bio::formats::FASTA;
+use bio::FASTA;
 use criterion::*;
 
 static ECOLI: &str = "benches/ecoli.fasta";

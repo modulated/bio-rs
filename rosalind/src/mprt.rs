@@ -1,4 +1,4 @@
-use bio::{FASTA, protein_motif::ProteinMotif};
+use bio::{protein_motif::ProteinMotif, FASTA};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

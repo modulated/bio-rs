@@ -1,4 +1,4 @@
-use bio::{FASTAVec, palindrome};
+use bio::{palindrome, FASTAVec};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

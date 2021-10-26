@@ -9,7 +9,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	}
 
 	let filename = args().nth(1).ok_or("File not found.")?;
-	
+
 	let fastas = FASTAVec::from_file(&filename);
 	println!("{} sequences loaded", fastas.len());
 

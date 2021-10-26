@@ -1,4 +1,4 @@
-use bio::{compare_strings, FASTAVec, transition_transversion_ratio};
+use bio::{compare_strings, transition_transversion_ratio, FASTAVec};
 use std::env::args;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 		return Ok(());
 	}
 
-	let filename = args().nth(1).ok_or("Error: Unable to read args")?;	
+	let filename = args().nth(1).ok_or("Error: Unable to read args")?;
 
 	let seqs = FASTAVec::from_file(&filename);
 
