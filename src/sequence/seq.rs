@@ -14,10 +14,9 @@ impl Seq {
 	pub fn from_bytes(b: &[u8]) -> Self {
 		Self(b.to_vec())
 	}
-
-	#[must_use]
-	pub fn from_file(str: &str) -> Self {
-		Self::new(std::fs::read_to_string(str).unwrap())
+	
+	pub fn from_file(str: &str) -> BioResult<Self> {
+		Ok(Self::new(std::fs::read_to_string(str)?))
 	}
 
 	#[must_use]
@@ -65,11 +64,10 @@ impl Seq {
 	pub fn reverse_complement(&self) -> Self {
 		let mut out = bytes::complement_slice(&self.0);
 		out.reverse();
-		Self::new(String::from_utf8(out).unwrap())
+		Self::new(String::from_utf8_lossy(&out))
 	}
-
-	#[must_use]
-	pub fn gc_content(&self) -> f64 {
+	
+	pub fn gc_content(&self) -> BioResult<f64> {
 		use std::convert::TryFrom;
 
 		let mut count = 0;
@@ -80,7 +78,7 @@ impl Seq {
 			}
 		}
 
-		f64::from(100 * count) / f64::from(i32::try_from(self.len()).unwrap())
+		Ok(f64::from(100 * count) / f64::from(u32::try_from(self.len())?))
 	}
 
 	#[must_use]
@@ -317,7 +315,7 @@ mod test {
 		let input = "CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT";
 		let output = "60.919540";
 
-		assert_eq!(output, &Seq::new(input).gc_content().to_string()[..9]);
+		assert_eq!(output, &Seq::new(input).gc_content().unwrap().to_string()[..9]);
 	}
 
 	#[test]

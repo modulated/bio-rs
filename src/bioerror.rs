@@ -1,7 +1,9 @@
-#[derive(thiserror::Error, Debug, PartialEq)]
+#[derive(thiserror::Error, Debug)]
 pub enum BioError {
 	#[error("Expected nucleotide, found {0}")]
 	NotNucleotide(u8),
+	#[error("Cannot open file")]
+	FileError(#[from] std::io::Error),
 	#[error("Cannot convert {0}")]
 	TryFromInt(#[from] std::num::TryFromIntError),
 	#[error("Cannot parse {0}")]

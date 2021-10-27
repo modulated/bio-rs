@@ -63,7 +63,7 @@ mod test {
 	#[test]
 	fn get_amino() {
 		assert_eq!(get_aa(1, b"ATG").unwrap(), b'M');
-		assert_eq!(get_aa(5, b"UGA").unwrap(), b'W');
-		assert_eq!(get_aa(5, b"FGA"), Err(BioError::NotNucleotide(b'F')));
+		assert_eq!(get_aa(5, b"UGA").unwrap(), b'W');				
+		assert_eq!(get_aa(5, b"FGA").err().unwrap().to_string(), BioError::NotNucleotide(b'F').to_string());
 	}
 }

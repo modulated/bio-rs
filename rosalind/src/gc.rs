@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let mut map = std::collections::HashMap::new();
 
 	for f in fastas {
-		map.insert(f.name, f.seq.gc_content());
+		map.insert(f.name, f.seq.gc_content()?);
 	}
 
 	let max = map
