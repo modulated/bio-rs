@@ -10,8 +10,8 @@ fn read_counts(name: &str) {
 	let _ = r.seq.counts();
 }
 
-fn orf(seq: &FASTA) {
-	let _r = seq.seq.orf();
+fn orf(fasta: &FASTA) {
+	let _r = fasta.seq.orf(1);
 }
 
 fn len(seq: &FASTA) {

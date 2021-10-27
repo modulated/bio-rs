@@ -1,4 +1,4 @@
-use crate::{sequence::bytes, TranslationBuilder};
+use crate::{sequence::bytes, BioResult, TranslationBuilder};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct Seq(pub(crate) Vec<u8>);
@@ -100,6 +100,50 @@ impl Seq {
 			to_stop: false,
 			stop_symbol: b'*',
 		}
+	}
+
+	pub fn orf(&self, transl_table: u8) -> BioResult<Vec<Self>> {
+		let mut out = vec![];
+
+		let offset_1 = &self.as_slice()[1..];
+		let offset_2 = &self.as_slice()[2..];
+		let mut rev = super::bytes::complement_slice(self.as_slice());
+		rev.reverse();
+		let r_offset_1 = &rev[1..];
+		let r_offset_2 = &rev[2..];
+
+		let seqs: Vec<&[u8]> = vec![
+			self.as_slice(),
+			offset_1,
+			offset_2,
+			&rev,
+			r_offset_1,
+			r_offset_2,
+		];
+
+		for s in seqs {
+			let mut proteins: Vec<Vec<u8>> = vec![];
+			for c in s.chunks_exact(3) {
+				match super::translationtable::get_aa(transl_table, c)? {
+					b'M' => {
+						proteins.iter_mut().for_each(|x| x.push(b'M'));
+						proteins.push(vec![b'M']);
+					}
+					b'*' => {
+						out.append(&mut proteins);
+					}
+					c => {
+						proteins.iter_mut().for_each(|x| x.push(c));
+					}
+				}
+			}
+		}
+
+		let mut out_seqs: Vec<Self> = out.iter().map(|x| Self::from_bytes(&x[..])).collect();
+		out_seqs.sort();
+		out_seqs.dedup();
+
+		Ok(out_seqs)
 	}
 
 	#[must_use]
@@ -225,8 +269,7 @@ mod test {
 		];
 
 		let mut stringvec = Seq::new(input)
-			.translate()
-			.orf()
+			.orf(1)
 			.unwrap()
 			.iter()
 			.map(std::string::ToString::to_string)
