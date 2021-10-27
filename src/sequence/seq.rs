@@ -132,52 +132,6 @@ impl Seq {
 
 		arr
 	}
-
-	#[must_use]
-	pub fn orf(&self) -> Vec<Self> {
-		use super::bytes::codon_to_amino;
-
-		let mut out = vec![];
-
-		let offset_1 = &self.0[1..];
-		let offset_2 = &self.0[2..];
-		let mut rev = bytes::complement_slice(&self.0);
-		rev.reverse();
-		let r_offset_1 = &rev[1..];
-		let r_offset_2 = &rev[2..];
-
-		let seqs = vec![
-			&self.0[..],
-			offset_1,
-			offset_2,
-			&rev[..],
-			r_offset_1,
-			r_offset_2,
-		];
-
-		for s in seqs {
-			let mut proteins: Vec<Vec<u8>> = vec![];
-			for c in s.chunks_exact(3) {
-				match codon_to_amino(c) {
-					b'M' => {
-						proteins.iter_mut().for_each(|x| x.push(b'M'));
-						proteins.push(vec![b'M']);
-					}
-					b'*' => {
-						out.append(&mut proteins);
-					}
-					c => {
-						proteins.iter_mut().for_each(|x| x.push(c));
-					}
-				}
-			}
-		}
-
-		let mut out_seqs: Vec<Self> = out.iter().map(|x| Self::from_bytes(&x[..])).collect();
-		out_seqs.sort();
-		out_seqs.dedup();
-		out_seqs
-	}
 }
 
 impl Default for Seq {
@@ -271,7 +225,9 @@ mod test {
 		];
 
 		let mut stringvec = Seq::new(input)
+			.translate()
 			.orf()
+			.unwrap()
 			.iter()
 			.map(std::string::ToString::to_string)
 			.collect::<Vec<_>>();

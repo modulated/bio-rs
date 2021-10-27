@@ -1,4 +1,4 @@
-pub(super) fn codon_to_amino(codon: &[u8]) -> u8 {
+/*  pub(super) fn codon_to_amino(codon: &[u8]) -> u8 {
 	let out: u8;
 	match codon[0] {
 		b'A' | b'a' => match codon[1] {
@@ -83,6 +83,7 @@ pub(super) fn codon_to_amino(codon: &[u8]) -> u8 {
 	};
 	out
 }
+*/
 
 pub(super) fn complement_slice(bytes: &[u8]) -> Vec<u8> {
 	let mut out = Vec::with_capacity(bytes.len());
@@ -114,27 +115,5 @@ pub(super) const fn transcribe_byte(byte: u8) -> u8 {
 		b'T' => b'U',
 		b't' => b'u',
 		_ => byte,
-	}
-}
-
-#[cfg(test)]
-mod test {
-	use super::codon_to_amino;
-
-	#[test]
-	fn test_codon_to_amino() {
-		let input = vec![
-			[b'U', b'A', b'C'],
-			[b'U', b'G', b'A'],
-			[b'A', b'A', b'G'],
-			[b'T', b'T', b'T'],
-			[b'T', b'G', b'G'],
-			[b'A', b'T', b'G'],
-		];
-		let output = vec![b'Y', b'*', b'K', b'F', b'W', b'M'];
-
-		for (i, o) in input.iter().zip(output) {
-			assert_eq!(codon_to_amino(i), o);
-		}
 	}
 }

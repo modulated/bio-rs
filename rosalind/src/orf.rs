@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let filename = args().nth(1).ok_or("File not found.")?;
 	let v = bio::FASTAVec::from_file(&filename);
 
-	let orfs = v[0].seq.orf();
+	let orfs = v[0].seq.translate().halt_at_stop(true).orf()?;
 	for o in orfs {
 		println!("{}", o);
 	}
