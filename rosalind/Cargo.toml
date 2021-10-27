@@ -23,191 +23,135 @@ test = false
 [[bin]]
 name = "rna"
 path = "src/rna.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "revc"
 path = "src/revc.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "fib"
 path = "src/fib.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "iprb"
 path = "src/iprb.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "gc"
 path = "src/gc.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "grph"
 path = "src/grph.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "prot"
 path = "src/prot.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "ham"
 path = "src/ham.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "subs"
 path = "src/subs.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "revp"
 path = "src/revp.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "orf"
 path = "src/orf.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "mrna"
 path = "src/mrna.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "perm"
 path = "src/perm.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "pper"
 path = "src/pper.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "splc"
 path = "src/splc.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "lexf"
 path = "src/lexf.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "tree"
 path = "src/tree.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "kmer"
 path = "src/kmer.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "fibd"
 path = "src/fibd.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "lia"
 path = "src/lia.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "mprt"
 path = "src/mprt.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "sseq"
 path = "src/sseq.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "lcsq"
 path = "src/lcsq.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "scsp"
 path = "src/scsp.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "seto"
 path = "src/seto.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "sset"
 path = "src/sset.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "pdst"
 path = "src/pdst.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "lgis"
 path = "src/lgis.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "pmch"
 path = "src/pmch.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "tran"
 path = "src/tran.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "sign"
 path = "src/sign.rs"
-test = false
-doctest = false
 
 [[bin]]
 name = "long"
 path = "src/long.rs"
-test = false
-doctest = false
+
+[[bin]]
+name = "ini"
+path = "src/ini.rs"
+
+[[bin]]
+name = "frmt"
+path = "src/frmt.rs"
