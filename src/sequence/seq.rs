@@ -14,7 +14,7 @@ impl Seq {
 	pub fn from_bytes(b: &[u8]) -> Self {
 		Self(b.to_vec())
 	}
-	
+
 	pub fn from_file(str: &str) -> BioResult<Self> {
 		Ok(Self::new(std::fs::read_to_string(str)?))
 	}
@@ -66,7 +66,7 @@ impl Seq {
 		out.reverse();
 		Self::new(String::from_utf8_lossy(&out))
 	}
-	
+
 	pub fn gc_content(&self) -> BioResult<f64> {
 		use std::convert::TryFrom;
 
@@ -315,7 +315,10 @@ mod test {
 		let input = "CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGACTGGGAACCTGCGGGCAGTAGGTGGAAT";
 		let output = "60.919540";
 
-		assert_eq!(output, &Seq::new(input).gc_content().unwrap().to_string()[..9]);
+		assert_eq!(
+			output,
+			&Seq::new(input).gc_content().unwrap().to_string()[..9]
+		);
 	}
 
 	#[test]
