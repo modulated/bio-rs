@@ -1,3 +1,4 @@
+use crate::{BioError, BioResult};
 use num::{BigUint, ToPrimitive};
 use std::convert::TryInto;
 
@@ -26,14 +27,17 @@ pub fn factorial(num: u64) -> BigUint {
 	accum
 }
 
-#[must_use]
-pub fn poisson_pdf(x: u32, lambda: f64) -> f64 {
-	(-lambda).exp() * lambda.powi(x.try_into().unwrap()) / factorial(x.into()).to_f64().unwrap()
+pub fn poisson_pdf(x: u32, lambda: f64) -> BioResult<f64> {
+	Ok((-lambda).exp() * lambda.powi(x.try_into()?)
+		/ factorial(x.into()).to_f64().ok_or(BioError::BigUintToF64)?)
 }
 
-#[must_use]
-pub fn poisson_cdf(x: u32, lambda: f64) -> f64 {
-	(0..=x).into_iter().map(|x| poisson_pdf(x, lambda)).sum()
+pub fn poisson_cdf(x: u32, lambda: f64) -> BioResult<f64> {
+	let mut accum = 0.0;
+	for i in 0..=x {
+		accum += poisson_pdf(i, lambda)?;
+	}
+	Ok(accum)
 }
 
 #[cfg(test)]
@@ -54,7 +58,7 @@ mod test {
 	fn test_poisson_pdf() {
 		let x = 1;
 		let lambda = 0.5;
-		let res = format!("{:.14}", poisson_pdf(x, lambda));
+		let res = format!("{:.14}", poisson_pdf(x, lambda).unwrap());
 
 		assert_eq!(res, "0.30326532985632");
 	}
@@ -63,7 +67,7 @@ mod test {
 	fn test_poisson_cdf() {
 		let x = 4;
 		let lambda = 0.01;
-		let res = format!("{:.14}", poisson_cdf(x, lambda));
+		let res = format!("{:.14}", poisson_cdf(x, lambda).unwrap());
 
 		assert_eq!(res, "0.99999999999917");
 	}

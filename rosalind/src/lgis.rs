@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 	let filestring = std::fs::read_to_string(args().nth(1).ok_or("File not found")?)?;
 	let s = filestring.split_once('\n').unwrap().1.trim();
-	let input = int_string_to_vec(s);
+	let input = int_string_to_vec(s)?;
 
 	let res1 = longest_increasing_subsequence(&input);
 	println!("{}", slice_to_string(&res1));

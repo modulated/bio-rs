@@ -1,3 +1,4 @@
+use crate::{BioError, BioResult};
 use std::fmt::Display;
 
 pub fn slice_to_string<T: Display>(slice: &[T]) -> String {
@@ -17,7 +18,10 @@ pub fn slice_to_fmt_array<T: Display>(slice: &[T]) -> String {
 	format!("{{{}}}", r)
 }
 
-#[must_use]
-pub fn int_string_to_vec(string: &str) -> Vec<u32> {
-	string.split(' ').map(|x| x.parse().unwrap()).collect()
+pub fn int_string_to_vec(string: &str) -> BioResult<Vec<u32>> {
+	string
+		.split(' ')
+		.map(str::parse)
+		.collect::<Result<Vec<_>, _>>()
+		.map_err(BioError::from)
 }
