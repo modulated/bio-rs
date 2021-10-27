@@ -1,6 +1,5 @@
-use crate::Seq;
+use crate::{Seq, FASTQ};
 use std::fmt::Display;
-use ureq;
 
 #[derive(PartialEq, Debug)]
 pub struct FASTA {
@@ -62,9 +61,18 @@ impl Display for FASTA {
 	}
 }
 
+impl From<FASTQ> for FASTA {
+	fn from(fastq: FASTQ) -> Self {
+		Self {
+			name: fastq.name,
+			seq: fastq.seq,
+		}
+	}
+}
+
 #[cfg(test)]
 mod test {
-	use super::FASTA;
+	use crate::{Seq, FASTA, FASTQ};
 
 	#[test]
 	fn from_file() {
@@ -98,5 +106,23 @@ mod test {
 		let r = FASTA::from_ena_id("LT599825.1");
 		assert_eq!(r.name, "ENA|LT599825|LT599825.1 Escherichia coli isolate E. coli NRZ14408 genome assembly, chromosome: NRZ14408_C");
 		assert_eq!(r.seq.len(), 5_344_876);
+	}
+
+	#[test]
+	fn from_fastq() {
+		let fq = FASTQ::new(
+			r"@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!*((((***+))%%%++)(%%%%).1***-+*****))**55CCF>>>>>>CCCCCCC65",
+		);
+
+		let fs: FASTA = fq.into();
+
+		assert_eq!(fs.name, "SEQ_ID");
+		assert_eq!(
+			fs.seq,
+			Seq::new("GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT")
+		);
 	}
 }
