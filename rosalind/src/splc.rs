@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let introns: Vec<&Seq> = fastas[1..].iter().map(|x| &x.seq).collect();
 	let splc = fastas[0].seq.splice_introns(&introns);
 
-	println!("{}", splc.translate(true));
+	println!("{}", splc.translate().halt_at_stop(true).run()?);
 
 	Ok(())
 }

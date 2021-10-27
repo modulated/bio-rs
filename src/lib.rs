@@ -5,12 +5,14 @@
 #![allow(clippy::missing_errors_doc)]
 
 mod alignment;
+mod bioerror;
 pub mod combinatorics;
 mod formats;
 pub mod graph;
 mod sequence;
 pub mod util;
 pub use alignment::*;
+pub use bioerror::*;
 pub use formats::*;
 pub use sequence::*;
 pub use util::sets;

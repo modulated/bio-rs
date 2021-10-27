@@ -1,6 +1,6 @@
 use bio::*;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> BioResult<()> {
 	println!("FIB Problem");
 
 	let mut memo = std::collections::HashMap::new();

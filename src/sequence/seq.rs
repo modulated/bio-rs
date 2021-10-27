@@ -1,4 +1,4 @@
-use super::bytes;
+use crate::{sequence::bytes, TranslationBuilder};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
 pub struct Seq(pub(crate) Vec<u8>);
@@ -93,19 +93,13 @@ impl Seq {
 	}
 
 	#[must_use]
-	pub fn translate(&self, terminates: bool) -> Self {
-		let mut out: Vec<u8> = Vec::with_capacity(self.0.len());
-		for c in self
-			.0
-			.chunks_exact(3)
-			.map(|x| super::bytes::codon_to_amino(x))
-		{
-			if terminates && c == b'*' {
-				break;
-			}
-			out.push(c);
+	pub const fn translate(&self) -> TranslationBuilder {
+		TranslationBuilder {
+			seq: self,
+			transl_table: 1,
+			to_stop: false,
+			stop_symbol: b'*',
 		}
-		Self::from_bytes(&out)
 	}
 
 	#[must_use]
@@ -300,8 +294,13 @@ mod test {
 		let input = "ATGGCCATGGCGCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA";
 		let output1 = "MAMAPRTEINSTRING";
 		let output2 = "MAMAPRTEINSTRING*";
-		let res1 = Seq::new(input).translate(true).to_string();
-		let res2 = Seq::new(input).translate(false).to_string();
+		let res1 = Seq::new(input)
+			.translate()
+			.halt_at_stop(true)
+			.run()
+			.unwrap()
+			.to_string();
+		let res2 = Seq::new(input).translate().run().unwrap().to_string();
 		assert_eq!(res1, output1);
 		assert_eq!(res2, output2);
 	}
@@ -367,6 +366,13 @@ mod test {
 		let res = fastas[0].seq.splice_introns(&introns[..]);
 
 		assert_eq!(res.to_string(), dnaout);
-		assert_eq!(res.translate(true).to_string(), protout);
+		assert_eq!(
+			res.translate()
+				.halt_at_stop(true)
+				.run()
+				.unwrap()
+				.to_string(),
+			protout
+		);
 	}
 }

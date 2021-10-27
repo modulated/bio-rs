@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 	let input = std::fs::read_to_string(filename)?;
 
 	let rna = Seq::new(&input);
-	let prot = rna.transcribe().translate(false);
+	let prot = rna.transcribe().translate().run()?;
 
 	println!("{}", prot);
 
