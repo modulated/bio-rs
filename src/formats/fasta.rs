@@ -51,7 +51,8 @@ impl FASTA {
 
 impl Display for FASTA {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "{}\nLength: {}", self.name, self.seq.len())
+		let seq = self.seq.0.chunks(70).map(|x|String::from_utf8(x.to_vec()).unwrap()).collect::<Vec<_>>().join("\n");
+		write!(f, "{}\n{}", self.name, seq)
 	}
 }
 
