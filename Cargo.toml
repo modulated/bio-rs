@@ -12,6 +12,7 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
+gb-io = "0.6"
 num = "0.4"
 thiserror = "1.0"
 ureq = "2.2"
