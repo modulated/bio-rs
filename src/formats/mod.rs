@@ -1,8 +1,10 @@
 mod fasta;
 mod fastavec;
 mod fastq;
+mod fastqvec;
 mod genbank;
 pub use fasta::FASTA;
 pub use fastavec::FASTAVec;
 pub use fastq::FASTQ;
+pub use fastqvec::FASTQVec;
 pub use genbank::GenBank;
