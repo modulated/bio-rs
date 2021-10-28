@@ -166,3 +166,7 @@ path = "src/phre.rs"
 [[bin]]
 name = "filt"
 path = "src/filt.rs"
+
+[[bin]]
+name = "bphr"
+path = "src/bphr.rs"
