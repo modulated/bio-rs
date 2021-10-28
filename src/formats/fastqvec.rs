@@ -13,12 +13,12 @@ impl FASTQVec {
 	#[must_use]
 	pub fn from_string(input: &str) -> Self {
 		let mut res = vec![];
-		let arr: Vec<&str> = input.split('\n').collect();		
+		let arr: Vec<&str> = input.split('\n').collect();
 		for s in arr.chunks_exact(4) {
 			let f = FASTQ {
 				name: s[0][1..].to_string(),
 				seq: Seq::new(s[1]),
-				qual: Seq::new(s[3])
+				qual: Seq::new(s[3]),
 			};
 			res.push(f);
 		}
@@ -147,8 +147,7 @@ mod test {
 
 	#[test]
 	fn vec_from_string() {
-		let input = 
-r#"@SEQ_1
+		let input = r#"@SEQ_1
 GCTCCCTGGGGGTGGTGGGAGTCGTAGTTCTCAGGAGATTCCCTCTTAAAACAAAGCAAAATGGGACGTTACGCCTCATTATTGCTGCTGATCGTTTAGGGTCTCGCTGCCCTGGACATTGCGATGCAATATCTAATCGGGTAGTGCCTCGCGAATATCCGCAGCGCGCCTCACCGAGGGACATTTAATTCACACTTAAA
 +
 GBDB@>DAGCJ?BI<C?IB?BADEIGJB9F;A=EF;GDHHDH@BH>A<;CDJCA@JE??DAGBCF?;>FDH;D:;DJ@=BCE@B7B@;C@DAJ?@EH@<FF6?BCI>IF@E?B?B8@>B@D@7:J@AA>4==?B:8D?<F><E<G=B97H=B<@AA;DH6>;@=1>A69B>;A>9I@;7@B698=4:;7=6537=78211

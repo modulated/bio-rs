@@ -1,4 +1,4 @@
-use crate::{Seq, FASTA};
+use crate::{FASTQVec, Seq, FASTA};
 use std::ops::{Index, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
 #[derive(PartialEq, Debug)]
@@ -50,6 +50,16 @@ impl FASTAVec {
 	#[must_use]
 	pub fn is_empty(&self) -> bool {
 		self.0.len() == 0
+	}
+}
+
+impl From<FASTQVec> for FASTAVec {
+	fn from(fvec: FASTQVec) -> Self {
+		let mut out = Vec::with_capacity(fvec.len());
+		for f in fvec {
+			out.push(f.into());
+		}
+		Self(out)
 	}
 }
 
