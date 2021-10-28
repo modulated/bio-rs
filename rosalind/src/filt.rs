@@ -1,4 +1,4 @@
-use bio::{FASTQVec};
+use bio::FASTQVec;
 use std::env::args;
 fn main() {
 	if args().len() != 2 {
@@ -17,8 +17,8 @@ fn main() {
 
 	let fqvec = FASTQVec::from_string(fqv);
 	let mut count = 0;
-	for f in fqvec {		
-		if f.is_quality_ok(thresh, perc).unwrap() {			
+	for f in fqvec {
+		if f.is_quality_ok(thresh, perc).unwrap() {
 			count += 1;
 		}
 	}

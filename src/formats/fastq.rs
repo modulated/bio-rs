@@ -1,6 +1,6 @@
 use crate::{BioResult, Seq};
-use std::fmt::Display;
 use std::convert::TryFrom;
+use std::fmt::Display;
 
 #[derive(PartialEq, Debug)]
 pub struct FASTQ {
@@ -33,7 +33,7 @@ impl FASTQ {
 		self.qual.iter().map(|x| phred_to_int(*x)).collect()
 	}
 
-	pub fn average_quality(&self) -> BioResult<f64> {		
+	pub fn average_quality(&self) -> BioResult<f64> {
 		let num: f64 = self
 			.phred_quality()
 			.iter()
@@ -51,7 +51,8 @@ impl FASTQ {
 				count += 1;
 			}
 		}
-		let counted_percentage = (f64::from(count) * 100.0) / f64::from(u32::try_from(self.qual.len())?);
+		let counted_percentage =
+			(f64::from(count) * 100.0) / f64::from(u32::try_from(self.qual.len())?);
 		let percentage_target = f64::from(percentage);
 		Ok(counted_percentage >= percentage_target)
 	}
@@ -76,7 +77,7 @@ impl Display for FASTQ {
 
 #[cfg(test)]
 mod test {
-	use crate::{FASTQ, FASTQVec, Seq};
+	use crate::{FASTQVec, Seq, FASTQ};
 
 	#[test]
 	fn new() {
@@ -134,18 +135,20 @@ mod test {
 
 	#[test]
 	fn quality_filter() {
-		let fv = FASTQVec::from_string(r#"@Rosalind_0049_1
-		GCAGAGACCAGTAGATGTGTTTGCGGACGGTCGGGCTCCATGTGACACAG
-		+
-		FD@@;C<AI?4BA:=>C<G=:AE=><A??>764A8B797@A:58:527+,
-		@Rosalind_0049_2
-		AATGGGGGGGGGAGACAAAATACGGCTAAGGCAGGGGTCCTTGATGTCAT
-		+
-		1<<65:793967<4:92568-34:.>1;2752)24')*15;1,.3*3+*!
-		@Rosalind_0049_3
-		ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCTA
-		+
-		B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+"#);
+		let fv = FASTQVec::from_string(
+			r#"@Rosalind_0049_1
+			GCAGAGACCAGTAGATGTGTTTGCGGACGGTCGGGCTCCATGTGACACAG
+			+
+			FD@@;C<AI?4BA:=>C<G=:AE=><A??>764A8B797@A:58:527+,
+			@Rosalind_0049_2
+			AATGGGGGGGGGAGACAAAATACGGCTAAGGCAGGGGTCCTTGATGTCAT
+			+
+			1<<65:793967<4:92568-34:.>1;2752)24')*15;1,.3*3+*!
+			@Rosalind_0049_3
+			ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCTA
+			+
+			B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+"#
+		);
 		assert!(fv[0].is_quality_ok(20, 90).unwrap());
 		assert!(!fv[1].is_quality_ok(20, 90).unwrap());
 		assert!(fv[2].is_quality_ok(20, 90).unwrap());

@@ -1,4 +1,4 @@
-use bio::{FASTQVec};
+use bio::FASTQVec;
 use std::env::args;
 fn main() {
 	if args().len() != 2 {
