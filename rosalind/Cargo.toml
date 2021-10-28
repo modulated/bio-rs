@@ -154,3 +154,7 @@ path = "src/ini.rs"
 [[bin]]
 name = "frmt"
 path = "src/frmt.rs"
+
+[[bin]]
+name = "tfsq"
+path = "src/tfsq.rs"
