@@ -18,7 +18,7 @@ impl FASTQ {
 			seq: Seq::new(string[1].trim()),
 			qual: string[3].trim().as_bytes().to_vec(),
 		};
-		
+
 		out
 	}
 
@@ -29,12 +29,17 @@ impl FASTQ {
 
 	#[must_use]
 	pub fn phred_quality(&self) -> Vec<u8> {
-		self.qual.iter().map(|x|phred_to_int(*x)).collect()
+		self.qual.iter().map(|x| phred_to_int(*x)).collect()
 	}
 
 	pub fn average_quality(&self) -> BioResult<f64> {
 		use std::convert::TryFrom;
-		let num: f64 = self.phred_quality().iter().map(|x|u32::from(*x)).sum::<u32>().into();
+		let num: f64 = self
+			.phred_quality()
+			.iter()
+			.map(|x| u32::from(*x))
+			.sum::<u32>()
+			.into();
 		let denom: f64 = u32::try_from(self.qual.len())?.into();
 		Ok(num / denom)
 	}
@@ -80,22 +85,32 @@ mod test {
 
 	#[test]
 	fn phred_quality() {
-		let f = FASTQ::new(r#"@Rosalind_0041
+		let f = FASTQ::new(
+			r#"@Rosalind_0041
 			GGCCGGTCTATTTACGTTCTCACCCGACGTGACGTACGGTCC
 			+
-			6.3536354;.151<211/0?::6/-2051)-*"40/.,+%))"#);
-		let output = vec![21, 13, 18, 20, 18, 21, 18, 20, 19, 26, 13, 16, 20, 16, 27, 17, 16, 16, 14, 15, 30, 25, 25, 21, 14, 12, 17, 15, 20, 16, 8, 12, 9, 1, 19, 15, 14, 13, 11, 10, 4, 8, 8];
-		
+			6.3536354;.151<211/0?::6/-2051)-*"40/.,+%))"#,
+		);
+		let output = vec![
+			21, 13, 18, 20, 18, 21, 18, 20, 19, 26, 13, 16, 20, 16, 27, 17, 16, 16, 14, 15, 30, 25,
+			25, 21, 14, 12, 17, 15, 20, 16, 8, 12, 9, 1, 19, 15, 14, 13, 11, 10, 4, 8, 8,
+		];
+
 		assert_eq!(f.phred_quality(), output);
 	}
 
 	#[test]
 	fn average_quality() {
-		let f = FASTQ::new(r#"@Rosalind_0041
+		let f = FASTQ::new(
+			r#"@Rosalind_0041
 			GGCCGGTCTATTTACGTTCTCACCCGACGTGACGTACGGTCC
 			+
-			6.3536354;.151<211/0?::6/-2051)-*"40/.,+%))"#);
-		assert_eq!(format!("{:.4}", f.average_quality().unwrap()), 16.0698.to_string());
+			6.3536354;.151<211/0?::6/-2051)-*"40/.,+%))"#,
+		);
+		assert_eq!(
+			format!("{:.4}", f.average_quality().unwrap()),
+			16.0698.to_string()
+		);
 	}
 
 	#[test]
