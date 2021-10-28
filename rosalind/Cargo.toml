@@ -158,3 +158,11 @@ path = "src/frmt.rs"
 [[bin]]
 name = "tfsq"
 path = "src/tfsq.rs"
+
+[[bin]]
+name = "phre"
+path = "src/phre.rs"
+
+[[bin]]
+name = "filt"
+path = "src/filt.rs"
