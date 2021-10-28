@@ -53,10 +53,10 @@ impl FASTQVec {
 		let mut out = Vec::with_capacity(max_len);
 		let num_seq: f64 = f64::from(u32::try_from(self.0.len())?);
 		for i in 0..max_len {
-			let mut count = 0;
+			let mut count: u32 = 0;
 			for v in &self.0 {
 				if let Some(x) = v.qual.get(i) {
-					count += x - 33;
+					count += u32::from(x - 33);
 				}
 			}
 			out.push(f64::from(count) / num_seq);
