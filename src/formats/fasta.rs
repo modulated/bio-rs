@@ -42,7 +42,7 @@ impl FASTA {
 			.unwrap();
 
 		Self {
-			name: name.to_string(),
+			name: name.trim().to_string(),
 			seq: Seq::new(seq),
 		}
 	}
