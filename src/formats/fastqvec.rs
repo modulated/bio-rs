@@ -1,4 +1,5 @@
-use crate::{Seq, FASTQ};
+use crate::{BioResult, Seq, FASTQ};
+use std::convert::TryFrom;
 use std::ops::{Index, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
 #[derive(PartialEq, Debug)]
@@ -45,6 +46,23 @@ impl FASTQVec {
 	#[must_use]
 	pub fn is_empty(&self) -> bool {
 		self.0.len() == 0
+	}
+
+	pub fn position_base_quality(&self) -> BioResult<Vec<f64>> {
+		let max_len = self.0.iter().map(|x| x.qual.len()).max().unwrap();
+		let mut out = Vec::with_capacity(max_len);
+		let num_seq: f64 = f64::from(u32::try_from(self.0.len())?);
+		for i in 0..max_len {
+			let mut count = 0;
+			for v in &self.0 {
+				if let Some(x) = v.qual.get(i) {
+					count += x - 33;
+				}
+			}
+			out.push(f64::from(count) / num_seq);
+		}
+
+		Ok(out)
 	}
 }
 
@@ -180,5 +198,36 @@ mod test {
 		let output = FASTQVec::new(vec);
 
 		assert_eq!(output, FASTQVec::from_string(input));
+	}
+
+	#[test]
+	fn position_base_quality() {
+		let input = r"@Rosalind_0029
+			GCCCCAGGGAACCCTCCGACCGAGGATCGT
+			+
+			>?F?@6<C<HF?<85486B;85:8488/2/
+			@Rosalind_0029
+			TGTGATGGCTCTCTGAATGGTTCAGGCAGT
+			+
+			@J@H@>B9:B;<D==:<;:,<::?463-,,
+			@Rosalind_0029
+			CACTCTTACTCCCTAGCCGAACTCCTTTTT
+			+
+			=88;99637@5,4664-65)/?4-2+)$)$
+			@Rosalind_0029
+			GATTATGATATCAGTTGGCTCCGAGAGCGT
+			+
+			<@BGE@8C9=B9:B<>>>7?B>7:02+33.";
+		let output = vec![
+			28.75, 31.25, 31.0, 33.25, 30.5, 26.25, 26.0, 27.5, 24.5, 32.75, 29.0, 23.0, 26.5,
+			26.25, 24.0, 23.0, 22.75, 24.25, 25.0, 18.75, 24.25, 26.0, 22.75, 22.5, 17.5, 17.75,
+			14.75, 11.75, 13.5, 10.25,
+		];
+		let fqv = FASTQVec::from_string(input);
+		let res = fqv.position_base_quality().unwrap();
+
+		for i in 0..output.len() {
+			assert_eq!(format!("{:.2}", output[i]), format!("{:.2}", res[i]));
+		}
 	}
 }

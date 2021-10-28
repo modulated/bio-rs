@@ -147,7 +147,7 @@ mod test {
 			@Rosalind_0049_3
 			ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCTA
 			+
-			B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+"#
+			B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+"#,
 		);
 		assert!(fv[0].is_quality_ok(20, 90).unwrap());
 		assert!(!fv[1].is_quality_ok(20, 90).unwrap());
