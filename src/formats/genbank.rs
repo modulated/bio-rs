@@ -1,7 +1,4 @@
-pub struct GenBank {
-	pub name: String,
-	pub len: usize,
-}
+pub struct GenBank(pub gb_io::seq::Seq);
 
 impl GenBank {
 	#[must_use]
@@ -12,10 +9,7 @@ impl GenBank {
 			.unwrap()
 			.unwrap();
 
-		Self {
-			name: gb.name.unwrap(),
-			len: gb.len.unwrap(),
-		}
+		Self(gb)
 	}
 }
 
@@ -26,7 +20,11 @@ mod test {
 	#[test]
 	fn genbank() {
 		let gb = GenBank::new("benches/scu49845.gb");
-		assert_eq!(gb.name, "SCU49845");
-		assert_eq!(gb.len, 5028);
+		assert_eq!(gb.0.name.unwrap(), "SCU49845");
+		assert_eq!(gb.0.len.unwrap(), 5028);
+        assert_eq!(gb.0.molecule_type.unwrap(), "DNA");
+        assert_eq!(gb.0.date.unwrap().to_string(), "21-JUN-1999");
+        assert_eq!(gb.0.seq[0], b'g');
+        assert_eq!(gb.0.seq[4981], b'g');
 	}
 }
