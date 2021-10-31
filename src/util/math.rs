@@ -27,11 +27,17 @@ pub fn factorial(num: u64) -> BigUint {
 	accum
 }
 
+/// Returns Poisson probability distribution function with `lambda` paramter at `x`.
+/// # Errors
+/// If `BigUint` to float conversion fails will return `BioError::BigUintToF64`.
 pub fn poisson_pdf(x: u32, lambda: f64) -> BioResult<f64> {
 	Ok((-lambda).exp() * lambda.powi(x.try_into()?)
 		/ factorial(x.into()).to_f64().ok_or(BioError::BigUintToF64)?)
 }
 
+/// Returns Poisson probability distribution function with `lambda` paramter at `x`.
+/// # Errors
+/// If `BigUint` to float conversion fails will return `BioError::BigUintToF64`.
 pub fn poisson_cdf(x: u32, lambda: f64) -> BioResult<f64> {
 	let mut accum = 0.0;
 	for i in 0..=x {

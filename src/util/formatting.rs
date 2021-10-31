@@ -18,6 +18,9 @@ pub fn slice_to_fmt_array<T: Display>(slice: &[T]) -> String {
 	format!("{{{}}}", r)
 }
 
+/// Takes a string reference and returns `Vec<u32`.
+/// # Errors
+/// Will return `BioError::ParseIntError` if unable to parse input as int.
 pub fn int_string_to_vec(string: &str) -> BioResult<Vec<u32>> {
 	string
 		.split(' ')
