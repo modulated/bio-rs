@@ -1,8 +1,8 @@
 use crate::{FASTQVec, Seq, FASTA};
 use std::ops::{Index, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
-#[derive(PartialEq, Debug)]
-pub struct FASTAVec(Vec<FASTA>);
+#[derive(PartialEq, Eq, Debug)]
+pub struct FASTAVec(pub Vec<FASTA>);
 
 impl FASTAVec {
 	#[must_use]
@@ -37,10 +37,7 @@ impl FASTAVec {
 		Self::from_string(&s)
 	}
 
-	#[must_use]
-	pub fn iter(&self) -> std::slice::Iter<FASTA> {
-		self.0.iter()
-	}
+	
 
 	#[must_use]
 	pub fn len(&self) -> usize {

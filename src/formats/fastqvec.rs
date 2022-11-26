@@ -1,8 +1,10 @@
 use crate::{BioResult, Seq, FASTQ};
 use std::convert::TryFrom;
-use std::ops::{Index, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
+use std::ops::{
+	Index, IndexMut, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
+};
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct FASTQVec(Vec<FASTQ>);
 
 impl FASTQVec {
@@ -33,9 +35,12 @@ impl FASTQVec {
 		Self::from_string(&s)
 	}
 
-	#[must_use]
 	pub fn iter(&self) -> std::slice::Iter<FASTQ> {
 		self.0.iter()
+	}
+
+	pub fn iter_mut(&mut self) -> std::slice::IterMut<FASTQ> {
+		self.0.iter_mut()
 	}
 
 	#[must_use]
@@ -71,6 +76,12 @@ impl Index<usize> for FASTQVec {
 
 	fn index(&self, index: usize) -> &Self::Output {
 		&self.0[index]
+	}
+}
+
+impl IndexMut<usize> for FASTQVec {
+	fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+		&mut self.0[index]
 	}
 }
 

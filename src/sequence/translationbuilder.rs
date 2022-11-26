@@ -25,7 +25,7 @@ impl<'a> TranslationBuilder<'a> {
 	}
 
 	/// Runs the DNA to protein translation with built up parameters.
-	/// # Errors 
+	/// # Errors
 	/// If Seq contains non-nucleotide character will return `BioError::NotNucleotide`.
 	pub fn run(&self) -> BioResult<Seq> {
 		let mut out: Vec<u8> = Vec::with_capacity(self.seq.0.len());

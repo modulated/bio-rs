@@ -1,6 +1,6 @@
 use crate::{sequence::bytes, BioResult, TranslationBuilder};
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Default)]
 pub struct Seq(pub(crate) Vec<u8>);
 
 impl Seq {
@@ -34,7 +34,6 @@ impl Seq {
 		self.0.len()
 	}
 
-	#[must_use]
 	pub fn iter(&self) -> std::slice::Iter<u8> {
 		self.0.iter()
 	}
@@ -173,12 +172,6 @@ impl Seq {
 		}
 
 		arr
-	}
-}
-
-impl Default for Seq {
-	fn default() -> Self {
-		Self(Vec::default())
 	}
 }
 

@@ -2,7 +2,7 @@
 name = "bio"
 version = "0.1.0"
 authors = ["George Roubos <cowkingdom@hotmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -12,14 +12,14 @@ path = "src/lib.rs"
 doctest = false
 
 [dependencies]
-gb-io = "0.6"
-num = "0.4"
-thiserror = "1.0"
-ureq = "2.2"
+gb-io = "0.7"
+num = "0"
+thiserror = "1"
+ureq = "2"
 
 [dev-dependencies]
 cargo-husky = {version = "1.5", features = ["prepush-hook", "run-cargo-clippy", "run-cargo-fmt"]}
-criterion = "0.3"
+criterion = "0.4"
 
 [[bench]]
 name = "seq"

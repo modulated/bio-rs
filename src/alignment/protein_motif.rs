@@ -1,9 +1,9 @@
 use crate::Seq;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct ProteinMotif(Vec<AminoMotif>);
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub enum AminoMotif {
 	Amino(u8),
 	Either(u8, u8),

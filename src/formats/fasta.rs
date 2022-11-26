@@ -1,7 +1,7 @@
-use crate::{FASTQ, GenBank, Seq};
+use crate::{GenBank, Seq, FASTQ};
 use std::fmt::Display;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct FASTA {
 	pub name: String,
 	pub seq: Seq,
@@ -73,7 +73,11 @@ impl From<FASTQ> for FASTA {
 impl From<GenBank> for FASTA {
 	fn from(genbank: GenBank) -> Self {
 		Self {
-			name: format!("{} {}",genbank.0.name.unwrap_or_default(), genbank.0.definition.unwrap_or_default()),
+			name: format!(
+				"{} {}",
+				genbank.0.name.unwrap_or_default(),
+				genbank.0.definition.unwrap_or_default()
+			),
 			seq: Seq::from_bytes(&genbank.0.seq),
 		}
 	}

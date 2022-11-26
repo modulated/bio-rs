@@ -2,7 +2,7 @@ use crate::{BioResult, Seq};
 use std::convert::TryFrom;
 use std::fmt::Display;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct FASTQ {
 	pub name: String,
 	pub seq: Seq,
@@ -56,6 +56,28 @@ impl FASTQ {
 		let percentage_target = f64::from(percentage);
 		Ok(counted_percentage >= percentage_target)
 	}
+
+	pub fn trim_quality(&mut self, threshold: u8) {
+		let mut start = 0;
+		let mut end = self.qual.len();
+		let thresh = threshold + b'!';
+
+		for (i, x) in self.qual.iter().enumerate() {
+			start = i;
+			if *x > thresh {
+				break;
+			}
+		}
+
+		for (i, x) in self.qual.iter().enumerate().rev() {
+			end = i;
+			if *x > thresh {
+				break;
+			}
+		}
+		self.qual = self.qual[start..=end].to_vec();
+		self.seq = Seq::from_bytes(&self.seq[start..=end]);
+	}
 }
 
 const fn phred_to_int(ph: u8) -> u8 {
@@ -64,14 +86,13 @@ const fn phred_to_int(ph: u8) -> u8 {
 
 impl Display for FASTQ {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		let seq = self
-			.seq
-			.0
-			.chunks(70)
-			.map(|x| String::from_utf8(x.to_vec()).unwrap())
-			.collect::<Vec<_>>()
-			.join("\n");
-		write!(f, "{}\n{}", self.name, seq)
+		write!(
+			f,
+			"@{}\n{}\n+\n{}",
+			self.name,
+			self.seq,
+			std::str::from_utf8(&self.qual).unwrap()
+		)
 	}
 }
 
@@ -152,5 +173,41 @@ mod test {
 		assert!(fv[0].is_quality_ok(20, 90).unwrap());
 		assert!(!fv[1].is_quality_ok(20, 90).unwrap());
 		assert!(fv[2].is_quality_ok(20, 90).unwrap());
+	}
+
+	#[test]
+	fn trim_quality() {
+		let mut input = FASTQVec::from_string(
+			r"@Rosalind_0049
+		GCAGAGACCAGTAGATGTGTTTGCGGACGGTCGGGCTCCATGTGACACAG
+		+
+		FD@@;C<AI?4BA:=>C<G=:AE=><A??>764A8B797@A:58:527+,
+		@Rosalind_0049
+		AATGGGGGGGGGAGACAAAATACGGCTAAGGCAGGGGTCCTTGATGTCAT
+		+
+		1<<65:793967<4:92568-34:.>1;2752)24')*15;1,.3*3+*!
+		@Rosalind_0049
+		ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCTA
+		+
+		B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+",
+		);
+		let output = FASTQVec::from_string(
+			r"@Rosalind_0049
+		GCAGAGACCAGTAGATGTGTTTGCGGACGGTCGGGCTCCATGTGACAC
+		+
+		FD@@;C<AI?4BA:=>C<G=:AE=><A??>764A8B797@A:58:527
+		@Rosalind_0049
+		ATGGGGGGGGGAGACAAAATACGGCTAAGGCAGGGGTCCT
+		+
+		<<65:793967<4:92568-34:.>1;2752)24')*15;
+		@Rosalind_0049
+		ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCT
+		+
+		B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8",
+		);
+		for i in 0..input.len() {
+			input[i].trim_quality(20);
+			assert_eq!(input[i], output[i]);
+		}
 	}
 }
