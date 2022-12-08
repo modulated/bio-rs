@@ -1,8 +1,10 @@
 mod bytes;
+mod errorcorrection;
 mod mutation;
 mod seq;
 mod translationbuilder;
 mod translationtable;
+pub use errorcorrection::error_correction;
 pub use mutation::{compare_strings, transition_transversion_ratio, Mutation};
 pub use seq::Seq;
 pub use translationbuilder::TranslationBuilder;
