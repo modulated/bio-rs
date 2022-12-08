@@ -66,7 +66,7 @@ impl Seq {
 		Self::new(String::from_utf8_lossy(&out))
 	}
 
-	pub fn gc_content(&self) -> BioResult<f64> {		
+	pub fn gc_content(&self) -> BioResult<f64> {
 		let mut count = 0;
 		for c in self.iter() {
 			match c {

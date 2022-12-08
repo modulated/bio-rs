@@ -37,8 +37,6 @@ impl FASTAVec {
 		Self::from_string(&s)
 	}
 
-	
-
 	#[must_use]
 	pub fn len(&self) -> usize {
 		self.0.len()

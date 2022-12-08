@@ -5,9 +5,11 @@ pub fn create_graph(seqs: &FASTAVec, overlap_size: usize) -> Vec<(String, String
 	let mut output = vec![];
 
 	for (i, s1) in {
-    let this = &seqs;
+		let this = &seqs;
 		this.0.iter()
-	}.enumerate() {
+	}
+	.enumerate()
+	{
 		for s2 in &seqs[i + 1..] {
 			if s1.seq.suffix_overlap(&s2.seq, overlap_size) {
 				output.push((s1.name.to_string(), s2.name.to_string()));
