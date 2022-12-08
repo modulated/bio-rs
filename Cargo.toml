@@ -24,6 +24,3 @@ criterion = "0.4"
 [[bench]]
 name = "seq"
 harness = false
-
-[workspace]
-members = ["rosalind"]
