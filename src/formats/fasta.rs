@@ -11,7 +11,12 @@ impl FASTA {
 	#[must_use]
 	pub fn from_uniprot_id(id: &str) -> Self {
 		let path = format!("https://www.uniprot.org/uniprot/{id}.fasta");
-		let r = ureq::get(&path).call().unwrap().body_mut().read_to_string().unwrap();
+		let r = ureq::get(&path)
+			.call()
+			.unwrap()
+			.body_mut()
+			.read_to_string()
+			.unwrap();
 		let split = &r[1..].split_once('\n');
 		let (name, seq) = split.unwrap();
 		Self {
@@ -23,7 +28,12 @@ impl FASTA {
 	#[must_use]
 	pub fn from_ena_id(id: &str) -> Self {
 		let path = format!("https://www.ebi.ac.uk/Tools/dbfetch/dbfetch?db=ena_sequence&id={id}&format=fasta&style=raw");
-		let r = ureq::get(&path).call().unwrap().body_mut().read_to_string().unwrap();
+		let r = ureq::get(&path)
+			.call()
+			.unwrap()
+			.body_mut()
+			.read_to_string()
+			.unwrap();
 		let split = &r[1..].split_once('\n');
 		let (name, seq) = split.unwrap();
 		Self {

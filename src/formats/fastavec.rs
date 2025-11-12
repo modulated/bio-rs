@@ -46,7 +46,7 @@ impl FASTAVec {
 	pub fn is_empty(&self) -> bool {
 		self.0.len() == 0
 	}
-	
+
 	#[must_use]
 	pub fn iter(&self) -> Iter<'_> {
 		<&Self as IntoIterator>::into_iter(self)
