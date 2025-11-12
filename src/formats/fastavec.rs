@@ -6,7 +6,7 @@ pub struct FASTAVec(pub Vec<FASTA>);
 
 impl FASTAVec {
 	#[must_use]
-	pub fn new(vec: Vec<FASTA>) -> Self {
+	pub const fn new(vec: Vec<FASTA>) -> Self {
 		Self(vec)
 	}
 
@@ -45,6 +45,11 @@ impl FASTAVec {
 	#[must_use]
 	pub fn is_empty(&self) -> bool {
 		self.0.len() == 0
+	}
+	
+	#[must_use]
+	pub fn iter(&self) -> Iter<'_> {
+		<&Self as IntoIterator>::into_iter(self)
 	}
 }
 
@@ -157,7 +162,7 @@ mod test {
 
 	#[test]
 	fn vec_from_string() {
-		let input = r#">Rosalind_6404
+		let input = r">Rosalind_6404
         CCTGCGGAAGATCGGCACTAGAATAGCCAGAACCGTTTCTCTGAGGCTTCCGGCCTTCCC
         TCCCACTAATAATTCTGAGG
         >Rosalind_5959
@@ -165,7 +170,7 @@ mod test {
         ATATCCATTTGTCAGCAGACACGC
         >Rosalind_0808
         CCACCCTCGTGGTATGGCTAGGCATTCAGGAACCGGAGAACGCTTCAGACCAGCCCGGAC
-        TGGGAACCTGCGGGCAGTAGGTGGAAT"#;
+        TGGGAACCTGCGGGCAGTAGGTGGAAT";
 
 		let vec = vec![
 			FASTA {

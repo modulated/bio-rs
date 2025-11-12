@@ -110,7 +110,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Unweighted<T> {
 		let edges_1 = self
 			.data
 			.entry(node_1.borrow().clone())
-			.or_insert_with(Vec::new);
+			.or_default();
 		if !edges_1.contains(node_2.borrow()) {
 			return Err(Error::EdgeNotFound((
 				node_1.borrow().to_string(),
@@ -122,7 +122,7 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Unweighted<T> {
 		let edges_2 = self
 			.data
 			.entry(node_2.borrow().clone())
-			.or_insert_with(Vec::new);
+			.or_default();
 		if !edges_2.contains(node_1.borrow()) {
 			return Err(Error::EdgeNotFound((
 				node_2.borrow().to_string(),
@@ -214,6 +214,15 @@ impl<T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> Unweighted<T> {
 		}
 
 		Err(Error::PathNotFound)
+	}
+}
+
+impl<'a, T: Eq + core::hash::Hash + std::fmt::Display + Clone + Ord> IntoIterator for &'a Unweighted<T> {
+	type Item = (&'a T, &'a std::vec::Vec<T>);
+
+	type IntoIter = std::collections::hash_map::Iter<'a, T, std::vec::Vec<T>>;
+	fn into_iter(self) -> Self::IntoIter {
+		self.iter()
 	}
 }
 
@@ -334,7 +343,7 @@ mod tests {
 	}
 
 	#[test]
-	#[should_panic]
+	#[should_panic(expected = "not connected")]
 	fn unweighted_connected_fail() {
 		let mut g = Unweighted::new();
 		g.add(1);
@@ -378,7 +387,7 @@ mod tests {
 				let mut n = g.clone();
 				match n.unlink(x, y) {
 					Err(_) => {}
-					Ok(_) => assert!(!n.is_tree()),
+					Ok(()) => assert!(!n.is_tree()),
 				}
 			}
 		}

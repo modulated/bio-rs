@@ -15,7 +15,7 @@ pub fn slice_to_fmt_array<T: Display>(slice: &[T]) -> String {
 		.map(std::string::ToString::to_string)
 		.collect::<Vec<_>>()
 		.join(", ");
-	format!("{{{}}}", r)
+	format!("{{{r}}}")
 }
 
 /// Takes a string reference and returns `Vec<u32`.

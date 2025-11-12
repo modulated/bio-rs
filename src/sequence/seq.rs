@@ -68,7 +68,7 @@ impl Seq {
 
 	pub fn gc_content(&self) -> BioResult<f64> {
 		let mut count = 0;
-		for c in self.iter() {
+		for c in self {
 			match c {
 				b'G' | b'g' | b'C' | b'c' => count += 1,
 				_ => continue,
@@ -200,6 +200,16 @@ impl IntoIterator for Seq {
 	}
 }
 
+impl<'a> IntoIterator for &'a Seq {
+	type Item = &'a u8;
+
+	type IntoIter = std::slice::Iter<'a, u8>;
+
+	fn into_iter(self) -> Self::IntoIter {
+		self.iter()
+	}
+}
+
 #[cfg(test)]
 mod test {
 	use crate::formats::FASTAVec;
@@ -314,7 +324,7 @@ mod test {
 
 	#[test]
 	fn suffix_overlap() {
-		let input = vec!["AAATTTGGG", "GGGGTTACCC"];
+		let input = ["AAATTTGGG", "GGGGTTACCC"];
 		let s1 = Seq::new(input[0]);
 		let s2 = Seq::new(input[1]);
 
@@ -324,7 +334,7 @@ mod test {
 
 	#[test]
 	fn prefix_overlap() {
-		let input = vec!["AAATTTGGG", "GGGGTTACCC"];
+		let input = ["AAATTTGGG", "GGGGTTACCC"];
 		let s1 = Seq::new(input[0]);
 		let s2 = Seq::new(input[1]);
 

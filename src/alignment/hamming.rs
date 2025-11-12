@@ -13,9 +13,9 @@ pub fn distance<I: PartialEq, T: Clone + IntoIterator<Item = I>>(a: &T, b: &T) -
 
 pub fn p_distance<I: PartialEq, T: Clone + IntoIterator<Item = I>>(a: &T, b: &T) -> f64 {
 	let count_int: i32 = a.clone().into_iter().count().try_into().unwrap();
-	let count: f64 = count_int.try_into().unwrap();
+	let count: f64 = count_int.into();
 	let dist_int: i32 = distance(a, b).try_into().unwrap();
-	let int: f64 = dist_int.try_into().unwrap();
+	let int: f64 = dist_int.into();
 	int / count
 }
 

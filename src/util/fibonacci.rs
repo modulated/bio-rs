@@ -61,6 +61,6 @@ mod test {
 	fn test_mortal() {
 		let mut map = std::collections::HashMap::new();
 		assert_eq!(mortal_rabbits(6, 3, &mut map), 4);
-		println!("{:?}", map);
+		println!("{map:?}");
 	}
 }

@@ -12,7 +12,7 @@ pub fn prob_inheritance_dominant(
 	let n = f64::from(homozygous_recesive);
 	let t = f64::from(homozygous_dominant + heterozygous_dominant + homozygous_recesive);
 
-	1.0 - 1.0 / t / (t - 1.0) * (n.mul_add(n - 1.0, n * m) + m * (m - 1.0) / 4.0)
+	(1.0 / t / (t - 1.0)).mul_add(-(n.mul_add(n - 1.0, n * m) + m * (m - 1.0) / 4.0), 1.0)
 }
 
 /// Returns the probability that at least `n` organisms will be `AaBb` after `k` generations if they only mate with `AaBb` individuals

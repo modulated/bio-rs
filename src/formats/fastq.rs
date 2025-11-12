@@ -113,7 +113,7 @@ mod test {
 		assert_eq!(f.seq, Seq::new("ATGTCTCCTGGACCCCTCTGTGCCCAAGCTCCTCATGCATCCTCCTCAGCAACTTGTCCTGTAGCTGAGGCTCACTGACTACCAGCTGCAG"));
 		assert_eq!(
 			f.qual,
-			br#"1:DAADDDF\<B\<AGF=FGIEHCCD9DG=1E9?D>CF@HHG??B\<GEBGHCG;;CDB8==C@@>>GII@@5?A?@B>CEDCFCC:;?CCCAC"#
+			br"1:DAADDDF\<B\<AGF=FGIEHCCD9DG=1E9?D>CF@HHG??B\<GEBGHCG;;CDB8==C@@>>GII@@5?A?@B>CEDCFCC:;?CCCAC"
 		);
 	}
 
@@ -157,7 +157,7 @@ mod test {
 	#[test]
 	fn quality_filter() {
 		let fv = FASTQVec::from_string(
-			r#"@Rosalind_0049_1
+			r"@Rosalind_0049_1
 			GCAGAGACCAGTAGATGTGTTTGCGGACGGTCGGGCTCCATGTGACACAG
 			+
 			FD@@;C<AI?4BA:=>C<G=:AE=><A??>764A8B797@A:58:527+,
@@ -168,7 +168,7 @@ mod test {
 			@Rosalind_0049_3
 			ACCCCATACGGCGAGCGTCAGCATCTGATATCCTCTTTCAATCCTAGCTA
 			+
-			B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+"#,
+			B:EI>JDB5=>DA?E6B@@CA?C;=;@@C:6D:3=@49;@87;::;;?8+",
 		);
 		assert!(fv[0].is_quality_ok(20, 90).unwrap());
 		assert!(!fv[1].is_quality_ok(20, 90).unwrap());

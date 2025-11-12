@@ -29,7 +29,7 @@ fn nuc_complement(n: u8) -> u8 {
 		b'C' | b'c' => out = b'G',
 		b'G' | b'g' => out = b'C',
 		b'T' | b't' | b'U' | b'u' => out = b'A',
-		_ => panic!("Unexpected character {}", n),
+		_ => panic!("Unexpected character {n}"),
 	};
 
 	out
